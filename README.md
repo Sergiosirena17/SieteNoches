@@ -112,7 +112,7 @@ El juego genera por código una música lo-fi, el zumbido de los ventiladores, l
 - Con O₂ bajo 30 %, la música baja a 0.75x.
 - En la antena y en la Noche 7 la música se apaga.
 
-Inspiración: tomamos ideas de Undertale (intro con viñetas, contraste de tono), Among Us (mapa con salas), FNAF (sobrevivir hasta las 6:00 AM) y Papers, Please (interfaces diegéticas), pero **no se usa ningún sprite, música ni mapa de esos juegos**.
+Inspiración: tomamos ideas de Undertale (intro con viñetas, contraste de tono), Among Us (mapa con salas) y Papers, Please (interfaces diegéticas), pero **no se usa ningún sprite, música ni mapa de esos juegos**.
 
 ## Menú SieteNoches (dentro de Unity)
 
