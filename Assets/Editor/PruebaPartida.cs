@@ -121,13 +121,19 @@ public static class PruebaPartida
                 Mapa.ContinuarPantalla();
                 break;
             case 3:
+                Revisar(Mapa.PantallaAbierta && Mapa.textoPantallaTitulo.text == "Cómo se juega", "La primera noche explica cómo se juega");
+                Mapa.ContinuarPantalla();
+                break;
+            case 4:
                 Revisar(!Mapa.PantallaAbierta, "Continuar cierra la pantalla");
                 Foto("02_Mapa");
                 Mapa.Entrar(Estacion(Estaciones.Invernadero));
                 break;
-            case 4:
+            case 5:
             {
                 Revisar(escena == "Est_Invernadero", "Entra al Invernadero");
+                Revisar(Uno<Tutorial>() != null, "La primera vez aparece el tutorial del Invernadero");
+                Tutorial.CerrarAbierto();
                 var inv = Uno<InvernaderoControlador>();
                 inv.Seleccionar(0);
                 inv.Sembrar((int)Especie.Espirulina);
@@ -137,23 +143,24 @@ public static class PruebaPartida
                 Revisar(c.Especie == Especie.Espirulina && c.ConfiguracionCorrecta(false, out _), "Siembra Espirulina con 90 % y LED rojo + azul");
                 break;
             }
-            case 5:
+            case 6:
             {
                 var inv = Uno<InvernaderoControlador>();
                 Revisar(inv.textoManual.text.Contains("Espirulina") && inv.plantas[0].enabled, "Se ve la planta y el manual en la página 1");
                 Foto("03_Invernadero");
                 inv.Salir();
-                Revisar(inv.panelTarjeta.activeSelf && inv.textoDato.text.Contains("Veggie"), "Al salir muestra la tarjeta de dato real");
+                Revisar(inv.panelTarjeta.activeSelf && inv.textoDato.text.Contains("Estación Espacial"), "Al salir muestra la tarjeta de dato real");
                 inv.Continuar();
                 break;
             }
-            case 6:
+            case 7:
                 Revisar(escena == Escenas.Mapa && GameState.Visitas == 1 && GameState.Hora == "21:00", "Vuelve al mapa a las 21:00");
                 Mapa.Entrar(Estacion(Estaciones.SoporteVital));
                 break;
-            case 7:
+            case 8:
             {
                 Revisar(escena == "Est_SoporteVital", "Entra a Soporte Vital");
+                Tutorial.CerrarAbierto();
                 var sv = Uno<SoporteVitalControlador>();
                 Revisar(sv.Logica != null, "El MOXIE está listo para encenderse");
                 sv.AlternarSector(2);
@@ -162,7 +169,7 @@ public static class PruebaPartida
                 sv.Logica.Temperatura = 805f; sv.Logica.Produccion = 0.4f; sv.Logica.Hollin = 0.3f;
                 break;
             }
-            case 8:
+            case 9:
             {
                 var sv = Uno<SoporteVitalControlador>();
                 Foto("04_SoporteVital");
@@ -171,19 +178,20 @@ public static class PruebaPartida
                 sv.Salir(); sv.Continuar();
                 break;
             }
-            case 9:
+            case 10:
                 Revisar(escena == Escenas.Mapa, "Soporte Vital vuelve al mapa");
                 Mapa.Entrar(Estacion(Estaciones.Biomedica));
                 break;
-            case 10:
+            case 11:
             {
                 Revisar(escena == "Est_Biomedica", "Entra a la Terminal Biomédica");
+                Tutorial.CerrarAbierto();
                 var bio = Uno<BiomedicaControlador>();
                 bio.Elegir((int)TripId.Jonas);
                 bio.CompletarTexto();
                 break;
             }
-            case 11:
+            case 12:
             {
                 var bio = Uno<BiomedicaControlador>();
                 Foto("05_Biomedica");
@@ -199,34 +207,35 @@ public static class PruebaPartida
                 bio.Salir(); bio.Continuar();
                 break;
             }
-            case 12:
+            case 13:
                 Revisar(!Estacion(Estaciones.Biomedica).Disponible, "La Biomédica se cierra tras 2 charlas");
                 Mapa.Entrar(Estacion(Estaciones.Camarotes));
                 break;
-            case 13:
+            case 14:
                 Revisar(Mapa.PantallaAbierta && Mapa.textoPantallaTitulo.text == "6:00 AM", "Terminar la guardia lleva a las 6:00 AM");
                 Revisar(GameState.Noche == 2 && GameState.Capsulas[0].Estado == EstadoPlanta.Madura, "La noche se resolvió: Noche 2 y espirulina madura");
                 Foto("06_Amanecer");
                 Mapa.ContinuarPantalla();
                 break;
-            case 14:
+            case 15:
                 Revisar(Mapa.PantallaAbierta && Mapa.textoPantallaTitulo.text.StartsWith("Noche 2"), "Aparece la pantalla de la Noche 2");
                 Mapa.ContinuarPantalla();
                 break;
-            case 15:
+            case 16:
                 Revisar(Estacion(Estaciones.Antena).Disponible, "Noche 2: la antena ya funciona");
                 Mapa.Entrar(Estacion(Estaciones.Antena));
                 break;
-            case 16:
+            case 17:
             {
                 Revisar(escena == "Est_Antena", "Entra a la Antena");
+                Tutorial.CerrarAbierto();
                 var an = Uno<AntenaControlador>();
                 an.ElegirPaquete(0);
                 Revisar(an.grupoOscilo.activeSelf && an.Logica != null, "Elegir SOS abre el osciloscopio");
                 an.Logica.Frecuencia = 0.62f;
                 break;
             }
-            case 17:
+            case 18:
             {
                 var an = Uno<AntenaControlador>();
                 Foto("07_Antena");
@@ -234,7 +243,7 @@ public static class PruebaPartida
                 Revisar(GameState.ProgresoRescate == 1 && an.grupoMensaje.activeSelf, "El SOS llega: rescate 1/4 y responde Nikolas");
                 break;
             }
-            case 18:
+            case 19:
             {
                 var an = Uno<AntenaControlador>();
                 Foto("08_Nikolas");
@@ -242,7 +251,7 @@ public static class PruebaPartida
                 an.Salir(); an.Continuar();
                 break;
             }
-            case 19:
+            case 20:
                 Revisar(escena == Escenas.Mapa && GameState.NikolasDiscusiones == 1, "Vuelve al mapa con 1 discusión con Nikolas");
                 // Saltar a la Noche 7 con una partida buena para probar la carrera final.
                 GameState.ProgresoRescate = 4; GameState.CosechaLimpia = true; GameState.Oxigeno = 80;
@@ -251,11 +260,11 @@ public static class PruebaPartida
                 GameState.PosicionJugador = null;
                 SceneManager.LoadScene(Escenas.Mapa);
                 break;
-            case 20:
+            case 21:
                 Revisar(Mapa.PantallaAbierta && Mapa.textoPantallaTitulo.text.StartsWith("Noche 7"), "Noche 7: pantalla de la hora más oscura");
                 Mapa.ContinuarPantalla();
                 break;
-            case 21:
+            case 22:
                 Revisar(Mapa.TiempoRestante > 0f && Mapa.TiempoRestante < MapaControlador.SegundosNoche7, "Corre la cuenta regresiva de 60 s");
                 Foto("09_Noche7");
                 Mapa.Entrar(Estacion(Estaciones.Puente));
@@ -264,12 +273,12 @@ public static class PruebaPartida
                 Revisar(GameState.ValvulasCerradas, "Soporte Vital cierra las válvulas");
                 Mapa.Entrar(Estacion(Estaciones.Puente));
                 break;
-            case 22:
+            case 23:
                 Revisar(escena == Escenas.Lanzamiento, "El Puente abre el Lanzamiento");
                 Foto("10_Lanzamiento");
                 Uno<LanzamientoControlador>().Despegar();
                 break;
-            case 23:
+            case 24:
                 Revisar(escena == Escenas.Final, "Despegar lleva al Final");
                 var fin = Uno<FinalControlador>();
                 Revisar(fin.IdFinal == EvaluadorFinal.Heroe && fin.textoTitulo.text == "Regreso héroe", "Con rescate 4/4 y todos sanos sale Regreso héroe");

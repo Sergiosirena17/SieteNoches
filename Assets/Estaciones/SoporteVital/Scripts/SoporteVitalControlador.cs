@@ -50,12 +50,13 @@ public class SoporteVitalControlador : EstacionBase
         }
         Franja(zonaProduccion, MoxieLogica.Normalizar(MoxieLogica.ZonaMin), MoxieLogica.Normalizar(MoxieLogica.ZonaMax));
         Franja(zonaFusion, MoxieLogica.Normalizar(MoxieLogica.Fusion), 1f);
+        MostrarTutorial();
     }
 
     protected override void Update()
     {
         base.Update();
-        if (logica != null && !logica.Terminado && !Saliendo)
+        if (logica != null && !logica.Terminado && !Saliendo && !Tutorial.Abierto)
         {
             bool calentando = Teclas.Mantiene(Key.Space) || (botonCalentar != null && botonCalentar.Presionado);
             if (Teclas.Pulsa(Key.P)) Purgar();

@@ -302,7 +302,7 @@ public static class ConstructorEscenas
         ClickInt(Btn("Humedad -", ajustes, "−", new Vector2(-120, 20), new Vector2(26, 22), out _), ctrl.CambiarHumedad, -5);
         ctrl.textoHumedad = Txt("Humedad", ajustes, "Humedad 50 %", 11, new Vector2(-60, 20), new Vector2(90, 20));
         ClickInt(Btn("Humedad +", ajustes, "+", new Vector2(0, 20), new Vector2(26, 22), out _), ctrl.CambiarHumedad, 5);
-        string[] leds = { "Rojo 660 nm", "Azul 450 nm", "UV-A 380 nm" };
+        string[] leds = { "Luz roja", "Luz azul", "Luz UV" };
         ctrl.botonesLed = new Image[3];
         for (int i = 0; i < 3; i++)
         {
@@ -317,11 +317,12 @@ public static class ConstructorEscenas
         ctrl.botonAccion = accion.gameObject;
         ctrl.textoAviso = Txt("Aviso", ui, "", 9, new Vector2(-160, -150), new Vector2(310, 16), TextAnchor.MiddleLeft, Energia);
 
-        var manual = Img("Manual Astrobotanico", ui, new Vector2(162, 0), new Vector2(290, 296), Color.white, Spr(arte + "spr_manual_pagina.png"));
-        ctrl.textoManual = Txt("Texto del manual", manual.transform, "", 9, new Vector2(0, 12), new Vector2(264, 262), TextAnchor.UpperLeft, Tinta);
-        ctrl.textoPagina = Txt("Pagina", manual.transform, "1 / 3", 10, new Vector2(0, -134), new Vector2(60, 16), TextAnchor.MiddleCenter, Tinta);
-        Click(Btn("Pagina anterior", manual.transform, "<", new Vector2(-110, -134), new Vector2(30, 20), out _), ctrl.PaginaAnterior);
-        Click(Btn("Pagina siguiente", manual.transform, ">", new Vector2(110, -134), new Vector2(30, 20), out _), ctrl.PaginaSiguiente);
+        var manual = Img("Manual Astrobotanico", ui, new Vector2(165, 2), new Vector2(300, 304), Color.white, Spr(arte + "spr_manual_pagina.png"));
+        ctrl.textoManual = Txt("Texto del manual", manual.transform, "", 11, new Vector2(0, 14), new Vector2(270, 262), TextAnchor.UpperLeft, Tinta);
+        ctrl.textoManual.lineSpacing = 1.15f;
+        ctrl.textoPagina = Txt("Pagina", manual.transform, "1 / 2", 10, new Vector2(0, -136), new Vector2(60, 16), TextAnchor.MiddleCenter, Tinta);
+        Click(Btn("Pagina anterior", manual.transform, "<", new Vector2(-115, -136), new Vector2(30, 20), out _), ctrl.PaginaAnterior);
+        Click(Btn("Pagina siguiente", manual.transform, ">", new Vector2(115, -136), new Vector2(30, 20), out _), ctrl.PaginaSiguiente);
 
         var lista = new List<InvernaderoControlador.SpritesEspecie>();
         foreach (var e in Semillas.Todas)

@@ -60,35 +60,45 @@ public static class Semillas
     public static string Leds(InfoSemilla s)
     {
         var partes = new List<string>();
-        if (s.Rojo) partes.Add("Rojo 660 nm");
-        if (s.Azul) partes.Add("Azul 450 nm");
-        if (s.Uv) partes.Add("UV-A 380 nm");
-        return partes.Count == 0 ? "Apagado (oscuridad total)" : string.Join(" + ", partes);
+        if (s.Rojo) partes.Add("roja");
+        if (s.Azul) partes.Add("azul");
+        if (s.Uv) partes.Add("UV");
+        return partes.Count == 0 ? "sin luz" : "luz " + string.Join(" + ", partes);
     }
+
+    /// <summary>Lo que dice el manual de cada planta: solo lo necesario para cuidarla.</summary>
+    static readonly Dictionary<Especie, string> Resumen = new Dictionary<Especie, string>
+    {
+        { Especie.Espirulina, "Da oxígeno cada noche mientras tenga luz." },
+        { Especie.Papa, "Da 3 raciones de comida. Aguanta 1 noche sin luz." },
+        { Especie.Lechuga, "Da 1 dosis que calma mucho y protege de la radiación." },
+        { Especie.Arabidopsis, "No se come. Crecida, te avisa de los peligros de la noche." },
+        { Especie.Dechloromonas, "Limpia el suelo tóxico de su cápsula y da agua." },
+    };
 
     static string Ficha(Especie e)
     {
         var s = Info[e];
-        return "<b>" + s.Nombre + "</b>  <i>" + s.Cientifico + "</i>\n" +
-               "Ciclo: " + s.Noches + (s.Noches == 1 ? " noche" : " noches") + (s.Continua ? " (y sigue)" : "") + "\n" +
-               "Humedad: " + s.Humedad + " %   Luz: " + Leds(s) + "\n" +
-               s.Efecto + "\n" + s.Riesgo + "\n";
+        string ciclo = s.Continua ? "" : "  ·  " + s.Noches + (s.Noches == 1 ? " noche" : " noches");
+        return "<b>" + s.Nombre + "</b>" + ciclo + "\n" +
+               "Humedad " + s.Humedad + " %  ·  " + Leds(s) + "\n" +
+               Resumen[e] + "\n";
     }
 
-    /// <summary>Las 3 paginas del Manual Astrobotánico que se ven en el invernadero.</summary>
+    /// <summary>Las 2 paginas del manual que se ven en el invernadero.</summary>
     public static readonly string[] PaginasManual =
     {
-        "MANUAL ASTROBOTÁNICO  (1/3)\n\n" + Ficha(Especie.Espirulina) + "\n" + Ficha(Especie.Papa),
-        "MANUAL ASTROBOTÁNICO  (2/3)\n\n" + Ficha(Especie.Lechuga) + "\n" + Ficha(Especie.Arabidopsis),
-        "MANUAL ASTROBOTÁNICO  (3/3)\n\n" + Ficha(Especie.Dechloromonas) + "\n" +
-        "<b>Reglas de la noche</b>\n" +
-        "• Cada canal LED encendido gasta 3 % de batería.\n" +
-        "• Una planta a oscuras respira: consume 2 % de O₂.\n" +
-        "• En 0.38 g el agua forma una película en la raíz. Mucha agua la ahoga.\n" +
-        "• Con 60 % de humedad o más y sin calefacción, el agua se congela.\n" +
-        "• El regolito tiene de 0.5 % a 1 % de percloratos: límpialo antes de sembrar comida.\n" +
-        "• 1 noche mal configurada: deja de crecer. 2 seguidas: biomasa podrida (-5 % O₂).",
+        "<b>MANUAL DE PLANTAS</b>\n\n" + Ficha(Especie.Espirulina) + "\n" + Ficha(Especie.Papa) + "\n" + Ficha(Especie.Lechuga),
+        "<b>MANUAL DE PLANTAS</b>\n\n" + Ficha(Especie.Arabidopsis) + "\n" + Ficha(Especie.Dechloromonas) + "\n" +
+        "<b>Reglas</b>\n" +
+        "• Cada luz encendida gasta batería.\n" +
+        "• Sin luz, la planta gasta un poco de oxígeno.\n" +
+        "• Mucha agua ahoga las raíces.\n" +
+        "• Humedad alta sin calefacción: se congela.\n" +
+        "• Suelo tóxico (ClO₄⁻): límpialo antes de sembrar comida.\n" +
+        "• 2 noches mal cuidada: se pudre.",
     };
+
 
     public const string LineaAlucinacion = "«No importa cuánta luz les pongas. Afuera sigue siendo de noche.»";
 }

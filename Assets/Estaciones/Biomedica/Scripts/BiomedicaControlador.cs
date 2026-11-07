@@ -53,6 +53,7 @@ public class BiomedicaControlador : EstacionBase
     void Start()
     {
         MostrarEleccion();
+        MostrarTutorial();
     }
 
     protected override void Update()

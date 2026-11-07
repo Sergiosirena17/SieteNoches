@@ -85,6 +85,8 @@ public static class GameState
     public static int NochesMoxie, NochesApagon, NochesSinVentilacion, PlantasMuertas, Cosechas, SosEnviados, CosechasToxicas;
     public static readonly List<string> Informe = new List<string>();
     public static readonly List<string> UltimoReporte = new List<string>();
+    /// <summary>Tutoriales que ya se mostraron en esta partida (aparecen solo la primera vez).</summary>
+    public static readonly HashSet<string> TutorialesVistos = new HashSet<string>();
 
     /// <summary>Donde estaba el jugador antes de entrar a una estacion. Null = posicion inicial.</summary>
     public static Vector2? PosicionJugador;
@@ -114,6 +116,7 @@ public static class GameState
         NochesMoxie = NochesApagon = NochesSinVentilacion = PlantasMuertas = Cosechas = SosEnviados = CosechasToxicas = 0;
         Informe.Clear();
         UltimoReporte.Clear();
+        TutorialesVistos.Clear();
         PosicionJugador = null;
 
         Capsulas = new[]

@@ -50,6 +50,7 @@ public class AntenaControlador : EstacionBase
         Mostrar(grupoPaquetes);
         bool elenaVerde = GameState.Trip(TripId.Elena).Estado == EstadoTrip.Verde;
         if (marcaObjetivo != null) marcaObjetivo.gameObject.SetActive(elenaVerde);
+        MostrarTutorial();
     }
 
     void OnDestroy()
@@ -61,7 +62,7 @@ public class AntenaControlador : EstacionBase
     protected override void Update()
     {
         base.Update();
-        if (logica == null || Saliendo) return;
+        if (logica == null || Saliendo || Tutorial.Abierto) return;
         if (!logica.Terminado)
         {
             int f = 0, a = 0;

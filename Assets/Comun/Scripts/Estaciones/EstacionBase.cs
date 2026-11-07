@@ -47,6 +47,12 @@ public abstract class EstacionBase : MonoBehaviour
         }
     }
 
+    /// <summary>Muestra el "cómo funciona" la primera vez que se entra a esta estación.</summary>
+    protected void MostrarTutorial()
+    {
+        Tutorial.MostrarSiHaceFalta(idEstacion, Estaciones.Nombre[idEstacion]);
+    }
+
     /// <summary>Texto corto para el informe del final. Cada estacion dice que hizo.</summary>
     protected virtual string ResumenSalida() => Estaciones.Nombre[idEstacion];
 
@@ -58,8 +64,8 @@ public abstract class EstacionBase : MonoBehaviour
         resumen = ResumenSalida();
         DatosReales.PorEstacion.TryGetValue(idEstacion, out var tarjeta);
         if (textoResultado != null) textoResultado.text = resumen;
-        if (textoDato != null) textoDato.text = "Dato real: " + tarjeta.Texto;
-        if (textoFuente != null) textoFuente.text = "Fuente: " + tarjeta.Fuente;
+        if (textoDato != null) textoDato.text = tarjeta.Texto;
+        if (textoFuente != null) textoFuente.text = ""; // la fuente se cuenta en la exposicion, no en el juego
         if (panelTarjeta != null) panelTarjeta.SetActive(true);
         else Continuar();
     }

@@ -58,6 +58,7 @@ public class InvernaderoControlador : EstacionBase
     {
         Seleccionar(0);
         MostrarPagina(0);
+        MostrarTutorial();
         if (GameState.Noche == 5 && HayArabidopsisViva())
             Avisar("La Arabidopsis se retorció y sus hojas están negras. Algo atraviesa el casco...");
     }

@@ -254,7 +254,23 @@ public class MapaControlador : MonoBehaviour
             }
         }
         else yield return Pantalla("Noche " + n + " · 18:30 MTC", string.Join("\n", cuerpo));
+
+        if (!GameState.TutorialesVistos.Contains("mapa"))
+        {
+            GameState.TutorialesVistos.Add("mapa");
+            yield return Pantalla("Cómo se juega", string.Join("\n", ComoSeJuega));
+        }
     }
+
+    static readonly string[] ComoSeJuega =
+    {
+        "• Camina con WASD y entra a las estaciones con E. Cada visita dura 2 h 30.",
+        "• Lo que dejas encendido gasta batería. A las 6:00 AM ves qué pasó con el oxígeno, las plantas y la tripulación.",
+        "• Arriba están tus recursos y el pulso de cada tripulante: verde está bien, rojo está mal.",
+        "• Cuando quieras terminar la noche, ve a los Camarotes.",
+        "",
+        "Para empezar: siembra en el Invernadero, enciende el MOXIE en Soporte Vital y habla con Jonas en la Terminal Biomédica (está nervioso).",
+    };
 
     /// <summary>Guiño a FNAF: a las 6:00 AM se resuelve todo lo que dejaste configurado.</summary>
     IEnumerator Amanecer()

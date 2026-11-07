@@ -47,10 +47,10 @@ public static class DatosReales
 
     public static readonly Dictionary<string, Tarjeta> PorEstacion = new Dictionary<string, Tarjeta>
     {
-        { Estaciones.Invernadero, new Tarjeta { Texto = "El sistema Veggie de la Estación Espacial cultiva con LEDs rojos, azules y verdes. En baja gravedad el agua no drena igual y puede ahogar las raíces.", Fuente = "nasa.gov (Growing Plants in Space)" } },
-        { Estaciones.SoporteVital, new Tarjeta { Texto = "MOXIE, a bordo de Perseverance, produjo 122 g de oxígeno calentando el CO₂ del aire marciano a 800 °C.", Fuente = "jpl.nasa.gov" } },
-        { Estaciones.Biomedica, new Tarjeta { Texto = "La radiación y el aislamiento están entre los 5 grandes riesgos del Human Research Program. Un sol dura 24 h 39 min y desordena el sueño.", Fuente = "nasa.gov/hrp" } },
-        { Estaciones.Antena, new Tarjeta { Texto = "Una orden desde la Tierra tarda de 3 a 22 minutos en llegar a Marte. Los orbitadores sirven de relevo en Banda X.", Fuente = "science.nasa.gov" } },
+        { Estaciones.Invernadero, new Tarjeta { Texto = "En la Estación Espacial cultivan plantas con luces LED. En poca gravedad, el exceso de agua ahoga las raíces.", Fuente = "nasa.gov (Growing Plants in Space)" } },
+        { Estaciones.SoporteVital, new Tarjeta { Texto = "El MOXIE del rover Perseverance sacó oxígeno del aire de Marte calentándolo a 800 °C.", Fuente = "jpl.nasa.gov" } },
+        { Estaciones.Biomedica, new Tarjeta { Texto = "Un día en Marte dura 24 h 39 min. Ese desfase y el aislamiento afectan el sueño y el ánimo de los astronautas.", Fuente = "nasa.gov/hrp" } },
+        { Estaciones.Antena, new Tarjeta { Texto = "Un mensaje de la Tierra tarda de 3 a 22 minutos en llegar a Marte.", Fuente = "science.nasa.gov" } },
     };
 }
 
