@@ -1,6 +1,6 @@
-# 7 Soles en Marte (nombre provisional)
+# 7 Noches en Marte
 
-Juego 2D en Unity para el NASA Space Apps Challenge 2026. Aterrizamos de emergencia en Marte y hay 7 soles para reparar la nave y volver. Las reglas y los números están en el GDD del equipo.
+Juego 2D en Unity para el NASA Space Apps Challenge 2026. Aterrizamos de emergencia en Marte y hay 7 noches para reparar la nave y volver, al estilo FNAF: cada noche juegas 2 misiones y a las 6:00 AM se gastan los recursos. Las reglas y los números están en el GDD del equipo.
 
 ## Abrir el proyecto
 
@@ -8,6 +8,8 @@ Juego 2D en Unity para el NASA Space Apps Challenge 2026. Aterrizamos de emergen
 2. Clonar este repositorio con GitHub Desktop.
 3. En Unity Hub: **Add > Add project from disk** y elegir la carpeta del repositorio.
 4. Abrir `Assets/Escenas/Inicio.unity` y presionar **Play**.
+
+¿Nunca usaste Unity? Lee primero [Docs/GuiaUnity.md](Docs/GuiaUnity.md): explica cada ventana y cómo probar el juego paso a paso.
 
 Cada minijuego también se puede probar solo: abrir su escena (por ejemplo `Assets/Minijuegos/Respira/Mj_Respira.unity`) y presionar Play.
 
@@ -48,10 +50,10 @@ Assets/
   Escenas/        Inicio, Intro, Mapa, Lanzamiento, Final
   Intro/Vinetas/  las 8 imágenes de la cinemática
   Minijuegos/<Nombre>/  escena Mj_<Nombre>, Scripts/, Art/
-  Editor/         herramientas (menú SieteSoles)
+  Editor/         herramientas (menú SieteNoches)
 Docs/
   Arte/           guía de la hoja de sprites del personaje
-  Capturas/       imagen de cada escena, generada por el menú SieteSoles
+  Capturas/       imagen de cada escena, generada por el menú SieteNoches
 ```
 
 ## Para artistas: cómo reemplazar los dibujos
@@ -81,10 +83,11 @@ Todo el arte actual es **boceto**. Para cambiarlo, guarden su PNG **con el mismo
 
 Inspiración: tomamos la idea de juegos como Undertale (intro con viñetas, movimiento con vista superior) y Among Us (mapa con salas), pero **no se usa ningún sprite, música ni mapa de esos juegos**.
 
-## Menú SieteSoles (dentro de Unity)
+## Menú SieteNoches (dentro de Unity)
 
 - **Construir escenas que falten:** crea solo las escenas que no existen. Nunca borra trabajo.
 - **Correr pruebas rápidas:** revisa reglas, finales y que los minijuegos se puedan ganar y perder. Córranlo antes de subir cambios a `Comun/Scripts` o a la lógica de un minijuego.
+- **Probar partida completa:** juega sola de Inicio a Final y avisa si algo falla.
 - **Capturar escenas:** guarda una imagen de cada escena en `Docs/Capturas`.
 
 ## Hacer un minijuego (Huerto, Refugio, Insulta, Roca)

@@ -2870,7 +2870,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MapaControlador
   jugador: {fileID: 2126323102}
   luzGlobal: {fileID: 112865892}
-  textoSol: {fileID: 1078545805}
+  textoNoche: {fileID: 1078545805}
   textoMisiones: {fileID: 2052927629}
   textoOxigeno: {fileID: 11048867}
   textoAgua: {fileID: 1266650127}
@@ -2882,8 +2882,8 @@ MonoBehaviour:
   panelPantalla: {fileID: 1955736472}
   textoPantallaTitulo: {fileID: 1742245516}
   textoPantallaCuerpo: {fileID: 1218338812}
-  colorDia: {r: 1, g: 0.93, b: 0.85, a: 1}
-  colorNoche: {r: 0.35, g: 0.45, b: 0.8, a: 1}
+  colorAmanecer: {r: 1, g: 0.93, b: 0.85, a: 1}
+  colorNoche: {r: 0.55, g: 0.62, b: 0.9, a: 1}
 --- !u!4 &1077695861
 Transform:
   m_ObjectHideFlags: 0
@@ -2911,7 +2911,7 @@ GameObject:
   - component: {fileID: 1078545804}
   - component: {fileID: 1078545805}
   m_Layer: 0
-  m_Name: Sol
+  m_Name: Noche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2977,7 +2977,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Sol 1 de 7
+  m_Text: Noche 1 de 7
 --- !u!1 &1129025175
 GameObject:
   m_ObjectHideFlags: 0
@@ -4340,7 +4340,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Sol 1
+  m_Text: Noche 1
 --- !u!1 &1815683299
 GameObject:
   m_ObjectHideFlags: 0
@@ -12862,7 +12862,7 @@ GameObject:
   - component: {fileID: 1955736475}
   - component: {fileID: 1955736474}
   m_Layer: 0
-  m_Name: Pantalla de sol y noche
+  m_Name: Pantalla de noche y amanecer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

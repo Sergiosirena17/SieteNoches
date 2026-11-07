@@ -13,7 +13,7 @@ using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 /// <summary>
-/// Crea las escenas base del juego por codigo. Menu: SieteSoles > Construir escenas que falten.
+/// Crea las escenas base del juego por codigo. Menu: SieteNoches > Construir escenas que falten.
 /// IMPORTANTE: solo crea las escenas que NO existen. Nunca borra el trabajo de nadie.
 /// Si quieres regenerar una escena, borrala primero a mano.
 /// </summary>
@@ -44,7 +44,7 @@ public static class ConstructorEscenas
         return p;
     }
 
-    [MenuItem("SieteSoles/Construir escenas que falten")]
+    [MenuItem("SieteNoches/Construir escenas que falten")]
     public static void ConstruirFaltantes() { Construir(false); }
 
     /// <summary>Para linea de comandos (-executeMethod). Tambien solo crea las que faltan.</summary>
@@ -62,13 +62,13 @@ public static class ConstructorEscenas
                 var escena = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
                 plan.Crear();
                 EditorSceneManager.SaveScene(escena, plan.Ruta);
-                Debug.Log("[SieteSoles] Escena creada: " + plan.Ruta);
+                Debug.Log("[SieteNoches] Escena creada: " + plan.Ruta);
             }
             escenasBuild.Add(new EditorBuildSettingsScene(plan.Ruta, true));
         }
         EditorBuildSettings.scenes = escenasBuild.ToArray();
         AssetDatabase.SaveAssets();
-        Debug.Log("[SieteSoles] Lista de escenas actualizada (" + escenasBuild.Count + ").");
+        Debug.Log("[SieteNoches] Lista de escenas actualizada (" + escenasBuild.Count + ").");
     }
 
     // ------------------------------------------------------------------ Escenas
@@ -80,8 +80,8 @@ public static class ConstructorEscenas
         var ui = Lienzo(cam);
         SistemaEventos();
         var ctrl = new GameObject("Inicio").AddComponent<InicioControlador>();
-        Txt("Titulo", ui, "7 Soles en Marte", 36, new Vector2(0, 80), new Vector2(600, 50), TextAnchor.MiddleCenter, Energia);
-        Txt("Subtitulo", ui, "(nombre provisional)", 12, new Vector2(0, 45), new Vector2(400, 20));
+        Txt("Titulo", ui, "7 Noches en Marte", 36, new Vector2(0, 80), new Vector2(600, 50), TextAnchor.MiddleCenter, Energia);
+        Txt("Subtitulo", ui, "Sobrevive hasta las 6:00 AM. Siete veces.", 12, new Vector2(0, 45), new Vector2(400, 20));
         var b = Btn("Boton Jugar", ui, "Jugar", new Vector2(0, -20), new Vector2(160, 36), out _);
         Click(b, ctrl.Jugar);
         Txt("Controles", ui, "WASD o flechas: moverse     E o Espacio: interactuar     Espacio o clic: avanzar texto", 10, new Vector2(0, -150), new Vector2(620, 20));
@@ -105,7 +105,7 @@ public static class ConstructorEscenas
             "Entonces falló todo al mismo tiempo.",
             "Lo llamaron aterrizaje de emergencia. Fue más emergencia que aterrizaje.",
             "Wayra: Buenas noticias, respiras. Malas noticias, por ahora.",
-            "La ventana de regreso se cierra en 7 soles. Si la pierdes, la siguiente tarda 26 meses.",
+            "La ventana de regreso se cierra en 7 noches. Si la pierdes, la siguiente tarda 26 meses.",
             "Antes de salir, Wayra detecta algo en el suelo. Una huella. No es tuya.",
         };
         ctrl.vinetas = new IntroControlador.Vineta[textos.Length];
@@ -194,7 +194,7 @@ public static class ConstructorEscenas
         ctrl.jugador = jugador.transform;
         ctrl.luzGlobal = luz;
         Img("Barra superior", ui, new Vector2(0, 160), new Vector2(624, 34), new Color(0.07f, 0.1f, 0.18f, 0.85f));
-        ctrl.textoSol = Txt("Sol", ui, "Sol 1 de 7", 14, new Vector2(-235, 167), new Vector2(140, 18), TextAnchor.MiddleLeft, Energia);
+        ctrl.textoNoche = Txt("Noche", ui, "Noche 1 de 7", 14, new Vector2(-235, 167), new Vector2(140, 18), TextAnchor.MiddleLeft, Energia);
         ctrl.textoMisiones = Txt("Misiones", ui, "Misiones: 0 de 2", 10, new Vector2(-235, 152), new Vector2(140, 14), TextAnchor.MiddleLeft);
         string[] nombres = { "oxigeno", "agua", "comida", "energia", "nave", "moral" };
         var textos = new Text[nombres.Length];
@@ -209,9 +209,9 @@ public static class ConstructorEscenas
         ctrl.textoAviso = Txt("Aviso", ui, "E: Respira, Marte", 14, new Vector2(0, -150), new Vector2(520, 22), TextAnchor.MiddleCenter, Energia);
         ctrl.textoAviso.gameObject.AddComponent<Outline>().effectColor = Color.black;
 
-        var panel = Img("Pantalla de sol y noche", ui, Vector2.zero, new Vector2(640, 360), new Color(0.03f, 0.05f, 0.1f, 0.92f));
+        var panel = Img("Pantalla de noche y amanecer", ui, Vector2.zero, new Vector2(640, 360), new Color(0.03f, 0.05f, 0.1f, 0.92f));
         ctrl.panelPantalla = panel.gameObject;
-        ctrl.textoPantallaTitulo = Txt("Titulo", panel.transform, "Sol 1", 28, new Vector2(0, 60), new Vector2(560, 40), TextAnchor.MiddleCenter, Energia);
+        ctrl.textoPantallaTitulo = Txt("Titulo", panel.transform, "Noche 1", 28, new Vector2(0, 60), new Vector2(560, 40), TextAnchor.MiddleCenter, Energia);
         ctrl.textoPantallaCuerpo = Txt("Cuerpo", panel.transform, "", 14, new Vector2(0, -30), new Vector2(520, 140), TextAnchor.UpperCenter);
         panel.gameObject.SetActive(false);
     }
@@ -222,7 +222,7 @@ public static class ConstructorEscenas
         var ui = Lienzo(cam);
         SistemaEventos();
         var ctrl = new GameObject("Lanzamiento").AddComponent<LanzamientoControlador>();
-        Txt("Titulo", ui, "Sol 7: lanzamiento", 28, new Vector2(0, 110), new Vector2(560, 40), TextAnchor.MiddleCenter, Energia);
+        Txt("Titulo", ui, "Noche 7: lanzamiento", 28, new Vector2(0, 110), new Vector2(560, 40), TextAnchor.MiddleCenter, Energia);
         ctrl.textoEstado = Txt("Estado", ui, "Nave: 70 / 70\nEnergía: 30 / 30", 16, new Vector2(0, 10), new Vector2(520, 140), TextAnchor.MiddleCenter);
         var b = Btn("Boton Despegar", ui, "Despegar", new Vector2(0, -120), new Vector2(180, 36), out _);
         Click(b, ctrl.Despegar);
@@ -516,7 +516,7 @@ public static class ConstructorEscenas
     static Sprite Spr(string ruta)
     {
         var s = AssetDatabase.LoadAssetAtPath<Sprite>(ruta);
-        if (s == null) Debug.LogWarning("[SieteSoles] No encontré el sprite: " + ruta);
+        if (s == null) Debug.LogWarning("[SieteNoches] No encontré el sprite: " + ruta);
         return s;
     }
 

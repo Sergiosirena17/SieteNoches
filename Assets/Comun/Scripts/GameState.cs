@@ -8,10 +8,10 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public static class GameState
 {
-    public const int SolDelLanzamiento = 7;
+    public const int NocheDelLanzamiento = 7;
 
-    public static int Sol = 1;
-    public static int MisionesHoy = 0;
+    public static int Noche = 1;
+    public static int MisionesEstaNoche = 0;
 
     public static int Oxigeno = 70;
     public static int Agua = 70;
@@ -23,8 +23,8 @@ public static class GameState
     public static int NikolasGanadas = 0;
     public static readonly HashSet<string> Marcas = new HashSet<string>();
 
-    /// <summary>Misiones ya jugadas en el sol actual (no se pueden repetir el mismo sol).</summary>
-    public static readonly List<string> MisionesHechasHoy = new List<string>();
+    /// <summary>Misiones ya jugadas en la noche actual (no se pueden repetir la misma noche).</summary>
+    public static readonly List<string> MisionesHechasEstaNoche = new List<string>();
 
     /// <summary>Cuantas veces se jugo cada mision en toda la partida. Sirve para subir la dificultad.</summary>
     public static readonly Dictionary<string, int> VecesJugado = new Dictionary<string, int>();
@@ -35,8 +35,8 @@ public static class GameState
     /// <summary>Donde estaba el jugador antes de entrar a un minijuego. Null = posicion inicial.</summary>
     public static Vector2? PosicionJugador = null;
 
-    /// <summary>Misiones disponibles en cada sol, segun la tabla del GDD. El indice 0 no se usa.</summary>
-    public static readonly string[][] MisionesPorSol =
+    /// <summary>Misiones disponibles en cada noche, segun la tabla del GDD. El indice 0 no se usa.</summary>
+    public static readonly string[][] MisionesPorNoche =
     {
         new string[0],
         new[] { Misiones.Respira, Misiones.Tormenta, Misiones.Insulta },
@@ -61,11 +61,11 @@ public static class GameState
 
     public static void Reiniciar()
     {
-        Sol = 1; MisionesHoy = 0; NikolasGanadas = 0;
+        Noche = 1; MisionesEstaNoche = 0; NikolasGanadas = 0;
         Oxigeno = 70; Agua = 70; Comida = 70; Energia = 70;
         Nave = 20; Moral = 70;
         Marcas.Clear();
-        MisionesHechasHoy.Clear();
+        MisionesHechasEstaNoche.Clear();
         VecesJugado.Clear();
         Historial.Clear();
         PosicionJugador = null;
@@ -95,20 +95,20 @@ public static class GameState
     public static List<string> MisionesDisponibles()
     {
         var lista = new List<string>();
-        if (Sol < 1 || Sol >= SolDelLanzamiento) return lista;
-        foreach (var id in MisionesPorSol[Sol])
+        if (Noche < 1 || Noche >= NocheDelLanzamiento) return lista;
+        foreach (var id in MisionesPorNoche[Noche])
         {
-            if (MisionesHechasHoy.Contains(id)) continue;
+            if (MisionesHechasEstaNoche.Contains(id)) continue;
             if (id == Misiones.Roca && RocaDecidida()) continue;
             lista.Add(id);
         }
         return lista;
     }
 
-    public static bool DebeLlegarLaNoche()
+    public static bool DebeAmanecer()
     {
-        if (Sol >= SolDelLanzamiento) return false;
-        return MisionesHoy >= MisionesPermitidas() || MisionesDisponibles().Count == 0;
+        if (Noche >= NocheDelLanzamiento) return false;
+        return MisionesEstaNoche >= MisionesPermitidas() || MisionesDisponibles().Count == 0;
     }
 
     public static int Dificultad(string idMision)
@@ -118,10 +118,10 @@ public static class GameState
 
     public static void RegistrarMision(string idMision, string resumen)
     {
-        MisionesHoy++;
-        MisionesHechasHoy.Add(idMision);
+        MisionesEstaNoche++;
+        MisionesHechasEstaNoche.Add(idMision);
         VecesJugado[idMision] = Dificultad(idMision) + 1;
-        Historial.Add("Sol " + Sol + ": " + resumen);
+        Historial.Add("Noche " + Noche + ": " + resumen);
     }
 
     /// <summary>Lo llama cada minijuego al terminar, despues de aplicar su resultado.</summary>
@@ -131,7 +131,7 @@ public static class GameState
         SceneManager.LoadScene(Escenas.Mapa);
     }
 
-    public static void PasarNoche()
+    public static void PasarAlAmanecer()
     {
         int penalizacionMoral = 0;
         Sumar(oxigeno: -15, agua: -10, comida: -10, energia: -10);
@@ -139,8 +139,8 @@ public static class GameState
         if (Comida == 0) penalizacionMoral -= 15;
         if (Energia == 0) penalizacionMoral -= 15;
         Sumar(moral: penalizacionMoral);
-        MisionesHoy = 0;
-        MisionesHechasHoy.Clear();
-        Sol++;
+        MisionesEstaNoche = 0;
+        MisionesHechasEstaNoche.Clear();
+        Noche++;
     }
 }

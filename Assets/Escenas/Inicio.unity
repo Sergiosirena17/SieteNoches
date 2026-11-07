@@ -843,7 +843,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 7 Soles en Marte
+  m_Text: 7 Noches en Marte
 --- !u!222 &1273326242
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -922,7 +922,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: (nombre provisional)
+  m_Text: Sobrevive hasta las 6:00 AM. Siete veces.
 --- !u!222 &1471595370
 CanvasRenderer:
   m_ObjectHideFlags: 0

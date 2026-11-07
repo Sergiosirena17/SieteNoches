@@ -113,10 +113,10 @@ public static class DatosReales
     };
 }
 
-/// <summary>Textos de cada sol (de Narrativa y game design).</summary>
-public static class TextosSoles
+/// <summary>Textos de cada noche (de Narrativa y game design).</summary>
+public static class TextosNoches
 {
-    public static readonly string[] Dia =
+    public static readonly string[] Inicio =
     {
         "",
         "Wayra explica lo básico y Nikolas ya está discutiendo.",
@@ -128,7 +128,7 @@ public static class TextosSoles
         "Sube a la nave y despega. Ve al Puente.",
     };
 
-    public static readonly string[] Noche =
+    public static readonly string[] Amanecer =
     {
         "",
         "Un ruido suave en el casco. Wayra dice que es el viento.",

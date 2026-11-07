@@ -9,9 +9,9 @@ public class EstacionMision : MonoBehaviour
     [Tooltip("Id de Misiones (respira, tormenta...). Vacio = lugar extra que todavia no tiene minijuego.")]
     public string idMision;
     public string nombreVisible = "Lugar";
-    [Tooltip("Marcar solo en el Puente: el sol 7 desde aqui se despega")]
+    [Tooltip("Marcar solo en el Puente: la noche 7 desde aqui se despega")]
     public bool esPuente;
-    [Tooltip("Flecha o brillo que indica que hoy hay mision aqui")]
+    [Tooltip("Flecha o brillo que indica que esta noche hay mision aqui")]
     public SpriteRenderer indicador;
 
     bool jugadorCerca;
@@ -20,7 +20,7 @@ public class EstacionMision : MonoBehaviour
     {
         get
         {
-            if (GameState.Sol >= GameState.SolDelLanzamiento) return esPuente;
+            if (GameState.Noche >= GameState.NocheDelLanzamiento) return esPuente;
             if (string.IsNullOrEmpty(idMision)) return false;
             return GameState.MisionesDisponibles().Contains(idMision);
         }

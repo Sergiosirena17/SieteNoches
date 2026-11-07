@@ -5,11 +5,11 @@ using UnityEngine;
 
 /// <summary>
 /// Guarda una imagen de cada escena (camara principal) en Docs/Capturas. Util para revisar sin abrir cada escena.
-/// Menu: SieteSoles > Capturar escenas.
+/// Menu: SieteNoches > Capturar escenas.
 /// </summary>
 public static class Capturas
 {
-    [MenuItem("SieteSoles/Capturar escenas")]
+    [MenuItem("SieteNoches/Capturar escenas")]
     public static void Capturar()
     {
         string carpeta = Path.GetFullPath(Path.Combine(Application.dataPath, "../Docs/Capturas"));

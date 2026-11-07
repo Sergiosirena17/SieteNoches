@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-/// <summary>Sol 7: muestra si la nave puede despegar y pasa al final.</summary>
+/// <summary>Noche 7: muestra si la nave puede despegar y pasa al final.</summary>
 public class LanzamientoControlador : MonoBehaviour
 {
     public Text textoEstado;

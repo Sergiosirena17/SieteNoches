@@ -7,14 +7,14 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Recorre una partida en modo Play sin intervencion: Inicio, Intro, Mapa, Respira, Tormenta, noche,
 /// Roca, Lanzamiento y Final. Falla si aparece cualquier error en la Consola.
-/// Menu: SieteSoles > Probar partida completa (la prueba sale sola del modo Play al terminar).
+/// Menu: SieteNoches > Probar partida completa (la prueba sale sola del modo Play al terminar).
 /// </summary>
 [InitializeOnLoad]
 public static class PruebaPartida
 {
-    const string ClavePaso = "SieteSoles.PruebaPartida.Paso";
-    const string ClaveErrores = "SieteSoles.PruebaPartida.Errores";
-    const string ClaveConsola = "SieteSoles.PruebaPartida.Consola";
+    const string ClavePaso = "SieteNoches.PruebaPartida.Paso";
+    const string ClaveErrores = "SieteNoches.PruebaPartida.Errores";
+    const string ClaveConsola = "SieteNoches.PruebaPartida.Consola";
     const int FramesPorPaso = 45;
     static int frames;
 
@@ -25,7 +25,7 @@ public static class PruebaPartida
         Application.logMessageReceived += AlRegistrar;
     }
 
-    [MenuItem("SieteSoles/Probar partida completa")]
+    [MenuItem("SieteNoches/Probar partida completa")]
     public static void Correr() { Empezar(false); }
 
     public static void CorrerDesdeConsola() { Empezar(true); }
@@ -95,8 +95,8 @@ public static class PruebaPartida
                 Revisar(escena == Escenas.Mapa, "Llega al Mapa");
                 var anim = Uno<AnimadorHojaSprites>();
                 Revisar(anim != null && anim.GetComponent<SpriteRenderer>().sprite != null, "El jugador tiene sprite cortado de la hoja");
-                Revisar(MapaControlador.Instancia.panelPantalla.activeSelf, "Aparece la pantalla del Sol 1");
-                Revisar(Estacion(Misiones.Respira).Disponible && !Estacion(Misiones.Huerto).Disponible, "Sol 1: Respira disponible y Huerto no");
+                Revisar(MapaControlador.Instancia.panelPantalla.activeSelf, "Aparece la pantalla de la Noche 1");
+                Revisar(Estacion(Misiones.Respira).Disponible && !Estacion(Misiones.Huerto).Disponible, "Noche 1: Respira disponible y Huerto no");
                 MapaControlador.Instancia.Entrar(Estacion(Misiones.Respira));
                 break;
             case 3:
@@ -108,7 +108,7 @@ public static class PruebaPartida
                 break;
             case 4:
                 Revisar(escena == Escenas.Mapa, "Respira vuelve al Mapa");
-                Revisar(GameState.Oxigeno == 100 && GameState.Nave == 30 && GameState.MisionesHoy == 1, "Ganar Respira suma oxígeno y nave");
+                Revisar(GameState.Oxigeno == 100 && GameState.Nave == 30 && GameState.MisionesEstaNoche == 1, "Ganar Respira suma oxígeno y nave");
                 MapaControlador.Instancia.Entrar(Estacion(Misiones.Tormenta));
                 break;
             case 5:
@@ -121,7 +121,7 @@ public static class PruebaPartida
             case 6:
                 Revisar(escena == Escenas.Mapa, "Tormenta vuelve al Mapa");
                 Revisar(GameState.Energia == 60, "Perder Tormenta resta energía");
-                Revisar(MapaControlador.Instancia.textoPantallaTitulo.text == "Noche 1", "Tras 2 misiones llega la Noche 1");
+                Revisar(MapaControlador.Instancia.textoPantallaTitulo.text == "6:00 AM", "Tras 2 misiones llegan las 6:00 AM");
                 SceneManager.LoadScene("Mj_Roca");
                 break;
             case 7:
@@ -132,7 +132,7 @@ public static class PruebaPartida
                 break;
             case 8:
                 Revisar(GameState.Marcas.Contains("roca_analizada"), "Analizar la roca deja su marca");
-                GameState.Sol = 7; GameState.Nave = 80; GameState.Energia = 50;
+                GameState.Noche = 7; GameState.Nave = 80; GameState.Energia = 50;
                 SceneManager.LoadScene(Escenas.Lanzamiento);
                 break;
             case 9:

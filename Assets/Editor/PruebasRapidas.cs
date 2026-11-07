@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// Pruebas automaticas de reglas (sin abrir escenas). Menu: SieteSoles > Correr pruebas rapidas.
+/// Pruebas automaticas de reglas (sin abrir escenas). Menu: SieteNoches > Correr pruebas rapidas.
 /// Revisan el GameState, los 9 finales y que los minijuegos se puedan ganar y perder.
 /// Correr SIEMPRE antes de subir cambios a GameState, Efectos, EvaluadorFinal o la logica de un minijuego.
 /// </summary>
@@ -12,7 +12,7 @@ public static class PruebasRapidas
     static int fallas;
     static readonly List<string> informe = new List<string>();
 
-    [MenuItem("SieteSoles/Correr pruebas rapidas")]
+    [MenuItem("SieteNoches/Correr pruebas rapidas")]
     public static void Correr()
     {
         Ejecutar();
@@ -48,17 +48,17 @@ public static class PruebasRapidas
     static void ProbarEstado()
     {
         GameState.Reiniciar();
-        Esperar(GameState.Oxigeno == 70 && GameState.Nave == 20 && GameState.Sol == 1, "P01 valores iniciales");
-        Esperar(GameState.MisionesDisponibles().Count == 3, "Sol 1 tiene 3 misiones");
+        Esperar(GameState.Oxigeno == 70 && GameState.Nave == 20 && GameState.Noche == 1, "P01 valores iniciales");
+        Esperar(GameState.MisionesDisponibles().Count == 3, "Noche 1 tiene 3 misiones");
 
         GameState.RegistrarMision(Misiones.Respira, "prueba");
-        Esperar(!GameState.MisionesDisponibles().Contains(Misiones.Respira), "Una mision no se repite el mismo sol");
-        Esperar(!GameState.DebeLlegarLaNoche(), "Con 1 mision todavia es de dia");
+        Esperar(!GameState.MisionesDisponibles().Contains(Misiones.Respira), "Una mision no se repite la misma noche");
+        Esperar(!GameState.DebeAmanecer(), "Con 1 mision todavia no amanece");
         GameState.RegistrarMision(Misiones.Tormenta, "prueba");
-        Esperar(GameState.DebeLlegarLaNoche(), "P03 con 2 misiones llega la noche");
+        Esperar(GameState.DebeAmanecer(), "P03 con 2 misiones amanece");
 
         GameState.Reiniciar();
-        for (int i = 0; i < 5; i++) GameState.PasarNoche();
+        for (int i = 0; i < 5; i++) GameState.PasarAlAmanecer();
         Esperar(GameState.Oxigeno == 0, "P04 sin misiones de oxigeno, el oxigeno llega a 0 en la noche 5");
         Esperar(EvaluadorFinal.Calcular() == "SinAire", "P04 eso da el final Sin aire");
 
@@ -67,11 +67,11 @@ public static class PruebasRapidas
         Esperar(GameState.MisionesPermitidas() == 1, "P05 con moral 0 solo 1 mision");
 
         GameState.Reiniciar();
-        GameState.Sol = 7;
-        Esperar(GameState.MisionesDisponibles().Count == 0 && !GameState.DebeLlegarLaNoche(), "P06 el sol 7 no tiene misiones ni noche");
+        GameState.Noche = 7;
+        Esperar(GameState.MisionesDisponibles().Count == 0 && !GameState.DebeAmanecer(), "P06 la noche 7 no tiene misiones ni amanecer");
 
         GameState.Reiniciar();
-        GameState.Sol = 2;
+        GameState.Noche = 2;
         Efectos.DecidirRoca(DecisionRoca.Dejar);
         Esperar(!GameState.MisionesDisponibles().Contains(Misiones.Roca), "Decidida la roca, ya no aparece");
 

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 /// <summary>
-/// Controla el mapa: barra de recursos, avisos de estaciones, la noche y el paso de soles.
+/// Controla el mapa: barra de recursos, avisos de estaciones, el inicio de cada noche y el amanecer (6:00 AM).
 /// </summary>
 public class MapaControlador : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class MapaControlador : MonoBehaviour
     public Light2D luzGlobal;
 
     [Header("Barra superior")]
-    public Text textoSol;
+    [FormerlySerializedAs("textoSol")] public Text textoNoche;
     public Text textoMisiones;
     public Text textoOxigeno, textoAgua, textoComida, textoEnergia, textoNave, textoMoral;
 
@@ -28,8 +29,10 @@ public class MapaControlador : MonoBehaviour
     public Text textoPantallaCuerpo;
 
     [Header("Luz")]
-    public Color colorDia = new Color(1f, 0.93f, 0.85f);
-    public Color colorNoche = new Color(0.35f, 0.45f, 0.8f);
+    [Tooltip("Luz mientras juegas la noche")]
+    public Color colorNoche = new Color(0.55f, 0.62f, 0.9f);
+    [Tooltip("Luz de la pantalla de las 6:00 AM")]
+    [FormerlySerializedAs("colorDia")] public Color colorAmanecer = new Color(1f, 0.85f, 0.7f);
 
     EstacionMision estacionCerca;
 
@@ -48,12 +51,12 @@ public class MapaControlador : MonoBehaviour
         if (GameState.PosicionJugador.HasValue && jugador != null)
             jugador.position = GameState.PosicionJugador.Value;
         if (textoAviso != null) textoAviso.text = "";
-        PonerLuz(colorDia, 1f);
+        PonerLuz(colorNoche, 0.8f);
         ActualizarBarra();
 
         if (GameState.Oxigeno <= 0) { SceneManager.LoadScene(Escenas.Final); return; }
-        if (GameState.DebeLlegarLaNoche()) StartCoroutine(Noche());
-        else if (GameState.MisionesHoy == 0) StartCoroutine(Pantalla("Sol " + GameState.Sol, TextosSoles.Dia[Mathf.Clamp(GameState.Sol, 0, 7)] + "\n\n" + ResumenMisiones()));
+        if (GameState.DebeAmanecer()) StartCoroutine(Amanecer());
+        else if (GameState.MisionesEstaNoche == 0) StartCoroutine(Pantalla("Noche " + GameState.Noche, TextosNoches.Inicio[Mathf.Clamp(GameState.Noche, 0, 7)] + "\n\n" + ResumenMisiones()));
     }
 
     void Update()
@@ -63,19 +66,19 @@ public class MapaControlador : MonoBehaviour
 
     string ResumenMisiones()
     {
-        if (GameState.Sol >= GameState.SolDelLanzamiento) return "Ve al Puente para despegar.";
+        if (GameState.Noche >= GameState.NocheDelLanzamiento) return "Ve al Puente para despegar.";
         var nombres = new List<string>();
         foreach (var id in GameState.MisionesDisponibles()) nombres.Add(Misiones.Nombre[id]);
-        return "Misiones de hoy (elige " + GameState.MisionesPermitidas() + "): " + string.Join(", ", nombres);
+        return "Misiones de esta noche (elige " + GameState.MisionesPermitidas() + "): " + string.Join(", ", nombres);
     }
 
     void ActualizarBarra()
     {
-        if (textoSol != null) textoSol.text = "Sol " + GameState.Sol + " de " + GameState.SolDelLanzamiento;
+        if (textoNoche != null) textoNoche.text = "Noche " + GameState.Noche + " de " + GameState.NocheDelLanzamiento;
         if (textoMisiones != null)
-            textoMisiones.text = GameState.Sol >= GameState.SolDelLanzamiento
+            textoMisiones.text = GameState.Noche >= GameState.NocheDelLanzamiento
                 ? "Ve al Puente"
-                : "Misiones: " + GameState.MisionesHoy + " de " + GameState.MisionesPermitidas();
+                : "Misiones: " + GameState.MisionesEstaNoche + " de " + GameState.MisionesPermitidas();
         Poner(textoOxigeno, GameState.Oxigeno);
         Poner(textoAgua, GameState.Agua);
         Poner(textoComida, GameState.Comida);
@@ -96,9 +99,9 @@ public class MapaControlador : MonoBehaviour
         estacionCerca = e;
         if (textoAviso == null) return;
         if (e.Disponible)
-            textoAviso.text = GameState.Sol >= GameState.SolDelLanzamiento ? "E: Despegar" : "E: " + e.nombreVisible;
+            textoAviso.text = GameState.Noche >= GameState.NocheDelLanzamiento ? "E: Despegar" : "E: " + e.nombreVisible;
         else
-            textoAviso.text = string.IsNullOrEmpty(e.idMision) ? e.nombreVisible + " (próximamente)" : e.nombreVisible + ": hoy no hay misión aquí";
+            textoAviso.text = string.IsNullOrEmpty(e.idMision) ? e.nombreVisible + " (próximamente)" : e.nombreVisible + ": esta noche no hay misión aquí";
     }
 
     public void OcultarAviso(EstacionMision e)
@@ -112,19 +115,20 @@ public class MapaControlador : MonoBehaviour
     {
         if (!e.Disponible) return;
         if (jugador != null) GameState.PosicionJugador = jugador.position;
-        if (GameState.Sol >= GameState.SolDelLanzamiento) { SceneManager.LoadScene(Escenas.Lanzamiento); return; }
+        if (GameState.Noche >= GameState.NocheDelLanzamiento) { SceneManager.LoadScene(Escenas.Lanzamiento); return; }
         SceneManager.LoadScene(Misiones.Escena[e.idMision]);
     }
 
-    IEnumerator Noche()
+    /// <summary>Guiño a FNAF: al terminar las misiones de la noche suenan las 6:00 AM.</summary>
+    IEnumerator Amanecer()
     {
-        int sol = GameState.Sol;
-        PonerLuz(colorNoche, 0.45f);
-        yield return Pantalla("Noche " + sol, TextosSoles.Noche[Mathf.Clamp(sol, 0, 7)]);
-        GameState.PasarNoche();
+        int noche = GameState.Noche;
+        PonerLuz(colorAmanecer, 1f);
+        yield return Pantalla("6:00 AM", "Sobreviviste la Noche " + noche + ".\n\n" + TextosNoches.Amanecer[Mathf.Clamp(noche, 0, 7)]);
+        GameState.PasarAlAmanecer();
         if (GameState.Oxigeno <= 0) { SceneManager.LoadScene(Escenas.Final); yield break; }
-        PonerLuz(colorDia, 1f);
-        yield return Pantalla("Sol " + GameState.Sol, TextosSoles.Dia[Mathf.Clamp(GameState.Sol, 0, 7)] + "\n\n" + ResumenMisiones());
+        PonerLuz(colorNoche, 0.8f);
+        yield return Pantalla("Noche " + GameState.Noche, TextosNoches.Inicio[Mathf.Clamp(GameState.Noche, 0, 7)] + "\n\n" + ResumenMisiones());
     }
 
     IEnumerator Pantalla(string titulo, string cuerpo)
