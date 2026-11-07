@@ -1,6 +1,6 @@
 # 7 Noches en Marte
 
-Juego 2D en Unity para el NASA Space Apps Challenge 2026. Aterrizamos de emergencia en Marte y hay 7 noches para reparar la nave y volver, al estilo FNAF: cada noche juegas 2 misiones y a las 6:00 AM se gastan los recursos. Las reglas y los números están en el GDD del equipo.
+Juego 2D en Unity para el NASA Space Apps Challenge 2026. Aterrizamos de emergencia en Marte y hay 7 noches para reparar la nave y volver, cada noche juegas 2 misiones y a las 6:00 AM se gastan los recursos. Las reglas y los números están en el GDD del equipo.
 
 ## Abrir el proyecto
 
