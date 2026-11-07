@@ -2,26 +2,26 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-/// <summary>Muestra el final elegido por EvaluadorFinal y el resumen de decisiones.</summary>
+/// <summary>Muestra el final elegido por EvaluadorFinal y el Informe Científico de Misión.</summary>
 public class FinalControlador : MonoBehaviour
 {
     public Text textoTitulo;
     public Text textoTipo;
     public Text textoCuerpo;
-    public Text textoResumen;
+    public Text textoInforme;
+
+    public string IdFinal { get; private set; }
 
     void Start()
     {
-        var id = EvaluadorFinal.Calcular();
-        var f = EvaluadorFinal.Finales[id];
+        IdFinal = EvaluadorFinal.Calcular();
+        var f = EvaluadorFinal.Finales[IdFinal];
         if (textoTitulo != null) textoTitulo.text = f.Titulo;
-        if (textoTipo != null) textoTipo.text = "Final " + f.Tipo.ToLower();
-        if (textoCuerpo != null) textoCuerpo.text = f.Texto;
-        if (textoResumen != null)
-        {
-            var lineas = GameState.Historial.Count == 0 ? "No completaste misiones." : string.Join("\n", GameState.Historial);
-            textoResumen.text = "Tus decisiones:\n" + lineas;
-        }
+        if (textoTipo != null) textoTipo.text = "Final: " + f.Tipo;
+        if (textoCuerpo != null)
+            textoCuerpo.text = f.Texto + (IdFinal == EvaluadorFinal.Hipoxia ? "\n\n" + EvaluadorFinal.MotivoHipoxia() : "");
+        if (textoInforme != null)
+            textoInforme.text = "INFORME CIENTÍFICO DE MISIÓN\n• " + string.Join("\n• ", EvaluadorFinal.InformeCientifico());
     }
 
     public void JugarDeNuevo()

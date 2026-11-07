@@ -10,133 +10,114 @@ public static class Escenas
     public const string Final = "Final";
 }
 
-/// <summary>Identificadores de las misiones del nucleo.</summary>
-public static class Misiones
+/// <summary>Las 4 estaciones principales y los lugares del mapa (documento "Ideas de misiones").</summary>
+public static class Estaciones
 {
-    public const string Respira = "respira";
-    public const string Tormenta = "tormenta";
-    public const string Huerto = "huerto";
-    public const string Refugio = "refugio";
-    public const string Insulta = "insulta";
-    public const string Roca = "roca";
+    public const string Invernadero = "invernadero";
+    public const string SoporteVital = "soporte";
+    public const string Biomedica = "biomedica";
+    public const string Antena = "antena";
+    public const string Camarotes = "camarotes";
+    public const string Puente = "puente";
 
     public static readonly Dictionary<string, string> Nombre = new Dictionary<string, string>
     {
-        { Respira, "Respira, Marte" },
-        { Tormenta, "Tormenta de polvo" },
-        { Huerto, "Huerto marciano" },
-        { Refugio, "Refugio" },
-        { Insulta, "Insulta a Nikolas" },
-        { Roca, "¿Roca o señal?" },
+        { Invernadero, "Invernadero hidropónico" },
+        { SoporteVital, "Soporte Vital (MOXIE)" },
+        { Biomedica, "Terminal Biomédica" },
+        { Antena, "Antena Banda X" },
+        { Camarotes, "Camarotes" },
+        { Puente, "Puente" },
     };
 
+    /// <summary>Escena de cada estacion. Los Camarotes y el Puente no tienen escena propia.</summary>
     public static readonly Dictionary<string, string> Escena = new Dictionary<string, string>
     {
-        { Respira, "Mj_Respira" },
-        { Tormenta, "Mj_Tormenta" },
-        { Huerto, "Mj_Huerto" },
-        { Refugio, "Mj_Refugio" },
-        { Insulta, "Mj_Insulta" },
-        { Roca, "Mj_Roca" },
+        { Invernadero, "Est_Invernadero" },
+        { SoporteVital, "Est_SoporteVital" },
+        { Biomedica, "Est_Biomedica" },
+        { Antena, "Est_Antena" },
     };
 }
 
-public enum Resultado { Gano, AMedias, Perdio }
-
-public enum DecisionRoca { Analizar, SubirSinAnalizar, Dejar }
-
-/// <summary>Efecto de cada minijuego en los recursos. Copia exacta de la tabla del GDD.</summary>
-public static class Efectos
-{
-    public static void Aplicar(string id, Resultado r)
-    {
-        switch (id)
-        {
-            case Misiones.Respira:
-                if (r == Resultado.Gano) GameState.Sumar(oxigeno: 30, nave: 10);
-                else if (r == Resultado.AMedias) GameState.Sumar(oxigeno: 15, nave: 5);
-                else GameState.Sumar(nave: -5);
-                break;
-            case Misiones.Tormenta:
-                if (r == Resultado.Gano) GameState.Sumar(energia: 30, nave: 10);
-                else if (r == Resultado.AMedias) GameState.Sumar(energia: 15, nave: 5);
-                else GameState.Sumar(energia: -10);
-                break;
-            case Misiones.Huerto:
-                if (r == Resultado.Gano) GameState.Sumar(comida: 30, agua: -5, nave: 10);
-                else if (r == Resultado.AMedias) GameState.Sumar(comida: 15, agua: -5, nave: 5);
-                else GameState.Sumar(agua: -10);
-                break;
-            case Misiones.Refugio:
-                if (r == Resultado.Gano) GameState.Sumar(moral: 15, nave: 10);
-                else if (r == Resultado.AMedias) GameState.Sumar(nave: 5);
-                else GameState.Sumar(moral: -15, nave: -5);
-                break;
-            case Misiones.Insulta:
-                if (r == Resultado.Gano) { GameState.Sumar(moral: 20, nave: 10); GameState.NikolasGanadas++; }
-                else if (r == Resultado.AMedias) GameState.Sumar(moral: 5, nave: 5);
-                else GameState.Sumar(moral: -5);
-                break;
-            default:
-                UnityEngine.Debug.LogError("Efectos.Aplicar: mision desconocida '" + id + "'. Para la roca usa DecidirRoca.");
-                break;
-        }
-    }
-
-    public static void DecidirRoca(DecisionRoca decision)
-    {
-        switch (decision)
-        {
-            case DecisionRoca.Analizar:
-                GameState.Sumar(energia: -10, nave: 5); GameState.Marcas.Add("roca_analizada"); break;
-            case DecisionRoca.SubirSinAnalizar:
-                GameState.Sumar(nave: 5); GameState.Marcas.Add("roca_sin_analizar"); break;
-            default:
-                GameState.Sumar(moral: 10, nave: 5); GameState.Marcas.Add("roca_dejada"); break;
-        }
-    }
-}
-
-/// <summary>Tarjetas de dato real (texto y fuente de Narrativa y game design).</summary>
+/// <summary>Tarjeta de dato real que aparece al salir de cada estacion.</summary>
 public static class DatosReales
 {
     public struct Tarjeta { public string Texto; public string Fuente; }
 
-    public static readonly Dictionary<string, Tarjeta> PorMision = new Dictionary<string, Tarjeta>
+    public static readonly Dictionary<string, Tarjeta> PorEstacion = new Dictionary<string, Tarjeta>
     {
-        { Misiones.Respira, new Tarjeta { Texto = "MOXIE, a bordo de Perseverance, produjo 122 gramos de oxígeno en Marte en 16 sesiones.", Fuente = "jpl.nasa.gov" } },
-        { Misiones.Tormenta, new Tarjeta { Texto = "Opportunity dejó de comunicarse en 2018 tras una tormenta de polvo que cubrió Marte.", Fuente = "science.nasa.gov" } },
-        { Misiones.Huerto, new Tarjeta { Texto = "Veggie es el huerto de la Estación Espacial y suele tener seis plantas.", Fuente = "nasa.gov" } },
-        { Misiones.Refugio, new Tarjeta { Texto = "La radiación espacial es uno de los cinco peligros de los vuelos tripulados.", Fuente = "nasa.gov/hrp" } },
-        { Misiones.Insulta, new Tarjeta { Texto = "Una orden enviada desde la Tierra tarda de 3 a 22 minutos en llegar a Perseverance.", Fuente = "science.nasa.gov" } },
-        { Misiones.Roca, new Tarjeta { Texto = "Cheyava Falls es una posible biofirma: podría tener origen biológico, pero faltan datos para concluirlo.", Fuente = "nasa.gov" } },
+        { Estaciones.Invernadero, new Tarjeta { Texto = "El sistema Veggie de la Estación Espacial cultiva con LEDs rojos, azules y verdes. En baja gravedad el agua no drena igual y puede ahogar las raíces.", Fuente = "nasa.gov (Growing Plants in Space)" } },
+        { Estaciones.SoporteVital, new Tarjeta { Texto = "MOXIE, a bordo de Perseverance, produjo 122 g de oxígeno calentando el CO₂ del aire marciano a 800 °C.", Fuente = "jpl.nasa.gov" } },
+        { Estaciones.Biomedica, new Tarjeta { Texto = "La radiación y el aislamiento están entre los 5 grandes riesgos del Human Research Program. Un sol dura 24 h 39 min y desordena el sueño.", Fuente = "nasa.gov/hrp" } },
+        { Estaciones.Antena, new Tarjeta { Texto = "Una orden desde la Tierra tarda de 3 a 22 minutos en llegar a Marte. Los orbitadores sirven de relevo en Banda X.", Fuente = "science.nasa.gov" } },
     };
 }
 
-/// <summary>Textos de cada noche (de Narrativa y game design).</summary>
+/// <summary>Eventos y telemetria de cada noche (tabla "Planificación de eventos y crisis").</summary>
 public static class TextosNoches
 {
-    public static readonly string[] Inicio =
+    /// <summary>Bateria con la que empieza cada noche, en %. El indice 0 no se usa.</summary>
+    public static readonly int[] BateriaBase = { 0, 70, 65, 60, 45, 60, 55, 10 };
+
+    public static readonly string[] Titulo =
     {
         "",
-        "Wayra explica lo básico y Nikolas ya está discutiendo.",
-        "Aparece una roca con manchas raras.",
-        "Llega una alerta solar.",
-        "Wayra empieza a contradecirse.",
-        "El polvo se acerca y Nikolas se pone serio.",
-        "Últimas reparaciones.",
-        "Sube a la nave y despega. Ve al Puente.",
+        "Primera noche tras el impacto en Arcadia Planitia",
+        "Paso del orbitador en sombra",
+        "Helada de hielo seco",
+        "Tormenta nocturna de polvo",
+        "Tormenta de protones solares",
+        "Hollín y guardia rota",
+        "La hora más oscura",
     };
 
-    public static readonly string[] Amanecer =
+    public static readonly string[] Telemetria =
     {
         "",
-        "Un ruido suave en el casco. Wayra dice que es el viento.",
-        "Los paneles se apagan uno por uno y vuelven.",
-        "Hay huellas nuevas junto al invernadero.",
-        "Llega un mensaje de radio con tu propia voz.",
-        "Golpes en la escotilla.",
-        "Silencio total. Los sensores marcan algo a tu lado.",
+        "Temp: -75 °C | Presión: 6.1 hPa | τ = 0.4",
+        "Temp: -82 °C | Eclipse de Fobos | τ = 0.5",
+        "Temp: -120 °C | Escarcha en válvulas | τ = 0.6",
+        "Temp: -90 °C | Opacidad τ = 3.1",
+        "Temp: -95 °C | Radiación: 45 mSv | Sin magnetosfera global",
+        "Temp: -100 °C | Hollín en MOXIE | Deuda de sueño: +3.9 h",
+        "Temp: -125 °C | Reserva crítica",
+    };
+
+    public static readonly string[] Incidente =
+    {
+        "",
+        "El sol cayó y los paneles dan 0 W. El MOXIE está frío: llévalo a 800 °C para sacar O₂ del CO₂. Lee el Manual Astrobotánico y siembra tus primeras semillas. Jonas está nervioso: el casco cruje al contraerse por el frío.",
+        "Se activa la Antena Banda X: el orbitador cruza el cielo y su frecuencia se corre por el efecto Doppler. Transmitir gasta 25 % de batería. ¿SOS a Houston o el esquema de reciclaje que pide la Dra. Thorne?",
+        "El frío congela el CO₂ del aire como hielo seco sobre las tomas del MOXIE.",
+        "Hubo tormenta todo el día: los paneles casi no cargaron. Además, el polvo metió percloratos (ClO₄⁻) en una cápsula del invernadero.",
+        "El Sol lanzó partículas energéticas. Marte no tiene campo magnético global: la radiación atraviesa el domo. Houston avisa que el módulo de ascenso no podrá subir muestras biológicas. Vance y Thorne discuten.",
+        "El MOXIE acumula carbono sólido en sus válvulas (2CO₂ → 2CO + O₂). Cualquier tripulante en rojo ejecuta esta noche su sabotaje.",
+        "Son las 05:00. El momento más frío de Marte es justo antes del amanecer. Tienes 60 segundos bajo luces de emergencia: cierra las válvulas en Soporte Vital y ve al Puente.",
+    };
+
+    /// <summary>Lo que avisa la Arabidopsis centinela al empezar la noche (si esta viva y crecida).</summary>
+    public static readonly string[] Centinela =
+    {
+        "",
+        "",
+        "La centinela está tranquila.",
+        "La centinela cerró sus hojas horas antes: viene una helada. Gracias al aviso descongelaste las tomas a tiempo.",
+        "La centinela tiene las hojas pálidas: hay polvo con percloratos en el aire.",
+        "La Arabidopsis se retorció y sus hojas están negras. No es un monstruo: detectó la tormenta de protones antes que las alarmas.",
+        "La centinela se inclina hacia el MOXIE: huele el monóxido de carbono del hollín.",
+        "",
+    };
+
+    public static readonly string[] MensajeNikolas =
+    {
+        "",
+        "",
+        "¿Me oyen? Aquí Houston. Recibí su señal. Antes que nada: ¿quién aterrizó la nave? Pregunto para el informe.",
+        "El pronóstico dice -120 °C esta noche. Abríguense. Y no culpen al pronóstico.",
+        "Vemos la tormenta desde aquí: Tau 3.1. Racionen la batería. Sí, ya sé que lo saben.",
+        "Malas noticias: el módulo de ascenso tiene una avería de peso. No podrá subir muestras biológicas. Lo siento.",
+        "Última ventana mañana. Si despegan, despeguen bien. Si no... también quiero saberlo.",
         "",
     };
 }

@@ -20,44 +20,41 @@ using UnityEngine.UI;
 public static class ConstructorEscenas
 {
     static readonly Color Noche = Hex("#121A2E"), Texto = Hex("#F4F1EA"), Energia = Hex("#F2C14E"),
-        Alerta = Hex("#E5484D"), Correcto = Hex("#4CAF7A"), Luz = Hex("#2F4B7C"), Metal = Hex("#4A5563");
+        Alerta = Hex("#E5484D"), Correcto = Hex("#4CAF7A"), Luz = Hex("#2F4B7C"), Metal = Hex("#4A5563"),
+        Oscuro = Hex("#0E1424"), Tinta = Hex("#2A2418");
 
     struct Plan { public string Ruta; public Action Crear; }
 
     static List<Plan> Planes()
     {
-        var p = new List<Plan>
+        return new List<Plan>
         {
             new Plan { Ruta = "Assets/Escenas/Inicio.unity", Crear = CrearInicio },
             new Plan { Ruta = "Assets/Escenas/Intro.unity", Crear = CrearIntro },
             new Plan { Ruta = "Assets/Escenas/Mapa.unity", Crear = CrearMapa },
             new Plan { Ruta = "Assets/Escenas/Lanzamiento.unity", Crear = CrearLanzamiento },
             new Plan { Ruta = "Assets/Escenas/Final.unity", Crear = CrearFinal },
-            new Plan { Ruta = "Assets/Minijuegos/Respira/Mj_Respira.unity", Crear = CrearRespira },
-            new Plan { Ruta = "Assets/Minijuegos/Tormenta/Mj_Tormenta.unity", Crear = CrearTormenta },
+            new Plan { Ruta = "Assets/Estaciones/Invernadero/Est_Invernadero.unity", Crear = CrearInvernadero },
+            new Plan { Ruta = "Assets/Estaciones/SoporteVital/Est_SoporteVital.unity", Crear = CrearSoporteVital },
+            new Plan { Ruta = "Assets/Estaciones/Biomedica/Est_Biomedica.unity", Crear = CrearBiomedica },
+            new Plan { Ruta = "Assets/Estaciones/Antena/Est_Antena.unity", Crear = CrearAntena },
         };
-        foreach (var (id, carpeta) in new[] { (Misiones.Huerto, "Huerto"), (Misiones.Refugio, "Refugio"), (Misiones.Insulta, "Insulta"), (Misiones.Roca, "Roca") })
-        {
-            string idLocal = id;
-            p.Add(new Plan { Ruta = "Assets/Minijuegos/" + carpeta + "/Mj_" + carpeta + ".unity", Crear = () => CrearPendiente(idLocal) });
-        }
-        return p;
     }
 
     [MenuItem("SieteNoches/Construir escenas que falten")]
-    public static void ConstruirFaltantes() { Construir(false); }
+    public static void ConstruirFaltantes() { Construir(); }
 
     /// <summary>Para linea de comandos (-executeMethod). Tambien solo crea las que faltan.</summary>
-    public static void ConstruirDesdeConsola() { Construir(false); }
+    public static void ConstruirDesdeConsola() { Construir(); }
 
-    static void Construir(bool sobrescribir)
+    static void Construir()
     {
         AssetDatabase.Refresh();
         var escenasBuild = new List<EditorBuildSettingsScene>();
         foreach (var plan in Planes())
         {
             Directory.CreateDirectory(Path.GetDirectoryName(plan.Ruta));
-            if (sobrescribir || !File.Exists(plan.Ruta))
+            if (!File.Exists(plan.Ruta))
             {
                 var escena = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
                 plan.Crear();
@@ -71,7 +68,7 @@ public static class ConstructorEscenas
         Debug.Log("[SieteNoches] Lista de escenas actualizada (" + escenasBuild.Count + ").");
     }
 
-    // ------------------------------------------------------------------ Escenas
+    // ================================================================== Pantallas
 
     static void CrearInicio()
     {
@@ -81,10 +78,10 @@ public static class ConstructorEscenas
         SistemaEventos();
         var ctrl = new GameObject("Inicio").AddComponent<InicioControlador>();
         Txt("Titulo", ui, "7 Noches en Marte", 36, new Vector2(0, 80), new Vector2(600, 50), TextAnchor.MiddleCenter, Energia);
-        Txt("Subtitulo", ui, "Sobrevive hasta las 6:00 AM. Siete veces.", 12, new Vector2(0, 45), new Vector2(400, 20));
+        Txt("Subtitulo", ui, "Guardia nocturna: sobrevive hasta las 6:00 AM. Siete veces.", 12, new Vector2(0, 45), new Vector2(500, 20));
         var b = Btn("Boton Jugar", ui, "Jugar", new Vector2(0, -20), new Vector2(160, 36), out _);
         Click(b, ctrl.Jugar);
-        Txt("Controles", ui, "WASD o flechas: moverse     E o Espacio: interactuar     Espacio o clic: avanzar texto", 10, new Vector2(0, -150), new Vector2(620, 20));
+        Txt("Controles", ui, "WASD o flechas: moverse     E: entrar a una estación     Espacio: avanzar texto", 10, new Vector2(0, -150), new Vector2(620, 20));
     }
 
     static void CrearIntro()
@@ -100,13 +97,13 @@ public static class ConstructorEscenas
         string[] textos =
         {
             "Durante siglos, Marte fue un punto rojo en el cielo.",
-            "Hasta que la nave Misti salió a buscar respuestas, contigo a bordo.",
-            "El viaje fue largo. Solo hablabas con Wayra, la IA de la nave, y con Nikolas, por radio y siempre tarde.",
+            "La nave Misti salió con cinco personas: tú, la comandante Elena Vance, Marco \"Tornillo\" Silva, la Dra. Aris Thorne y Jonas Miller.",
+            "Desde Houston, Nikolas te hablaba por radio. Siempre con 12 minutos de retraso.",
             "Entonces falló todo al mismo tiempo.",
-            "Lo llamaron aterrizaje de emergencia. Fue más emergencia que aterrizaje.",
-            "Wayra: Buenas noticias, respiras. Malas noticias, por ahora.",
+            "Aterrizaje de emergencia en Arcadia Planitia. Fue más emergencia que aterrizaje.",
+            "Se pone el sol. De noche los paneles solares dan 0 W y afuera la temperatura baja de -10 °C a -110 °C.",
             "La ventana de regreso se cierra en 7 noches. Si la pierdes, la siguiente tarda 26 meses.",
-            "Antes de salir, Wayra detecta algo en el suelo. Una huella. No es tuya.",
+            "Tu trabajo: hacer guardia cada noche hasta las 06:00 AM. Que nada se apague. Ni las plantas, ni las máquinas, ni la tripulación.",
         };
         ctrl.vinetas = new IntroControlador.Vineta[textos.Length];
         for (int i = 0; i < textos.Length; i++)
@@ -114,6 +111,38 @@ public static class ConstructorEscenas
         ctrl.imagen.sprite = ctrl.vinetas[0].imagen;
         ctrl.texto.text = textos[0];
     }
+
+    static void CrearLanzamiento()
+    {
+        var cam = Camara(Hex("#2A0B0B"));
+        var ui = Lienzo(cam);
+        SistemaEventos();
+        var ctrl = new GameObject("Lanzamiento").AddComponent<LanzamientoControlador>();
+        Txt("Titulo", ui, "05:59 AM · Puente", 26, new Vector2(0, 140), new Vector2(560, 36), TextAnchor.MiddleCenter, Energia);
+        Txt("Pregunta", ui, "Sale el sol en un minuto. ¿Qué hacen?", 13, new Vector2(0, 112), new Vector2(560, 20));
+        ctrl.textoEstado = Txt("Estado", ui, "Rescate: 0/4", 12, new Vector2(0, 10), new Vector2(560, 170), TextAnchor.UpperCenter);
+        var b1 = Btn("Boton Despegar", ui, "Despegar en la ventana", new Vector2(-130, -140), new Vector2(220, 32), out _);
+        Click(b1, ctrl.Despegar);
+        var b2 = Btn("Boton Sellar domo", ui, "Sellar el domo y quedarnos", new Vector2(130, -140), new Vector2(220, 32), out _);
+        Click(b2, ctrl.SellarDomo);
+    }
+
+    static void CrearFinal()
+    {
+        var cam = Camara(Color.black);
+        var ui = Lienzo(cam);
+        SistemaEventos();
+        var ctrl = new GameObject("Final").AddComponent<FinalControlador>();
+        Img("Imagen del final (reemplazar)", ui, new Vector2(-200, 85), new Vector2(200, 150), Metal);
+        ctrl.textoTitulo = Txt("Titulo", ui, "Título del final", 22, new Vector2(100, 150), new Vector2(380, 30), TextAnchor.MiddleLeft, Energia);
+        ctrl.textoTipo = Txt("Tipo", ui, "Final", 11, new Vector2(100, 128), new Vector2(380, 16), TextAnchor.MiddleLeft);
+        ctrl.textoCuerpo = Txt("Texto", ui, "", 12, new Vector2(100, 70), new Vector2(380, 90), TextAnchor.UpperLeft);
+        ctrl.textoInforme = Txt("Informe cientifico", ui, "INFORME CIENTÍFICO DE MISIÓN", 10, new Vector2(0, -75), new Vector2(600, 140), TextAnchor.UpperLeft);
+        var b = Btn("Boton Jugar de nuevo", ui, "Jugar de nuevo", new Vector2(240, -162), new Vector2(140, 26), out _);
+        Click(b, ctrl.JugarDeNuevo);
+    }
+
+    // ================================================================== Mapa
 
     static void CrearMapa()
     {
@@ -129,7 +158,7 @@ public static class ConstructorEscenas
         var tPiso = Bloque("tile_nave_piso"); var tPared = Bloque("tile_nave_pared");
         var tMarte = Bloque("tile_marte_suelo"); var tRoca = Bloque("tile_marte_roca"); var tPuerta = Bloque("tile_nave_puerta");
 
-        // Nave: x 0..19, y 0..19. Exterior (superficie de Marte): x 20..39.
+        // Domo: x 0..19, y 0..19. Exterior (superficie de Marte): x 20..39.
         for (int x = 0; x < 20; x++)
             for (int y = 0; y < 20; y++)
             {
@@ -157,16 +186,15 @@ public static class ConstructorEscenas
         // ---------- Estaciones ----------
         var flecha = Spr("Assets/Comun/UI/ui_flecha_mision.png");
         var estaciones = new GameObject("Estaciones").transform;
-        Estacion(estaciones, "Puente", Misiones.Insulta, "puente", new Vector2(4.5f, 16f), flecha, true);
-        Estacion(estaciones, "Soporte vital", Misiones.Respira, "soporte", new Vector2(15.5f, 16f), flecha, false);
-        Estacion(estaciones, "Invernadero", Misiones.Huerto, "invernadero", new Vector2(4.5f, 9.5f), flecha, false);
-        Estacion(estaciones, "Laboratorio", Misiones.Roca, "laboratorio", new Vector2(15.5f, 9.5f), flecha, false);
-        Estacion(estaciones, "Refugio", Misiones.Refugio, "refugio", new Vector2(4.5f, 3.5f), flecha, false);
-        Estacion(estaciones, "Paneles solares", Misiones.Tormenta, "paneles", new Vector2(27f, 14f), flecha, false);
-        Estacion(estaciones, "Zona de hielo", "", "laboratorio", new Vector2(34f, 15f), flecha, false);
-        Estacion(estaciones, "Pista de dron", "", "puente", new Vector2(26f, 5f), flecha, false);
-        Estacion(estaciones, "Sonda antigua", "", "refugio", new Vector2(34f, 5f), flecha, false);
-        Estacion(estaciones, "Sismógrafo", "", "soporte", new Vector2(31f, 9.5f), flecha, false);
+        Estacion(estaciones, "Puente", Estaciones.Puente, "puente", new Vector2(4.5f, 16f), flecha);
+        Estacion(estaciones, "Soporte Vital", Estaciones.SoporteVital, "soporte", new Vector2(15.5f, 16f), flecha);
+        Estacion(estaciones, "Invernadero", Estaciones.Invernadero, "invernadero", new Vector2(4.5f, 9.5f), flecha);
+        Estacion(estaciones, "Terminal Biomédica", Estaciones.Biomedica, "biomedica", new Vector2(15.5f, 9.5f), flecha);
+        Estacion(estaciones, "Camarotes", Estaciones.Camarotes, "camarotes", new Vector2(4.5f, 3.5f), flecha);
+        Estacion(estaciones, "Antena Banda X", Estaciones.Antena, "antena", new Vector2(27f, 14f), flecha);
+        Estacion(estaciones, "Paneles solares: 0 W de noche", "", "paneles", new Vector2(31f, 9.5f), flecha);
+        Estacion(estaciones, "Zona de hielo (próximamente)", "", "camarotes", new Vector2(34f, 15f), flecha);
+        Estacion(estaciones, "Sonda antigua (próximamente)", "", "puente", new Vector2(34f, 5f), flecha);
 
         // ---------- Jugador ----------
         var jugador = new GameObject("Jugador");
@@ -189,180 +217,378 @@ public static class ConstructorEscenas
         seguir.limites = new Vector4(0f, 0f, 40f, 20f);
         cam.transform.position = new Vector3(10f, 9.25f, -10f);
 
-        // ---------- Interfaz ----------
+        // ---------- Barra superior ----------
         var ctrl = new GameObject("Mapa (controlador)").AddComponent<MapaControlador>();
         ctrl.jugador = jugador.transform;
         ctrl.luzGlobal = luz;
-        Img("Barra superior", ui, new Vector2(0, 160), new Vector2(624, 34), new Color(0.07f, 0.1f, 0.18f, 0.85f));
-        ctrl.textoNoche = Txt("Noche", ui, "Noche 1 de 7", 14, new Vector2(-235, 167), new Vector2(140, 18), TextAnchor.MiddleLeft, Energia);
-        ctrl.textoMisiones = Txt("Misiones", ui, "Misiones: 0 de 2", 10, new Vector2(-235, 152), new Vector2(140, 14), TextAnchor.MiddleLeft);
-        string[] nombres = { "oxigeno", "agua", "comida", "energia", "nave", "moral" };
-        var textos = new Text[nombres.Length];
-        for (int i = 0; i < nombres.Length; i++)
+        Img("Barra superior", ui, new Vector2(0, 158), new Vector2(632, 42), new Color(0.07f, 0.1f, 0.18f, 0.88f));
+        ctrl.textoNoche = Txt("Noche y hora", ui, "Noche 1 de 7 · 18:30", 13, new Vector2(-232, 168), new Vector2(150, 18), TextAnchor.MiddleLeft, Energia);
+        string[] iconos = { "bateria", "oxigeno", "agua", "co2", "comida", "rescate", "domo" };
+        var valores = new Text[iconos.Length];
+        for (int i = 0; i < iconos.Length; i++)
         {
-            float x = -110 + i * 62;
-            Img("Icono " + nombres[i], ui, new Vector2(x, 160), new Vector2(22, 22), Color.white, Spr("Assets/Comun/UI/ui_icono_" + nombres[i] + ".png"));
-            textos[i] = Txt("Valor " + nombres[i], ui, "70", 13, new Vector2(x + 26, 160), new Vector2(30, 18), TextAnchor.MiddleLeft);
+            float x = -132 + i * 66;
+            Img("Icono " + iconos[i], ui, new Vector2(x, 168), new Vector2(18, 18), Color.white, Spr("Assets/Comun/UI/ui_icono_" + iconos[i] + ".png"));
+            valores[i] = Txt("Valor " + iconos[i], ui, "0", 11, new Vector2(x + 33, 168), new Vector2(46, 16), TextAnchor.MiddleLeft);
         }
-        ctrl.textoOxigeno = textos[0]; ctrl.textoAgua = textos[1]; ctrl.textoComida = textos[2];
-        ctrl.textoEnergia = textos[3]; ctrl.textoNave = textos[4]; ctrl.textoMoral = textos[5];
-        ctrl.textoAviso = Txt("Aviso", ui, "E: Respira, Marte", 14, new Vector2(0, -150), new Vector2(520, 22), TextAnchor.MiddleCenter, Energia);
+        ctrl.textoBateria = valores[0]; ctrl.textoOxigeno = valores[1]; ctrl.textoAgua = valores[2]; ctrl.textoCo2 = valores[3];
+        ctrl.textoComida = valores[4]; ctrl.textoRescate = valores[5]; ctrl.textoDomo = valores[6];
+        ctrl.textoObjetivo = Txt("Objetivo", ui, "", 9, new Vector2(-168, 148), new Vector2(280, 14), TextAnchor.MiddleLeft);
+        ctrl.textosTripulacion = new Text[4];
+        for (int i = 0; i < 4; i++)
+            ctrl.textosTripulacion[i] = Txt("Tripulante " + (i + 1), ui, "", 9, new Vector2(60 + i * 66, 148), new Vector2(64, 14), TextAnchor.MiddleLeft, Correcto);
+
+        ctrl.textoAviso = Txt("Aviso", ui, "", 14, new Vector2(0, -150), new Vector2(560, 22), TextAnchor.MiddleCenter, Energia);
         ctrl.textoAviso.gameObject.AddComponent<Outline>().effectColor = Color.black;
 
-        var panel = Img("Pantalla de noche y amanecer", ui, Vector2.zero, new Vector2(640, 360), new Color(0.03f, 0.05f, 0.1f, 0.92f));
+        // ---------- Pantalla de noche, amanecer y dilemas ----------
+        var panel = Img("Pantalla de noche y amanecer", ui, Vector2.zero, new Vector2(640, 360), new Color(0.03f, 0.05f, 0.1f, 0.97f));
         ctrl.panelPantalla = panel.gameObject;
-        ctrl.textoPantallaTitulo = Txt("Titulo", panel.transform, "Noche 1", 28, new Vector2(0, 60), new Vector2(560, 40), TextAnchor.MiddleCenter, Energia);
-        ctrl.textoPantallaCuerpo = Txt("Cuerpo", panel.transform, "", 14, new Vector2(0, -30), new Vector2(520, 140), TextAnchor.UpperCenter);
+        ctrl.textoPantallaTitulo = Txt("Titulo", panel.transform, "Noche 1 · 18:30 MTC", 24, new Vector2(0, 128), new Vector2(580, 32), TextAnchor.MiddleCenter, Energia);
+        ctrl.textoPantallaCuerpo = Txt("Cuerpo", panel.transform, "", 13, new Vector2(0, -8), new Vector2(580, 230), TextAnchor.UpperCenter);
+        var bc = Btn("Boton Continuar", panel.transform, "Continuar", new Vector2(0, -155), new Vector2(160, 26), out _);
+        Click(bc, ctrl.ContinuarPantalla);
+        ctrl.botonContinuar = bc.gameObject;
+        var ba = Btn("Opcion A", panel.transform, "Opción A", new Vector2(-152, -148), new Vector2(290, 36), out ctrl.textoOpcionA);
+        ctrl.textoOpcionA.fontSize = 10;
+        ClickInt(ba, ctrl.Elegir, 0);
+        ctrl.botonOpcionA = ba.gameObject;
+        var bb = Btn("Opcion B", panel.transform, "Opción B", new Vector2(152, -148), new Vector2(290, 36), out ctrl.textoOpcionB);
+        ctrl.textoOpcionB.fontSize = 10;
+        ClickInt(bb, ctrl.Elegir, 1);
+        ctrl.botonOpcionB = bb.gameObject;
         panel.gameObject.SetActive(false);
     }
 
-    static void CrearLanzamiento()
+    // ================================================================== Estaciones
+
+    static void CrearInvernadero()
     {
-        var cam = Camara(Noche);
+        var cam = Camara(Hex("#132A22"));
         var ui = Lienzo(cam);
         SistemaEventos();
-        var ctrl = new GameObject("Lanzamiento").AddComponent<LanzamientoControlador>();
-        Txt("Titulo", ui, "Noche 7: lanzamiento", 28, new Vector2(0, 110), new Vector2(560, 40), TextAnchor.MiddleCenter, Energia);
-        ctrl.textoEstado = Txt("Estado", ui, "Nave: 70 / 70\nEnergía: 30 / 30", 16, new Vector2(0, 10), new Vector2(520, 140), TextAnchor.MiddleCenter);
-        var b = Btn("Boton Despegar", ui, "Despegar", new Vector2(0, -120), new Vector2(180, 36), out _);
-        Click(b, ctrl.Despegar);
+        var ctrl = new GameObject("Invernadero (controlador)").AddComponent<InvernaderoControlador>();
+        ctrl.idEstacion = Estaciones.Invernadero;
+        Llenar(Img("Fondo", ui, Vector2.zero, Vector2.zero, Color.white, Spr("Assets/Estaciones/Invernadero/Art/spr_invernadero_fondo.png")));
+        Cabecera(ui, ctrl, "Invernadero hidropónico nocturno");
+
+        string arte = "Assets/Estaciones/Invernadero/Art/";
+        ctrl.marcosSeleccion = new Image[3]; ctrl.plantas = new Image[3]; ctrl.etiquetasCapsula = new Text[3]; ctrl.avisosPerclorato = new Text[3];
+        for (int i = 0; i < 3; i++)
+        {
+            var pos = new Vector2(-250 + i * 90, 85);
+            ctrl.marcosSeleccion[i] = Img("Seleccion " + (i + 1), ui, pos, new Vector2(88, 108), new Color(Energia.r, Energia.g, Energia.b, 0.55f));
+            var cap = Img("Capsula " + (i + 1), ui, pos, new Vector2(80, 100), Color.white, Spr(arte + (i == 0 ? "spr_capsula_hidroponica.png" : "spr_capsula_regolito.png")));
+            ClickInt(cap.gameObject.AddComponent<Button>(), ctrl.Seleccionar, i);
+            ctrl.plantas[i] = Img("Planta", cap.transform, new Vector2(0, 2), new Vector2(64, 64), Color.white);
+            ctrl.plantas[i].raycastTarget = false;
+            ctrl.avisosPerclorato[i] = Txt("Perclorato", cap.transform, "ClO₄⁻", 10, new Vector2(0, 40), new Vector2(70, 14), TextAnchor.MiddleCenter, Alerta);
+            ctrl.etiquetasCapsula[i] = Txt("Etiqueta", ui, "", 9, pos + new Vector2(0, -62), new Vector2(88, 24));
+        }
+        ctrl.textoCapsula = Txt("Capsula elegida", ui, "", 9, new Vector2(-160, -2), new Vector2(310, 26), TextAnchor.MiddleLeft, Energia);
+
+        var semillas = Rect("Semillas", ui, new Vector2(-160, -34), new Vector2(310, 24));
+        ctrl.grupoSemillas = semillas.gameObject;
+        string[] nombres = { "Espirulina", "Papa", "Lechuga", "Arabidopsis", "Dechlorom." };
+        for (int i = 0; i < 5; i++)
+        {
+            var b = Btn("Semilla " + nombres[i], semillas, nombres[i], new Vector2(-124 + i * 62, 0), new Vector2(58, 22), out var t);
+            t.fontSize = 9;
+            ClickInt(b, ctrl.Sembrar, i + 1);
+        }
+
+        var ajustes = Rect("Ajustes", ui, new Vector2(-160, -90), new Vector2(310, 70));
+        ctrl.grupoAjustes = ajustes.gameObject;
+        ClickInt(Btn("Humedad -", ajustes, "−", new Vector2(-120, 20), new Vector2(26, 22), out _), ctrl.CambiarHumedad, -5);
+        ctrl.textoHumedad = Txt("Humedad", ajustes, "Humedad 50 %", 11, new Vector2(-60, 20), new Vector2(90, 20));
+        ClickInt(Btn("Humedad +", ajustes, "+", new Vector2(0, 20), new Vector2(26, 22), out _), ctrl.CambiarHumedad, 5);
+        string[] leds = { "Rojo 660 nm", "Azul 450 nm", "UV-A 380 nm" };
+        ctrl.botonesLed = new Image[3];
+        for (int i = 0; i < 3; i++)
+        {
+            var b = Btn("LED " + leds[i], ajustes, leds[i], new Vector2(-100 + i * 100, -10), new Vector2(94, 22), out var t);
+            t.fontSize = 10;
+            ClickInt(b, ctrl.AlternarLed, i);
+            ctrl.botonesLed[i] = b.GetComponent<Image>();
+        }
+        var accion = Btn("Boton limpiar o arrancar", ui, "Arrancar planta", new Vector2(-90, -128), new Vector2(130, 20), out ctrl.textoAccion);
+        ctrl.textoAccion.fontSize = 10;
+        Click(accion, ctrl.Accion);
+        ctrl.botonAccion = accion.gameObject;
+        ctrl.textoAviso = Txt("Aviso", ui, "", 9, new Vector2(-160, -150), new Vector2(310, 16), TextAnchor.MiddleLeft, Energia);
+
+        var manual = Img("Manual Astrobotanico", ui, new Vector2(162, 0), new Vector2(290, 296), Color.white, Spr(arte + "spr_manual_pagina.png"));
+        ctrl.textoManual = Txt("Texto del manual", manual.transform, "", 9, new Vector2(0, 12), new Vector2(264, 262), TextAnchor.UpperLeft, Tinta);
+        ctrl.textoPagina = Txt("Pagina", manual.transform, "1 / 3", 10, new Vector2(0, -134), new Vector2(60, 16), TextAnchor.MiddleCenter, Tinta);
+        Click(Btn("Pagina anterior", manual.transform, "<", new Vector2(-110, -134), new Vector2(30, 20), out _), ctrl.PaginaAnterior);
+        Click(Btn("Pagina siguiente", manual.transform, ">", new Vector2(110, -134), new Vector2(30, 20), out _), ctrl.PaginaSiguiente);
+
+        var lista = new List<InvernaderoControlador.SpritesEspecie>();
+        foreach (var e in Semillas.Todas)
+        {
+            string n = e.ToString().ToLower();
+            lista.Add(new InvernaderoControlador.SpritesEspecie
+            {
+                especie = e,
+                brote = Spr(arte + "spr_planta_" + n + "_brote.png"),
+                crece = Spr(arte + "spr_planta_" + n + "_crece.png"),
+                madura = Spr(arte + "spr_planta_" + n + "_madura.png"),
+                estresada = Spr(arte + "spr_planta_" + n + "_estresada.png"),
+            });
+        }
+        ctrl.spritesEspecies = lista.ToArray();
+        ctrl.spritePodrida = Spr(arte + "spr_planta_podrida.png");
+        ctrl.spriteCongelada = Spr(arte + "spr_planta_congelada.png");
+        ctrl.spriteRetorcida = Spr(arte + "spr_planta_retorcida.png");
+
+        BotonSalir(ui, ctrl);
+        Tarjeta(ui, ctrl);
     }
 
-    static void CrearFinal()
-    {
-        var cam = Camara(Color.black);
-        var ui = Lienzo(cam);
-        SistemaEventos();
-        var ctrl = new GameObject("Final").AddComponent<FinalControlador>();
-        Img("Imagen del final (reemplazar)", ui, new Vector2(-170, 30), new Vector2(240, 180), Metal);
-        ctrl.textoTitulo = Txt("Titulo", ui, "Título del final", 26, new Vector2(110, 140), new Vector2(380, 36), TextAnchor.MiddleLeft, Energia);
-        ctrl.textoTipo = Txt("Tipo", ui, "Final", 12, new Vector2(110, 115), new Vector2(380, 18), TextAnchor.MiddleLeft);
-        ctrl.textoCuerpo = Txt("Texto", ui, "", 14, new Vector2(110, 55), new Vector2(380, 90), TextAnchor.UpperLeft);
-        ctrl.textoResumen = Txt("Resumen", ui, "Tus decisiones:", 10, new Vector2(110, -55), new Vector2(380, 120), TextAnchor.UpperLeft);
-        var b = Btn("Boton Jugar de nuevo", ui, "Jugar de nuevo", new Vector2(0, -150), new Vector2(180, 32), out _);
-        Click(b, ctrl.JugarDeNuevo);
-    }
-
-    static void CrearRespira()
+    static void CrearSoporteVital()
     {
         var cam = Camara(Hex("#1A2236"));
         var ui = Lienzo(cam);
         SistemaEventos();
-        var ctrl = new GameObject("Respira (controlador)").AddComponent<RespiraControlador>();
-        ctrl.idMision = Misiones.Respira;
-        Llenar(Img("Fondo", ui, Vector2.zero, Vector2.zero, Color.white, Spr("Assets/Minijuegos/Respira/Art/spr_respira_fondo.png")));
-        Txt("Titulo", ui, "Respira, Marte", 20, new Vector2(0, 160), new Vector2(400, 28), TextAnchor.MiddleCenter, Energia);
-        Txt("Instrucciones", ui, "Mantén ESPACIO para calentar y pulsa E para bombear. Las dos barras deben quedar en la zona verde.", 11, new Vector2(0, 138), new Vector2(600, 18));
-        ctrl.textoTiempo = Txt("Tiempo", ui, "60 s", 16, new Vector2(270, 160), new Vector2(80, 24), TextAnchor.MiddleRight);
-        ctrl.textoEstado = Txt("Estado", ui, "", 14, new Vector2(0, 40), new Vector2(240, 60), TextAnchor.MiddleCenter, Texto);
-        ctrl.textoEstado.gameObject.AddComponent<Outline>().effectColor = Color.black;
+        var ctrl = new GameObject("Soporte Vital (controlador)").AddComponent<SoporteVitalControlador>();
+        ctrl.idEstacion = Estaciones.SoporteVital;
+        Llenar(Img("Fondo", ui, Vector2.zero, Vector2.zero, Color.white, Spr("Assets/Estaciones/SoporteVital/Art/spr_soporte_fondo.png")));
+        Cabecera(ui, ctrl, "Soporte Vital y termodinámica");
 
-        Medidor(ui, "Temperatura", new Vector2(-170, 10), Hex("#E8833A"), out ctrl.rellenoTemperatura, out ctrl.zonaTemperatura);
-        Medidor(ui, "Presión", new Vector2(170, 10), Hex("#5AA9E6"), out ctrl.rellenoPresion, out ctrl.zonaPresion);
+        Txt("Titulo MOXIE", ui, "Reactor MOXIE (2CO₂ → 2CO + O₂)", 12, new Vector2(-160, 140), new Vector2(300, 18), TextAnchor.MiddleCenter, Energia);
+        ctrl.textoTiempo = Txt("Tiempo", ui, "45 s", 12, new Vector2(-30, 118), new Vector2(60, 16), TextAnchor.MiddleRight);
+        var marco = Img("Medidor de temperatura", ui, new Vector2(-275, 38), new Vector2(30, 150), Oscuro);
+        var relleno = Img("Relleno", marco.transform, Vector2.zero, Vector2.zero, Hex("#E8833A"));
+        ctrl.rellenoTemperatura = relleno.rectTransform;
+        ctrl.zonaProduccion = Img("Franja verde 780-830", marco.transform, Vector2.zero, Vector2.zero, new Color(Correcto.r, Correcto.g, Correcto.b, 0.6f)).rectTransform;
+        ctrl.zonaFusion = Img("Zona roja (fusion)", marco.transform, Vector2.zero, Vector2.zero, new Color(Alerta.r, Alerta.g, Alerta.b, 0.5f)).rectTransform;
+        Txt("Max", marco.transform, "900 °C", 9, new Vector2(0, 82), new Vector2(60, 12));
+        Txt("Min", marco.transform, "-60 °C", 9, new Vector2(0, -82), new Vector2(60, 12));
+        ctrl.textoTemperatura = Txt("Temperatura", ui, "-60 °C", 24, new Vector2(-150, 92), new Vector2(180, 30));
 
-        Txt("Etiqueta oxigeno", ui, "Oxígeno producido", 11, new Vector2(0, -100), new Vector2(300, 16));
-        var marco = Img("Barra oxigeno", ui, new Vector2(0, -118), new Vector2(300, 16), Hex("#0E1424"));
-        var rellenoO2 = Img("Relleno", marco.transform, Vector2.zero, Vector2.zero, Hex("#7EC8E3"));
-        ctrl.rellenoOxigeno = rellenoO2.rectTransform;
-        ctrl.rellenoOxigeno.anchorMin = Vector2.zero; ctrl.rellenoOxigeno.anchorMax = new Vector2(0f, 1f);
-        ctrl.rellenoOxigeno.offsetMin = ctrl.rellenoOxigeno.offsetMax = Vector2.zero;
+        Txt("Etiqueta produccion", ui, "O₂ producido esta noche", 10, new Vector2(-150, 60), new Vector2(200, 14));
+        var bp = Img("Barra produccion", ui, new Vector2(-150, 46), new Vector2(180, 12), Oscuro);
+        ctrl.rellenoProduccion = Img("Relleno", bp.transform, Vector2.zero, Vector2.zero, Hex("#7EC8E3")).rectTransform;
+        Txt("Etiqueta hollin", ui, "Hollín en los filtros", 10, new Vector2(-150, 26), new Vector2(200, 14));
+        var bh = Img("Barra hollin", ui, new Vector2(-150, 12), new Vector2(180, 12), Oscuro);
+        ctrl.rellenoHollin = Img("Relleno", bh.transform, Vector2.zero, Vector2.zero, Hex("#3B3B3B")).rectTransform;
+        ctrl.textoEstado = Txt("Estado", ui, "", 10, new Vector2(-150, -22), new Vector2(240, 40));
 
-        var calentar = Btn("Boton Calentar (mantener)", ui, "Calentar (ESPACIO)", new Vector2(-170, -150), new Vector2(150, 28), out _);
+        var controles = Rect("Controles del reactor", ui, new Vector2(-140, -98), new Vector2(260, 60));
+        ctrl.grupoControles = controles.gameObject;
+        var calentar = Btn("Boton Calentar (mantener)", controles, "Calentar (ESPACIO)", new Vector2(-65, 12), new Vector2(124, 24), out _);
         ctrl.botonCalentar = calentar.gameObject.AddComponent<BotonMantener>();
         UnityEngine.Object.DestroyImmediate(calentar); // se mantiene presionado, no es un clic
-        var bombear = Btn("Boton Bombear", ui, "Bombear (E)", new Vector2(170, -150), new Vector2(150, 28), out _);
-        Click(bombear, ctrl.BotonBombear);
-        Tarjeta(ui, ctrl);
-    }
+        Click(Btn("Boton Purgar", controles, "Purgar filtro (P)", new Vector2(65, 12), new Vector2(124, 24), out _), ctrl.Purgar);
+        Click(Btn("Boton Apagar", controles, "Apagar reactor", new Vector2(0, -18), new Vector2(124, 22), out _), ctrl.ApagarReactor);
 
-    static void CrearTormenta()
-    {
-        var cam = Camara(Hex("#D9A06F"));
-        var ui = Lienzo(cam);
-        SistemaEventos();
-        var ctrl = new GameObject("Tormenta (controlador)").AddComponent<TormentaControlador>();
-        ctrl.idMision = Misiones.Tormenta;
-        Llenar(Img("Fondo", ui, Vector2.zero, Vector2.zero, Color.white, Spr("Assets/Minijuegos/Tormenta/Art/spr_tormenta_fondo.png")));
-        Txt("Titulo", ui, "Tormenta de polvo", 20, new Vector2(0, 160), new Vector2(400, 28), TextAnchor.MiddleCenter, Noche);
-        Txt("Instrucciones", ui, "Haz clic en los paneles (o teclas 1 a 6) para limpiarlos antes de que se vaya la luz.", 11, new Vector2(0, 138), new Vector2(600, 18), TextAnchor.MiddleCenter, Noche);
-        ctrl.textoTiempo = Txt("Tiempo", ui, "75 s", 16, new Vector2(270, 160), new Vector2(80, 24), TextAnchor.MiddleRight, Noche);
-        ctrl.textoEstado = Txt("Estado", ui, "", 14, new Vector2(0, 108), new Vector2(400, 20), TextAnchor.MiddleCenter, Texto);
-        ctrl.textoEstado.gameObject.AddComponent<Outline>().effectColor = Color.black;
-
-        var spPanel = Spr("Assets/Minijuegos/Tormenta/Art/spr_tormenta_panel.png");
-        var spPolvo = Spr("Assets/Minijuegos/Tormenta/Art/spr_tormenta_polvo.png");
-        ctrl.capasPolvo = new Image[TormentaLogica.CantidadPaneles];
-        for (int i = 0; i < TormentaLogica.CantidadPaneles; i++)
+        Txt("Titulo sectores", ui, "Distribución de energía", 12, new Vector2(165, 140), new Vector2(280, 18), TextAnchor.MiddleCenter, Energia);
+        ctrl.botonesSector = new Image[3];
+        ctrl.textosSector = new Text[3];
+        for (int i = 0; i < 3; i++)
         {
-            var pos = new Vector2(-140 + (i % 3) * 140, i < 3 ? 45 : -55);
-            var img = Img("Panel " + (i + 1), ui, pos, new Vector2(120, 80), Color.white, spPanel);
-            var boton = img.gameObject.AddComponent<Button>();
-            UnityEventTools.AddIntPersistentListener(boton.onClick, ctrl.LimpiarPanel, i);
-            var polvo = Img("Polvo", img.transform, Vector2.zero, new Vector2(120, 80), new Color(1, 1, 1, 0.4f), spPolvo);
-            polvo.raycastTarget = false;
-            ctrl.capasPolvo[i] = polvo;
-            Txt("Numero", img.transform, (i + 1).ToString(), 12, new Vector2(-48, 28), new Vector2(20, 18), TextAnchor.MiddleCenter, Energia);
+            var b = Btn("Sector " + (i + 1), ui, "", new Vector2(165, 110 - i * 30), new Vector2(280, 24), out ctrl.textosSector[i]);
+            ctrl.textosSector[i].fontSize = 10;
+            ClickInt(b, ctrl.AlternarSector, i);
+            ctrl.botonesSector[i] = b.GetComponent<Image>();
         }
-        Txt("Etiqueta energia", ui, "Energía guardada", 11, new Vector2(0, -112), new Vector2(300, 16), TextAnchor.MiddleCenter, Noche);
-        var marco = Img("Barra energia", ui, new Vector2(0, -130), new Vector2(300, 16), Hex("#0E1424"));
-        var relleno = Img("Relleno", marco.transform, Vector2.zero, Vector2.zero, Energia);
-        ctrl.rellenoEnergia = relleno.rectTransform;
-        ctrl.rellenoEnergia.anchorMin = Vector2.zero; ctrl.rellenoEnergia.anchorMax = new Vector2(0f, 1f);
-        ctrl.rellenoEnergia.offsetMin = ctrl.rellenoEnergia.offsetMax = Vector2.zero;
-        ctrl.oscuridad = Img("Oscuridad de la tormenta", ui, Vector2.zero, Vector2.zero, new Color(0.05f, 0.03f, 0.02f, 0f));
-        ctrl.oscuridad.raycastTarget = false;
-        Llenar(ctrl.oscuridad);
+        ctrl.textoCargas = Txt("Consumo", ui, "", 9, new Vector2(165, -60), new Vector2(280, 140), TextAnchor.UpperLeft);
+
+        BotonSalir(ui, ctrl);
         Tarjeta(ui, ctrl);
     }
 
-    static void CrearPendiente(string id)
+    static void CrearBiomedica()
     {
-        var cam = Camara(Noche);
+        var cam = Camara(Hex("#10202A"));
         var ui = Lienzo(cam);
         SistemaEventos();
-        var ctrl = new GameObject("Minijuego pendiente (reemplazar)").AddComponent<MinijuegoPendiente>();
-        ctrl.idMision = id;
-        ctrl.textoTitulo = Txt("Titulo", ui, Misiones.Nombre[id] + "\n(en construcción)", 22, new Vector2(0, 110), new Vector2(560, 70), TextAnchor.MiddleCenter, Energia);
-        Txt("Nota", ui, "Escena temporal para probar la partida. Quien programe este minijuego reemplaza este objeto por su propio controlador.", 11, new Vector2(0, 55), new Vector2(560, 34));
-        var b1 = Btn("Boton 1", ui, "Simular: ganar", new Vector2(0, 0), new Vector2(220, 30), out ctrl.textoBoton1);
-        var b2 = Btn("Boton 2", ui, "Simular: a medias", new Vector2(0, -45), new Vector2(220, 30), out ctrl.textoBoton2);
-        var b3 = Btn("Boton 3", ui, "Simular: perder", new Vector2(0, -90), new Vector2(220, 30), out ctrl.textoBoton3);
-        Click(b1, ctrl.Boton1); Click(b2, ctrl.Boton2); Click(b3, ctrl.Boton3);
+        var ctrl = new GameObject("Biomedica (controlador)").AddComponent<BiomedicaControlador>();
+        ctrl.idEstacion = Estaciones.Biomedica;
+        Llenar(Img("Fondo", ui, Vector2.zero, Vector2.zero, Color.white, Spr("Assets/Estaciones/Biomedica/Art/spr_biomedica_fondo.png")));
+        Cabecera(ui, ctrl, "Terminal Biomédica y psicología");
+
+        string[] ids = { "elena", "marco", "aris", "jonas" };
+        ctrl.retratos = new Sprite[4]; ctrl.retratosMirada = new Sprite[4];
+        ctrl.retratosTarjeta = new Image[4]; ctrl.textosTarjeta = new Text[4]; ctrl.fondosTarjeta = new Image[4];
+        for (int i = 0; i < 4; i++)
+        {
+            ctrl.retratos[i] = Spr("Assets/Comun/Art/Retratos/spr_retrato_" + ids[i] + ".png");
+            ctrl.retratosMirada[i] = Spr("Assets/Comun/Art/Retratos/spr_retrato_" + ids[i] + "_mirada.png");
+            var fondo = Img("Tarjeta " + ids[i], ui, new Vector2(-237 + i * 158, 122), new Vector2(150, 50), Correcto);
+            ClickInt(fondo.gameObject.AddComponent<Button>(), ctrl.Elegir, i);
+            ctrl.fondosTarjeta[i] = fondo;
+            ctrl.retratosTarjeta[i] = Img("Retrato", fondo.transform, new Vector2(-48, 0), new Vector2(44, 44), Color.white, ctrl.retratos[i]);
+            ctrl.retratosTarjeta[i].raycastTarget = false;
+            ctrl.textosTarjeta[i] = Txt("Datos", fondo.transform, "", 9, new Vector2(24, 0), new Vector2(96, 46), TextAnchor.MiddleLeft, Oscuro);
+        }
+
+        var monitor = Img("Monitor cardiaco", ui, new Vector2(-150, 56), new Vector2(320, 72), Hex("#06140E"));
+        var ecg = Rect("ECG", monitor.transform, new Vector2(0, 8), new Vector2(300, 48));
+        var mc = monitor.gameObject.AddComponent<MonitorCardiaco>();
+        mc.altoMaximo = 40f;
+        mc.barras = new RectTransform[75];
+        for (int i = 0; i < mc.barras.Length; i++)
+        {
+            var b = Img("Barra " + i, ecg, new Vector2(-148 + i * 4, 0), new Vector2(3, 2), Correcto);
+            b.raycastTarget = false;
+            mc.barras[i] = b.rectTransform;
+        }
+        ctrl.monitor = mc;
+        ctrl.textoMonitor = Txt("Lectura", monitor.transform, "", 9, new Vector2(0, -27), new Vector2(312, 14), TextAnchor.MiddleCenter, Correcto);
+        Txt("Guia", ui, "Verde: menos de 85 BPM, da ventajas.\nRojo: más de 115 BPM, sabotea de noche.\nppCO₂ sobre 5.0 mmHg: hipercapnia (es el aire, no los nervios).\nB) promete calefacción: si no cumples, +45 BPM.",
+            9, new Vector2(165, 56), new Vector2(280, 72), TextAnchor.MiddleLeft);
+
+        var caja = Img("Caja de dialogo", ui, new Vector2(0, -66), new Vector2(624, 134), new Color(0.04f, 0.06f, 0.1f, 0.95f));
+        caja.gameObject.AddComponent<Outline>().effectColor = Energia;
+        ctrl.retratoDialogo = Img("Retrato", caja.transform, new Vector2(-255, 12), new Vector2(96, 96), Color.white);
+        ctrl.textoNombre = Txt("Nombre", caja.transform, "", 9, new Vector2(-255, -52), new Vector2(110, 14), TextAnchor.MiddleCenter, Energia);
+        ctrl.textoDialogo = Txt("Texto", caja.transform, "", 11, new Vector2(55, 38), new Vector2(500, 52), TextAnchor.UpperLeft);
+        ctrl.botonesOpcion = new GameObject[4];
+        ctrl.textosOpcion = new Text[4];
+        for (int i = 0; i < 4; i++)
+        {
+            var b = Btn("Opcion " + (i + 1), caja.transform, "", new Vector2(55, -2 - i * 19), new Vector2(500, 17), out ctrl.textosOpcion[i]);
+            ctrl.textosOpcion[i].fontSize = 9;
+            ctrl.textosOpcion[i].alignment = TextAnchor.MiddleLeft;
+            ClickInt(b, ctrl.Opcion, i);
+            ctrl.botonesOpcion[i] = b.gameObject;
+        }
+        var otro = Btn("Boton Hablar con otro", ui, "Hablar con otro", new Vector2(110, -162), new Vector2(130, 22), out _);
+        Click(otro, ctrl.HablarConOtro);
+        ctrl.botonOtro = otro.gameObject;
+
+        BotonSalir(ui, ctrl);
         Tarjeta(ui, ctrl);
     }
 
-    // ------------------------------------------------------------------ Piezas
-
-    static void Medidor(Transform ui, string nombre, Vector2 pos, Color color, out RectTransform relleno, out RectTransform zona)
+    static void CrearAntena()
     {
-        var marco = Img("Medidor " + nombre, ui, pos, new Vector2(36, 200), Hex("#0E1424"));
-        var r = Img("Relleno", marco.transform, Vector2.zero, Vector2.zero, color);
-        relleno = r.rectTransform;
-        relleno.anchorMin = Vector2.zero; relleno.anchorMax = new Vector2(1f, 0.4f);
-        relleno.offsetMin = relleno.offsetMax = Vector2.zero;
-        var z = Img("Zona segura", marco.transform, Vector2.zero, Vector2.zero, new Color(Correcto.r, Correcto.g, Correcto.b, 0.45f));
-        zona = z.rectTransform;
-        zona.anchorMin = new Vector2(0f, 0.55f); zona.anchorMax = new Vector2(1f, 0.8f);
-        zona.offsetMin = zona.offsetMax = Vector2.zero;
-        Txt("Etiqueta", marco.transform, nombre, 11, new Vector2(0, -112), new Vector2(120, 16));
+        var cam = Camara(Hex("#0B0F1A"));
+        var ui = Lienzo(cam);
+        SistemaEventos();
+        var ctrl = new GameObject("Antena (controlador)").AddComponent<AntenaControlador>();
+        ctrl.idEstacion = Estaciones.Antena;
+        Llenar(Img("Fondo", ui, Vector2.zero, Vector2.zero, Color.white, Spr("Assets/Estaciones/Antena/Art/spr_antena_fondo.png")));
+        Cabecera(ui, ctrl, "Comunicaciones y Antena Banda X");
+
+        // ---------- Paso 1: elegir paquete ----------
+        var paquetes = Img("Paso 1 - Elegir paquete", ui, new Vector2(0, -5), new Vector2(600, 300), new Color(0.04f, 0.06f, 0.1f, 0.95f));
+        ctrl.grupoPaquetes = paquetes.gameObject;
+        Txt("Explicacion", paquetes.transform, "Solo hay ancho de banda y batería para 1 paquete esta noche (25 % de batería; si se pierde la señal, 10 %).\n¿Qué envías?", 12, new Vector2(0, 110), new Vector2(560, 50));
+        string[] opciones =
+        {
+            "SOS a Nikolas en Houston  ·  Rescate +1  ·  Elena se calma",
+            "Esquema de reciclaje y mejoras del domo  ·  Domo +1 y agua +10 %  ·  Aris contenta, Elena no",
+            "Datos científicos  ·  Aris contenta, Elena no",
+        };
+        for (int i = 0; i < 3; i++)
+        {
+            var b = Btn("Paquete " + (i + 1), paquetes.transform, opciones[i], new Vector2(0, 50 - i * 42), new Vector2(520, 32), out var t);
+            t.fontSize = 11;
+            ClickInt(b, ctrl.ElegirPaquete, i);
+        }
+        Click(Btn("No transmitir", paquetes.transform, "No transmitir esta noche (ahorra batería)", new Vector2(0, -95), new Vector2(300, 24), out _), ctrl.NoTransmitir);
+
+        // ---------- Paso 2: osciloscopio ----------
+        var oscilo = Rect("Paso 2 - Osciloscopio", ui, Vector2.zero, new Vector2(640, 360));
+        ctrl.grupoOscilo = oscilo.gameObject;
+        var pantalla = Img("Pantalla", oscilo, new Vector2(-60, 45), new Vector2(440, 150), Hex("#04140A"));
+        pantalla.gameObject.AddComponent<Outline>().effectColor = Correcto;
+        ctrl.tamanoOscilo = new Vector2(420f, 130f);
+        ctrl.puntosObjetivo = Puntos(pantalla.transform, "Onda del satelite", 84, new Color(Correcto.r, Correcto.g, Correcto.b, 0.35f), 4);
+        ctrl.puntosJugador = Puntos(pantalla.transform, "Tu onda", 84, Hex("#9BFFB8"), 3);
+        ctrl.textoVacio = Txt("El vacio", pantalla.transform, "", 12, Vector2.zero, new Vector2(420, 50), TextAnchor.MiddleCenter, Texto);
+        ctrl.textoVacio.gameObject.AddComponent<Outline>().effectColor = Color.black;
+
+        var regla = Img("Regla de frecuencia", oscilo, new Vector2(-60, -42), new Vector2(420, 6), Metal);
+        ctrl.anchoRegla = 420f;
+        ctrl.marcaObjetivo = Img("Marca Elena (Doppler exacto)", regla.transform, Vector2.zero, new Vector2(4, 16), Energia).rectTransform;
+        ctrl.marcaJugador = Img("Marca tuya", regla.transform, Vector2.zero, new Vector2(4, 12), Hex("#9BFFB8")).rectTransform;
+        Txt("Etiqueta bloqueo", oscilo, "Señal bloqueada", 10, new Vector2(-60, -60), new Vector2(200, 14));
+        var bl = Img("Barra bloqueo", oscilo, new Vector2(-60, -74), new Vector2(300, 10), Oscuro);
+        ctrl.rellenoBloqueo = Img("Relleno", bl.transform, Vector2.zero, Vector2.zero, Correcto).rectTransform;
+
+        ctrl.botonFrecMenos = Mantener(oscilo, "◀ Frecuencia (A)", new Vector2(-230, -105));
+        ctrl.botonFrecMas = Mantener(oscilo, "Frecuencia ▶ (D)", new Vector2(-130, -105));
+        ctrl.botonAmpMas = Mantener(oscilo, "▲ Amplitud (W)", new Vector2(10, -105));
+        ctrl.botonAmpMenos = Mantener(oscilo, "▼ Amplitud (S)", new Vector2(110, -105));
+        ctrl.textoTiempo = Txt("Tiempo", oscilo, "40 s", 14, new Vector2(240, 110), new Vector2(100, 20), TextAnchor.MiddleCenter, Energia);
+        ctrl.textoEstado = Txt("Estado", oscilo, "", 10, new Vector2(240, 40), new Vector2(140, 110), TextAnchor.UpperLeft);
+        Txt("Ayuda Doppler", oscilo, "El orbitador cruza el cielo: su frecuencia se corre de derecha a izquierda (efecto Doppler). Si Elena está en verde, marca el punto exacto.", 9, new Vector2(240, -40), new Vector2(140, 90), TextAnchor.UpperLeft);
+
+        // ---------- Paso 3: mensaje de Nikolas ----------
+        var mensaje = Img("Paso 3 - Mensaje de Nikolas", ui, new Vector2(0, -5), new Vector2(600, 300), new Color(0.04f, 0.06f, 0.1f, 0.95f));
+        ctrl.grupoMensaje = mensaje.gameObject;
+        Img("Retrato Nikolas", mensaje.transform, new Vector2(-235, 70), new Vector2(96, 96), Color.white, Spr("Assets/Comun/Art/Retratos/spr_retrato_nikolas.png"));
+        ctrl.textoMensaje = Txt("Mensaje", mensaje.transform, "", 11, new Vector2(55, 40), new Vector2(460, 200), TextAnchor.UpperLeft);
+        ctrl.botonesRespuesta = new GameObject[2];
+        var r1 = Btn("Respuesta cordial", mensaje.transform, "Responder: «Recibido, Houston. Gracias, Nikolas.»", new Vector2(55, -95), new Vector2(460, 22), out _);
+        ClickInt(r1, ctrl.Responder, 0);
+        var r2 = Btn("Respuesta sarcastica", mensaje.transform, "Responder: «Tú nos mandaste a aterrizar aquí, genio.»", new Vector2(55, -122), new Vector2(460, 22), out _);
+        ClickInt(r2, ctrl.Responder, 1);
+        ctrl.botonesRespuesta[0] = r1.gameObject; ctrl.botonesRespuesta[1] = r2.gameObject;
+
+        oscilo.gameObject.SetActive(false);
+        mensaje.gameObject.SetActive(false);
+        BotonSalir(ui, ctrl);
+        Tarjeta(ui, ctrl);
     }
 
-    static void Tarjeta(Transform ui, MinijuegoBase mj)
+    // ================================================================== Piezas
+
+    static RectTransform[] Puntos(Transform padre, string nombre, int cantidad, Color color, float tam)
+    {
+        var grupo = Rect(nombre, padre, Vector2.zero, Vector2.zero);
+        var r = new RectTransform[cantidad];
+        for (int i = 0; i < cantidad; i++)
+        {
+            var p = Img("p" + i, grupo, Vector2.zero, new Vector2(tam, tam), color);
+            p.raycastTarget = false;
+            r[i] = p.rectTransform;
+        }
+        return r;
+    }
+
+    static BotonMantener Mantener(Transform padre, string texto, Vector2 pos)
+    {
+        var b = Btn("Boton " + texto, padre, texto, pos, new Vector2(94, 24), out var t);
+        t.fontSize = 10;
+        var m = b.gameObject.AddComponent<BotonMantener>();
+        UnityEngine.Object.DestroyImmediate(b);
+        return m;
+    }
+
+    static void Cabecera(Transform ui, EstacionBase est, string titulo)
+    {
+        Img("Barra superior", ui, new Vector2(0, 166), new Vector2(632, 24), new Color(0.07f, 0.1f, 0.18f, 0.9f));
+        Txt("Titulo", ui, titulo, 13, new Vector2(-170, 166), new Vector2(290, 20), TextAnchor.MiddleLeft, Energia);
+        est.textoHora = Txt("Hora", ui, "Noche 1 · 18:30", 10, new Vector2(40, 166), new Vector2(120, 16), TextAnchor.MiddleCenter);
+        est.textoBateria = Txt("Bateria", ui, "Batería", 10, new Vector2(208, 166), new Vector2(200, 16), TextAnchor.MiddleRight);
+    }
+
+    static void BotonSalir(Transform ui, EstacionBase est)
+    {
+        var b = Btn("Boton Salir", ui, "Salir (+2 h 30)", new Vector2(250, -162), new Vector2(120, 22), out _);
+        Click(b, est.Salir);
+    }
+
+    static void Tarjeta(Transform ui, EstacionBase est)
     {
         var panel = Img("Tarjeta de dato real", ui, Vector2.zero, Vector2.zero, new Color(0f, 0f, 0f, 0.85f));
         Llenar(panel);
-        var caja = Img("Caja", panel.transform, Vector2.zero, new Vector2(480, 230), Hex("#1E2A44"));
+        var caja = Img("Caja", panel.transform, Vector2.zero, new Vector2(500, 240), Hex("#1E2A44"));
         caja.gameObject.AddComponent<Outline>().effectColor = Energia;
-        mj.textoResultado = Txt("Resultado", caja.transform, "¡Lo lograste!", 18, new Vector2(0, 75), new Vector2(440, 50), TextAnchor.MiddleCenter, Energia);
-        mj.textoDato = Txt("Dato real", caja.transform, "Dato real: ...", 13, new Vector2(0, 5), new Vector2(440, 70), TextAnchor.MiddleCenter);
-        mj.textoFuente = Txt("Fuente", caja.transform, "Fuente: ...", 10, new Vector2(0, -45), new Vector2(440, 16), TextAnchor.MiddleCenter, new Color(1, 1, 1, 0.7f));
-        var b = Btn("Boton Continuar", caja.transform, "Continuar", new Vector2(0, -85), new Vector2(150, 30), out _);
-        Click(b, mj.Continuar);
-        mj.panelTarjeta = panel.gameObject;
+        est.textoResultado = Txt("Resultado", caja.transform, "", 12, new Vector2(0, 75), new Vector2(460, 60), TextAnchor.MiddleCenter, Energia);
+        est.textoDato = Txt("Dato real", caja.transform, "Dato real: ...", 12, new Vector2(0, 5), new Vector2(460, 70), TextAnchor.MiddleCenter);
+        est.textoFuente = Txt("Fuente", caja.transform, "Fuente: ...", 10, new Vector2(0, -45), new Vector2(460, 16), TextAnchor.MiddleCenter, new Color(1, 1, 1, 0.7f));
+        var b = Btn("Boton Continuar", caja.transform, "Volver al mapa", new Vector2(0, -88), new Vector2(150, 28), out _);
+        Click(b, est.Continuar);
+        est.panelTarjeta = panel.gameObject;
         panel.gameObject.SetActive(false);
     }
 
-    static void Estacion(Transform padre, string nombre, string id, string sprite, Vector2 pos, Sprite flecha, bool esPuente)
+    static void Estacion(Transform padre, string nombre, string id, string sprite, Vector2 pos, Sprite flecha)
     {
         var go = new GameObject("Estacion " + nombre);
         go.transform.SetParent(padre);
@@ -375,9 +601,9 @@ public static class ConstructorEscenas
         solido.size = new Vector2(1.8f, 1.2f); solido.offset = new Vector2(0f, -0.3f);
         var zona = go.AddComponent<CircleCollider2D>();
         zona.isTrigger = true; zona.radius = 1.6f;
-        var e = go.AddComponent<EstacionMision>();
-        e.idMision = id; e.nombreVisible = nombre; e.esPuente = esPuente;
-        var ind = new GameObject("Indicador de mision");
+        var e = go.AddComponent<EstacionMapa>();
+        e.idEstacion = id; e.nombreVisible = nombre;
+        var ind = new GameObject("Indicador");
         ind.transform.SetParent(go.transform, false);
         ind.transform.localPosition = new Vector3(0f, 2.2f, 0f);
         var isr = ind.AddComponent<SpriteRenderer>();
@@ -493,6 +719,7 @@ public static class ConstructorEscenas
         t.text = texto;
         t.alignment = alineacion;
         t.color = color ?? Texto;
+        t.supportRichText = true;
         t.horizontalOverflow = HorizontalWrapMode.Wrap;
         t.verticalOverflow = VerticalWrapMode.Overflow;
         t.raycastTarget = false;
@@ -504,13 +731,18 @@ public static class ConstructorEscenas
         var img = Img(nombre, padre, pos, tam, Luz);
         img.gameObject.AddComponent<Outline>().effectColor = Energia;
         var b = img.gameObject.AddComponent<Button>();
-        texto = Txt("Texto", img.transform, etiqueta, 13, Vector2.zero, tam);
+        texto = Txt("Texto", img.transform, etiqueta, 13, Vector2.zero, tam - new Vector2(6, 0));
         return b;
     }
 
     static void Click(Button b, UnityAction accion)
     {
         UnityEventTools.AddPersistentListener(b.onClick, accion);
+    }
+
+    static void ClickInt(Button b, UnityAction<int> accion, int valor)
+    {
+        UnityEventTools.AddIntPersistentListener(b.onClick, accion, valor);
     }
 
     static Sprite Spr(string ruta)

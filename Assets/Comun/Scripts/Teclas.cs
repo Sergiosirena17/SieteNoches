@@ -20,7 +20,7 @@ public static class Teclas
         return v.sqrMagnitude > 1f ? v.normalized : v;
     }
 
-    /// <summary>E o Espacio: entrar a una mision.</summary>
+    /// <summary>E o Espacio: entrar a una estacion.</summary>
     public static bool Interactuar()
     {
         var k = Keyboard.current;
@@ -35,6 +35,13 @@ public static class Teclas
         bool teclado = k != null && (k.spaceKey.wasPressedThisFrame || k.enterKey.wasPressedThisFrame);
         bool raton = m != null && m.leftButton.wasPressedThisFrame;
         return teclado || raton;
+    }
+
+    /// <summary>Espacio o Enter (sin raton): para no saltar textos al hacer clic en un boton.</summary>
+    public static bool AvanzarTeclado()
+    {
+        var k = Keyboard.current;
+        return k != null && (k.spaceKey.wasPressedThisFrame || k.enterKey.wasPressedThisFrame);
     }
 
     public static bool Mantiene(Key tecla)

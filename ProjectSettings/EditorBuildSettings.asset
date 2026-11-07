@@ -7,36 +7,30 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Escenas/Inicio.unity
-    guid: ebcd40318b7d27a42a18f46d252c6bf0
+    guid: 1b43d0bada354424485228f803983fc4
   - enabled: 1
     path: Assets/Escenas/Intro.unity
-    guid: 8f857118544166e4aada9fab27d0feac
+    guid: 13c36dc4a7d768a4b93bd1f6142bb750
   - enabled: 1
     path: Assets/Escenas/Mapa.unity
-    guid: 9c53ae499a7fd36468b99e3de1974d80
+    guid: 98f09dd03cf1c4c4bb13511905d9b4d1
   - enabled: 1
     path: Assets/Escenas/Lanzamiento.unity
-    guid: 2b64633272d8d2b4d94b84b46b6e46d2
+    guid: abcb6cc6c241d5d4eb65e526e8b3d677
   - enabled: 1
     path: Assets/Escenas/Final.unity
-    guid: d2d0f9379fa90f849b4ebc3d01323773
+    guid: 2175ed3f88cd90a49a47bad5df56d4d9
   - enabled: 1
-    path: Assets/Minijuegos/Respira/Mj_Respira.unity
-    guid: 54eef22a75ca3314a97f1edfe083caeb
+    path: Assets/Estaciones/Invernadero/Est_Invernadero.unity
+    guid: 02b45e352a4546a49908c40bf81d1dc6
   - enabled: 1
-    path: Assets/Minijuegos/Tormenta/Mj_Tormenta.unity
-    guid: de1048e5308e77546b0b5aafaa16f452
+    path: Assets/Estaciones/SoporteVital/Est_SoporteVital.unity
+    guid: e36d7ed72bb4b30478955113e5b7a084
   - enabled: 1
-    path: Assets/Minijuegos/Huerto/Mj_Huerto.unity
-    guid: 03cb3dcefbb9dd045b691fb40fe58db7
+    path: Assets/Estaciones/Biomedica/Est_Biomedica.unity
+    guid: 5067ea02f8bd6784b96cc40cc128dbb2
   - enabled: 1
-    path: Assets/Minijuegos/Refugio/Mj_Refugio.unity
-    guid: 5b1afa8ab2f3efd499682c24974f27e8
-  - enabled: 1
-    path: Assets/Minijuegos/Insulta/Mj_Insulta.unity
-    guid: 9ee1db0970020194c9b714d693aa2f05
-  - enabled: 1
-    path: Assets/Minijuegos/Roca/Mj_Roca.unity
-    guid: afa58121e689fa042b653c87c8afb108
+    path: Assets/Estaciones/Antena/Est_Antena.unity
+    guid: 45926959f3f03ab4a8b642470701799d
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

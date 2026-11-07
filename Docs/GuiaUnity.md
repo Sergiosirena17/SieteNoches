@@ -19,7 +19,7 @@ Esta guía es para quien nunca abrió Unity. Sigue los pasos en orden.
 
 | Ventana | Para qué sirve |
 | --- | --- |
-| **Project** (abajo) | Los archivos del proyecto, igual que el Explorador de Windows. Aquí están `Assets/Escenas`, `Assets/Minijuegos`, etc. |
+| **Project** (abajo) | Los archivos del proyecto, igual que el Explorador de Windows. Aquí están `Assets/Escenas`, `Assets/Estaciones`, etc. |
 | **Hierarchy** (izquierda) | Los objetos de la escena abierta: cámara, jugador, textos, estaciones. |
 | **Scene** (centro) | Editor visual de la escena. Puedes mover objetos con el mouse. |
 | **Game** (pestaña junto a Scene) | Lo que ve el jugador. Al presionar Play se muestra aquí. |
@@ -43,14 +43,15 @@ Si cerraste alguna ventana, vuelve a abrirla desde **Window > General**. Para vo
 
 > **Importante:** todo lo que cambies mientras Play está activo **se pierde** al salir. Si el botón Play está azul, sal primero y después edita.
 
-Para probar un solo minijuego, abre su escena (por ejemplo `Assets/Minijuegos/Respira/Mj_Respira.unity`) y presiona Play. Al ganarlo te lleva al mapa.
+Para probar una sola estación, abre su escena (por ejemplo `Assets/Estaciones/Invernadero/Est_Invernadero.unity`) y presiona Play. Al salir te lleva al mapa.
 
 ### Controles
 
-- **Mapa:** WASD o flechas para moverte; E para entrar a una misión.
+- **Mapa:** WASD o flechas para moverte; E para entrar a una estación.
 - **Textos:** Espacio o clic para avanzar.
-- **Respira:** mantén Espacio para calentar y pulsa E para bombear.
-- **Tormenta:** clic en los paneles o teclas 1 a 6.
+- **Soporte Vital:** mantén Espacio para calentar el MOXIE y pulsa P para purgar el hollín.
+- **Antena:** A/D para la frecuencia y W/S para la amplitud.
+- **Invernadero y Biomédica:** con el mouse.
 
 ## 5. Menú SieteNoches (nuestras herramientas)
 
@@ -65,7 +66,7 @@ Antes de hacer un Pull Request a `main`, corre las dos pruebas.
 
 ## 6. Editar cosas comunes
 
-- **Cambiar un número de un minijuego:** selecciona en Hierarchy el objeto que tiene el script `...Controlador`. En el Inspector verás sus campos; cámbialos y guarda con **Ctrl+S**.
+- **Cambiar un número de una estación:** selecciona en Hierarchy el objeto que tiene el script `...Controlador`. En el Inspector verás sus campos; cámbialos y guarda con **Ctrl+S**.
 - **Cambiar un texto:** selecciona el texto en Hierarchy y edita el campo **Text** en el Inspector.
 - **Cambiar un dibujo:** reemplaza el PNG en la carpeta de Windows con el mismo nombre y medida. Unity lo detecta solo (lee el README).
 - **Editar código:** doble clic en un archivo `.cs` en Project; se abre en Visual Studio o VS Code. Guarda, vuelve a Unity y espera a que termine de compilar (rueda girando abajo a la derecha). Si hay errores, salen en rojo en la Console y Play no funciona hasta que los arregles.
