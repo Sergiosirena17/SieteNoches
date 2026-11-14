@@ -44,6 +44,8 @@ public class InvernaderoControlador : EstacionBase
     int pagina;
     float relojAlucinacion;
     bool alucinando;
+    bool confirmarArrancar;                 // true tras el primer clic en "Arrancar planta"
+    readonly bool[] ledsTmp = new bool[3];  // reutilizado en Dibujar() para no crear basura cada frame
 
     static readonly Color[] ColoresLed = { new Color(0.9f, 0.2f, 0.25f), new Color(0.25f, 0.45f, 0.95f), new Color(0.62f, 0.35f, 0.95f) };
     static readonly Color LedApagado = new Color(0.18f, 0.22f, 0.3f);
@@ -75,6 +77,7 @@ public class InvernaderoControlador : EstacionBase
     public void Seleccionar(int i)
     {
         Seleccionada = Mathf.Clamp(i, 0, GameState.Capsulas.Length - 1);
+        confirmarArrancar = false;
         Avisar("");
     }
 
@@ -83,6 +86,7 @@ public class InvernaderoControlador : EstacionBase
     {
         var c = GameState.Capsulas[Seleccionada];
         if (!c.Vacia || Saliendo) return;
+        confirmarArrancar = false;
         var e = (Especie)especie;
         c.Sembrar(e);
         if (c.Toxica)
@@ -95,6 +99,8 @@ public class InvernaderoControlador : EstacionBase
 
     public void CambiarHumedad(int delta)
     {
+        if (Saliendo) return;
+        confirmarArrancar = false;
         var c = GameState.Capsulas[Seleccionada];
         c.Humedad = Mathf.Clamp(c.Humedad + delta, 0, 100);
     }
@@ -102,6 +108,8 @@ public class InvernaderoControlador : EstacionBase
     /// <summary>0 rojo 660 nm, 1 azul 450 nm, 2 UV-A 380 nm.</summary>
     public void AlternarLed(int canal)
     {
+        if (Saliendo) return;
+        confirmarArrancar = false;
         var c = GameState.Capsulas[Seleccionada];
         if (canal == 0) c.LedRojo = !c.LedRojo;
         else if (canal == 1) c.LedAzul = !c.LedAzul;
@@ -111,9 +119,20 @@ public class InvernaderoControlador : EstacionBase
     /// <summary>Limpia la biomasa podrida o arranca la planta actual.</summary>
     public void Accion()
     {
+        if (Saliendo) return;
         var c = GameState.Capsulas[Seleccionada];
         if (c.Vacia) return;
         bool podrida = c.Estado == EstadoPlanta.Podrida;
+
+        // Arrancar una planta viva es irreversible (se pierden noches de cultivo): pedir confirmacion.
+        if (!podrida && !confirmarArrancar)
+        {
+            confirmarArrancar = true;
+            Avisar("¿Arrancar " + c.Info.Nombre + "? Pulsa otra vez para confirmar.");
+            return;
+        }
+
+        confirmarArrancar = false;
         c.Vaciar();
         Avisar(podrida ? "Limpiaste la biomasa podrida." : "Arrancaste la planta.");
     }
@@ -146,11 +165,14 @@ public class InvernaderoControlador : EstacionBase
         if (grupoSemillas != null) grupoSemillas.SetActive(sel.Vacia);
         if (grupoAjustes != null) grupoAjustes.SetActive(true);
         if (textoHumedad != null) textoHumedad.text = "Humedad " + sel.Humedad + " %";
-        bool[] leds = { sel.LedRojo, sel.LedAzul, sel.LedUv };
+        ledsTmp[0] = sel.LedRojo; ledsTmp[1] = sel.LedAzul; ledsTmp[2] = sel.LedUv;
         for (int k = 0; k < botonesLed.Length && k < 3; k++)
-            if (botonesLed[k] != null) botonesLed[k].color = leds[k] ? ColoresLed[k] : LedApagado;
+            if (botonesLed[k] != null) botonesLed[k].color = ledsTmp[k] ? ColoresLed[k] : LedApagado;
+        if (sel.Vacia) confirmarArrancar = false;
         if (botonAccion != null) botonAccion.SetActive(!sel.Vacia);
-        if (textoAccion != null) textoAccion.text = sel.Estado == EstadoPlanta.Podrida ? "Limpiar biomasa" : "Arrancar planta";
+        if (textoAccion != null)
+            textoAccion.text = sel.Estado == EstadoPlanta.Podrida ? "Limpiar biomasa"
+                             : confirmarArrancar ? "¿Seguro? Pulsa otra vez" : "Arrancar planta";
     }
 
     static string Descripcion(Capsula c)
