@@ -28,6 +28,7 @@ public abstract class EstacionBase : MonoBehaviour
 
     protected virtual void Awake()
     {
+        AmbienteAudio.EntrarMinijuego();
         if (panelTarjeta != null) panelTarjeta.SetActive(false);
     }
 

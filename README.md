@@ -4,6 +4,8 @@ Juego 2D en Unity para el NASA Space Apps Challenge 2026. La nave aterrizó con 
 
 El diseño completo está en el documento del equipo "Ideas de misiones" (Google Docs). Lo que ese documento no fijaba (números, tiempos) está en `Docs/CambiosParaDocs` en la PC de Sergio y en el código, en `SimulacionNoche.cs` y `Semillas.cs`.
 
+El trabajo pendiente de audio y de la presentación del NASA Space Apps Challenge está definido en [Docs/Backlog.md](Docs/Backlog.md). Los cambios relevantes de entrega se registran en [CHANGELOG.md](CHANGELOG.md).
+
 ## Abrir el proyecto
 
 1. Instalar **Unity 6000.6.8f1** (exactamente esa versión) con Web Build Support y Windows Build Support.

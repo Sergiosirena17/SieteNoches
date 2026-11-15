@@ -63,6 +63,7 @@ public class MapaControlador : MonoBehaviour
 
     void Start()
     {
+        AmbienteAudio.EntrarMapa();
         if (GameState.PosicionJugador.HasValue && jugador != null)
             jugador.position = GameState.PosicionJugador.Value;
         if (textoAviso != null) textoAviso.text = "";

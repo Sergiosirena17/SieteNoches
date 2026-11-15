@@ -1,0 +1,14 @@
+{
+  "name": "siete-noches-presentation",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Generator for the 7 Nights on Mars presentation deliverables.",
+  "type": "module",
+  "scripts": {
+    "build": "node generate-presentation.mjs"
+  },
+  "dependencies": {
+    "pdfkit": "0.20.2",
+    "pptxgenjs": "4.0.1"
+  }
+}

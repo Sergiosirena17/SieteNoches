@@ -11,11 +11,18 @@ public static class SonidoProcedural
     const int Frec = 22050;
     static readonly Dictionary<string, AudioClip> cache = new Dictionary<string, AudioClip>();
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    static void ReiniciarCache() => cache.Clear();
+
     public static AudioClip Musica() => Obtener("musica", GenerarMusica);
     public static AudioClip Zumbido() => Obtener("zumbido", GenerarZumbido);
     public static AudioClip Crujido() => Obtener("crujido", GenerarCrujido);
     public static AudioClip Siseo() => Obtener("siseo", GenerarSiseo);
     public static AudioClip Pitido() => Obtener("pitido", () => Tono("pitido", 1000f, 0.07f, 0.25f, false));
+    /// <summary>Musica de las estaciones/minijuegos. Si falta, conserva la musica procedimental como plan B.</summary>
+    public static AudioClip Minijuegos() => Obtener("minijuegos", GenerarMusica);
+    /// <summary>Narracion inicial. Es opcional: el juego continua en silencio si no existe el archivo.</summary>
+    public static AudioClip Narracion() => Resources.Load<AudioClip>("Audio/narracion");
 
     /// <summary>Sonido corto de voz (voice blip) para los dialogos. Cada personaje tiene su tono.</summary>
     public static AudioClip Blip(float hz) => Obtener("blip" + Mathf.RoundToInt(hz), () => Tono("blip", hz, 0.035f, 0.12f, true));
