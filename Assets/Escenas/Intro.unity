@@ -634,11 +634,11 @@ MonoBehaviour:
     texto: "Entonces fall\xF3 todo al mismo tiempo."
   - imagen: {fileID: 21300000, guid: dddc4c71a65791e4ea2b929a131aa4fd, type: 3}
     texto: "Aterrizaje de emergencia en Arcadia Planitia. Fue m\xE1s emergencia que aterrizaje."
-  - imagen: {fileID: 21300000, guid: bbd7f807c8c1e7847924a0151cfe8e71, type: 3}
+  - imagen: {fileID: 21300000, guid: 4e648279f23bc954fb7b6552ced4871a, type: 3}
     texto: "Se pone el sol. De noche los paneles solares dan 0 W y afuera la temperatura baja de -10 \xB0C a -110 \xB0C."
-  - imagen: {fileID: 21300000, guid: ba8d910d404a4064ca87586b18a3fef8, type: 3}
+  - imagen: {fileID: 21300000, guid: 11c6b42989d72e4449fcdf9f4a387407, type: 3}
     texto: La ventana de regreso se cierra en 7 noches. Si la pierdes, la siguiente tarda 26 meses.
-  - imagen: {fileID: 21300000, guid: 4b8676387b1552441b2aeda9dbd83089, type: 3}
+  - imagen: {fileID: 21300000, guid: 2801cd13664e01d448a817e4e8aa1d51, type: 3}
     texto: "Tu trabajo: hacer guardia cada noche hasta las 06:00 AM. Que nada se apague. Ni las plantas, ni las m\xE1quinas, ni la tripulaci\xF3n."
   imagen: {fileID: 1744895732}
   texto: {fileID: 1932326492}

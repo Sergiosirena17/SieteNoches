@@ -10,6 +10,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 - Integrate approved audio assets while preserving the procedural-audio fallback.
 
+## [1.0.6] — 2026-11-15
+
+### Changed
+
+- Updated Intro to use the five final vignette illustrations in the sequence 1, 2, 3, 4, 5, 1, 2, 3 while preserving all eight narrative text panels.
+
 ## [1.0.5] — 2026-11-15
 
 ### Added
