@@ -347,7 +347,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Bater\xEDa"
+  m_Text: "Battery"
 --- !u!1 &43888244
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,7 +493,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Volver al mapa
+  m_Text: Return to Map
 --- !u!222 &53724123
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1125,7 +1125,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Verde: menos de 85 BPM, da ventajas.\nRojo: m\xE1s de 115 BPM, sabotea de noche.\nppCO\u2082 sobre 5.0 mmHg: hipercapnia (es el aire, no los nervios).\nB) promete calefacci\xF3n: si no cumples, +45 BPM."
+  m_Text: "Green: under 85 BPM, grants advantages.\nRed: over 115 BPM, sabotages at night.\nppCO₂ above 5.0 mmHg: hypercapnia (it is the air, not nerves).\nB) promises heating: if you fail, +45 BPM."
 --- !u!222 &165154408
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2035,7 +2035,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Terminal Biom\xE9dica y psicolog\xEDa"
+  m_Text: "Biomedical Terminal and psychology"
 --- !u!222 &316782654
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2276,7 +2276,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Dato real: ...'
+  m_Text: 'Real-world fact: ...'
 --- !u!1 &420166379
 GameObject:
   m_ObjectHideFlags: 0
@@ -2959,7 +2959,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Fuente: ...'
+  m_Text: 'Source: ...'
 --- !u!1 &588714403
 GameObject:
   m_ObjectHideFlags: 0
@@ -3940,7 +3940,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Noche 1 \xB7 18:30"
+  m_Text: "Night 1 · 18:30"
 --- !u!1 &864182116
 GameObject:
   m_ObjectHideFlags: 0
@@ -4811,7 +4811,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Hablar con otro
+  m_Text: Talk to another
 --- !u!222 &1009272448
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9637,7 +9637,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Salir (+2 h 30)
+  m_Text: Exit (+2 h 30)
 --- !u!222 &2023369658
 CanvasRenderer:
   m_ObjectHideFlags: 0

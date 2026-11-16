@@ -276,7 +276,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Final
+  m_Text: Ending
 --- !u!1 &915465921
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,7 +355,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "T\xEDtulo del final"
+  m_Text: "Ending title"
 --- !u!1 &1186390946
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,7 +407,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "INFORME CIENT\xCDFICO DE MISI\xD3N"
+  m_Text: "MISSION SCIENCE REPORT"
 --- !u!222 &1186390948
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -993,7 +993,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Jugar de nuevo
+  m_Text: Play Again
 --- !u!222 &1932326492
 CanvasRenderer:
   m_ObjectHideFlags: 0

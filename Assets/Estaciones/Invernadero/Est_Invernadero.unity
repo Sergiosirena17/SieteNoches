@@ -554,7 +554,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Invernadero hidrop\xF3nico nocturno"
+  m_Text: "Nighttime hydroponic greenhouse"
 --- !u!222 &203286031
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1252,7 +1252,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Volver al mapa
+  m_Text: Return to Map
 --- !u!222 &356443072
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1664,7 +1664,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Noche 1 \xB7 18:30"
+  m_Text: "Night 1 · 18:30"
 --- !u!1 &574975996
 GameObject:
   m_ObjectHideFlags: 0
@@ -1901,7 +1901,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Dato real: ...'
+  m_Text: 'Real-world fact: ...'
 --- !u!1 &708821296
 GameObject:
   m_ObjectHideFlags: 0
@@ -1972,7 +1972,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Salir (+2 h 30)
+  m_Text: Exit (+2 h 30)
 --- !u!222 &708821299
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2275,7 +2275,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Lechuga
+  m_Text: Lettuce
 --- !u!222 &775032796
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2362,7 +2362,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Arrancar planta
+  m_Text: Pull out plant
 --- !u!1 &965391331
 GameObject:
   m_ObjectHideFlags: 0
@@ -2433,7 +2433,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Luz roja
+  m_Text: Red light
 --- !u!222 &965391334
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2893,7 +2893,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Humedad 50 %
+  m_Text: Humidity 50%
 --- !u!1 &1098437272
 GameObject:
   m_ObjectHideFlags: 0
@@ -4381,7 +4381,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Espirulina
+  m_Text: Spirulina
 --- !u!222 &1524894033
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4626,7 +4626,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Fuente: ...'
+  m_Text: 'Source: ...'
 --- !u!1 &1618136445
 GameObject:
   m_ObjectHideFlags: 0
@@ -5240,7 +5240,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Bater\xEDa"
+  m_Text: "Battery"
 --- !u!1 &1781140903
 GameObject:
   m_ObjectHideFlags: 0
@@ -5460,7 +5460,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Papa
+  m_Text: Potato
 --- !u!222 &1815981629
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6348,7 +6348,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Luz UV
+  m_Text: UV light
 --- !u!222 &2061491692
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6506,7 +6506,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Luz azul
+  m_Text: Blue light
 --- !u!222 &2117738090
 CanvasRenderer:
   m_ObjectHideFlags: 0

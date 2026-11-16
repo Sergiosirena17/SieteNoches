@@ -34,71 +34,71 @@ public static class Semillas
         { Especie.Espirulina, new InfoSemilla {
             Nombre = "Espirulina", Cientifico = "Arthrospira platensis (fotobiorreactor)", Noches = 1, Humedad = 90,
             Rojo = true, Azul = true, Comestible = true, Continua = true,
-            Efecto = "Con su luz encendida da +15 % de O₂ cada noche.",
-            Riesgo = "Si le apagas la luz o le bajas la humedad, deja de producir oxígeno al instante." } },
+        Efecto = "With its light on, it provides +15% O₂ every night.",
+        Riesgo = "If you turn off its light or lower humidity, it stops producing oxygen immediately." } },
         { Especie.Papa, new InfoSemilla {
             Nombre = "Papa", Cientifico = "Solanum tuberosum var. 'Unique'", Noches = 3, Humedad = 45,
             Rojo = true, ToleraUnaNocheOscura = true, Comestible = true,
-            Efecto = "Da 3 raciones. Una ración calma (-20 BPM) y da calor.",
-            Riesgo = "Si la riegas al 90 % en 0.38 g se pudre: hipoxia radicular. Aguanta 1 noche a oscuras." } },
+        Efecto = "Provides 3 rations. One ration calms (-20 BPM) and warms.",
+        Riesgo = "At 90% water in 0.38 g it rots: root hypoxia. It survives 1 night in darkness." } },
         { Especie.Lechuga, new InfoSemilla {
-            Nombre = "Lechuga roja", Cientifico = "Lactuca sativa 'Outredgeous'", Noches = 2, Humedad = 50,
+        Nombre = "Red lettuce", Cientifico = "Lactuca sativa 'Outredgeous'", Noches = 2, Humedad = 50,
             Azul = true, Uv = true, Comestible = true,
-            Efecto = "Da 1 dosis radioprotectora y sedante (-40 BPM).",
-            Riesgo = "La luz azul y UV estresa la hoja: se vuelve roja y fabrica antocianinas contra la radiación." } },
+        Efecto = "Provides 1 radioprotective, calming dose (-40 BPM).",
+        Riesgo = "Blue and UV light stress the leaf: it turns red and makes anthocyanins against radiation." } },
         { Especie.Arabidopsis, new InfoSemilla {
-            Nombre = "Berro centinela", Cientifico = "Arabidopsis thaliana Col-0", Noches = 1, Humedad = 30,
+        Nombre = "Sentinel cress", Cientifico = "Arabidopsis thaliana Col-0", Noches = 1, Humedad = 30,
             Azul = true, Continua = true,
-            Efecto = "No se come. Crecida, avisa de heladas, radiación y fugas antes que las alarmas.",
-            Riesgo = "Es el organismo modelo de los laboratorios espaciales para medir estrés." } },
+        Efecto = "Not edible. Once grown, it warns of freezes, radiation, and leaks before the alarms.",
+        Riesgo = "It is the model organism used by space laboratories to measure stress." } },
         { Especie.Dechloromonas, new InfoSemilla {
             Nombre = "Dechloromonas", Cientifico = "Cultivo biorremediador (bacteria y micelio)", Noches = 1, Humedad = 60,
-            Efecto = "A oscuras destruye el perclorato (ClO₄⁻) de su cápsula y devuelve +20 % de agua.",
-            Riesgo = "Mientras trabaja consume 8 % de O₂. Va con los LEDs apagados." } },
+        Efecto = "In darkness, it destroys perchlorate (ClO₄⁻) in its pod and returns +20% water.",
+        Riesgo = "While working, it consumes 8% O₂. Keep LEDs off." } },
     };
 
     public static string Leds(InfoSemilla s)
     {
         var partes = new List<string>();
-        if (s.Rojo) partes.Add("roja");
-        if (s.Azul) partes.Add("azul");
+        if (s.Rojo) partes.Add("red");
+        if (s.Azul) partes.Add("blue");
         if (s.Uv) partes.Add("UV");
-        return partes.Count == 0 ? "sin luz" : "luz " + string.Join(" + ", partes);
+        return partes.Count == 0 ? "no light" : "light " + string.Join(" + ", partes);
     }
 
     /// <summary>Lo que dice el manual de cada planta: solo lo necesario para cuidarla.</summary>
     static readonly Dictionary<Especie, string> Resumen = new Dictionary<Especie, string>
     {
-        { Especie.Espirulina, "Da oxígeno cada noche mientras tenga luz." },
-        { Especie.Papa, "Da 3 raciones de comida. Aguanta 1 noche sin luz." },
-        { Especie.Lechuga, "Da 1 dosis que calma mucho y protege de la radiación." },
-        { Especie.Arabidopsis, "No se come. Crecida, te avisa de los peligros de la noche." },
-        { Especie.Dechloromonas, "Limpia el suelo tóxico de su cápsula y da agua." },
+        { Especie.Espirulina, "Provides oxygen every night while it has light." },
+        { Especie.Papa, "Provides 3 food rations. Survives 1 night without light." },
+        { Especie.Lechuga, "Provides 1 dose that strongly calms and protects from radiation." },
+        { Especie.Arabidopsis, "Not edible. Once grown, it warns you about nighttime hazards." },
+        { Especie.Dechloromonas, "Cleans toxic soil in its pod and provides water." },
     };
 
     static string Ficha(Especie e)
     {
         var s = Info[e];
-        string ciclo = s.Continua ? "" : "  ·  " + s.Noches + (s.Noches == 1 ? " noche" : " noches");
+        string ciclo = s.Continua ? "" : "  ·  " + s.Noches + (s.Noches == 1 ? " night" : " nights");
         return "<b>" + s.Nombre + "</b>" + ciclo + "\n" +
-               "Humedad " + s.Humedad + " %  ·  " + Leds(s) + "\n" +
+        "Humidity " + s.Humedad + "%  ·  " + Leds(s) + "\n" +
                Resumen[e] + "\n";
     }
 
     /// <summary>Las 2 paginas del manual que se ven en el invernadero.</summary>
     public static readonly string[] PaginasManual =
     {
-        "<b>MANUAL DE PLANTAS</b>\n\n" + Ficha(Especie.Espirulina) + "\n" + Ficha(Especie.Papa) + "\n" + Ficha(Especie.Lechuga),
-        "<b>MANUAL DE PLANTAS</b>\n\n" + Ficha(Especie.Arabidopsis) + "\n" + Ficha(Especie.Dechloromonas) + "\n" +
-        "<b>Reglas</b>\n" +
-        "• Cada luz encendida gasta batería.\n" +
-        "• Sin luz, la planta gasta un poco de oxígeno.\n" +
-        "• Mucha agua ahoga las raíces.\n" +
-        "• Humedad alta sin calefacción: se congela.\n" +
-        "• Suelo tóxico (ClO₄⁻): límpialo antes de sembrar comida.\n" +
-        "• 2 noches mal cuidada: se pudre.",
+        "<b>PLANT MANUAL</b>\n\n" + Ficha(Especie.Espirulina) + "\n" + Ficha(Especie.Papa) + "\n" + Ficha(Especie.Lechuga),
+        "<b>PLANT MANUAL</b>\n\n" + Ficha(Especie.Arabidopsis) + "\n" + Ficha(Especie.Dechloromonas) + "\n" +
+        "<b>Rules</b>\n" +
+        "• Every active light uses battery.\n" +
+        "• Without light, a plant consumes a little oxygen.\n" +
+        "• Too much water drowns roots.\n" +
+        "• High humidity without heating freezes.\n" +
+        "• Toxic soil (ClO₄⁻): clean it before planting food.\n" +
+        "• 2 neglected nights: it rots.",
     };
 
 
-    public const string LineaAlucinacion = "«No importa cuánta luz les pongas. Afuera sigue siendo de noche.»";
+    public const string LineaAlucinacion = "“No matter how much light you give them. Outside, it is still night.”";
 }

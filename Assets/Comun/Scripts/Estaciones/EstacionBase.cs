@@ -39,11 +39,11 @@ public abstract class EstacionBase : MonoBehaviour
 
     protected void ActualizarBarra()
     {
-        if (textoHora != null) textoHora.text = "Noche " + GameState.Noche + " · " + GameState.Hora;
+        if (textoHora != null) textoHora.text = "Night " + GameState.Noche + " · " + GameState.Hora;
         if (textoBateria != null)
         {
             int consumo = SimulacionNoche.ConsumoProyectado();
-            textoBateria.text = "Batería: gasto " + consumo + " % de " + GameState.Bateria + " %";
+            textoBateria.text = "Battery: using " + consumo + "% of " + GameState.Bateria + "%";
             textoBateria.color = consumo > GameState.Bateria ? ColorMal : ColorBien;
         }
     }

@@ -625,21 +625,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::IntroControlador
   vinetas:
   - imagen: {fileID: 21300000, guid: 4e648279f23bc954fb7b6552ced4871a, type: 3}
-    texto: Durante siglos, Marte fue un punto rojo en el cielo.
+    texto: For centuries, Mars was a red point in the sky.
   - imagen: {fileID: 21300000, guid: 11c6b42989d72e4449fcdf9f4a387407, type: 3}
-    texto: "La nave Misti sali\xF3 con cinco personas: t\xFA, la comandante Elena Vance, Marco \"Tornillo\" Silva, la Dra. Aris Thorne y Jonas Miller."
+    texto: "The Misti launched with five people: you, Commander Elena Vance, Marco \"Wrench\" Silva, Dr. Aris Thorne, and Jonas Miller."
   - imagen: {fileID: 21300000, guid: 2801cd13664e01d448a817e4e8aa1d51, type: 3}
-    texto: Desde Houston, Nikolas te hablaba por radio. Siempre con 12 minutos de retraso.
+    texto: From Houston, Nikolas spoke to you over the radio. Always with a 12-minute delay.
   - imagen: {fileID: 21300000, guid: ba7d5ec621efac34c9f715293944ac8c, type: 3}
-    texto: "Entonces fall\xF3 todo al mismo tiempo."
+    texto: "Then everything failed at once."
   - imagen: {fileID: 21300000, guid: dddc4c71a65791e4ea2b929a131aa4fd, type: 3}
-    texto: "Aterrizaje de emergencia en Arcadia Planitia. Fue m\xE1s emergencia que aterrizaje."
+    texto: "Emergency landing in Arcadia Planitia. More emergency than landing."
   - imagen: {fileID: 21300000, guid: 4e648279f23bc954fb7b6552ced4871a, type: 3}
-    texto: "Se pone el sol. De noche los paneles solares dan 0 W y afuera la temperatura baja de -10 \xB0C a -110 \xB0C."
+    texto: "The sun sets. At night, solar panels provide 0 W, and outside temperature drops from -10 °C to -110 °C."
   - imagen: {fileID: 21300000, guid: 11c6b42989d72e4449fcdf9f4a387407, type: 3}
-    texto: La ventana de regreso se cierra en 7 noches. Si la pierdes, la siguiente tarda 26 meses.
+    texto: The return window closes in 7 nights. If you miss it, the next one is 26 months away.
   - imagen: {fileID: 21300000, guid: 2801cd13664e01d448a817e4e8aa1d51, type: 3}
-    texto: "Tu trabajo: hacer guardia cada noche hasta las 06:00 AM. Que nada se apague. Ni las plantas, ni las m\xE1quinas, ni la tripulaci\xF3n."
+    texto: "Your job: keep watch every night until 06:00 AM. Let nothing shut down—not the plants, machines, or crew."
   imagen: {fileID: 1744895732}
   texto: {fileID: 1932326492}
   textoAyuda: {fileID: 1186390947}
@@ -737,7 +737,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Durante siglos, Marte fue un punto rojo en el cielo.
+  m_Text: For centuries, Mars was a red point in the sky.
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

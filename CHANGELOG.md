@@ -10,6 +10,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 - Integrate approved audio assets while preserving the procedural-audio fallback.
 
+### Changed
+
+- Restored the looping main-music track on the title screen; it stops when **Play** starts the intro narration.
+
+## [1.0.7] — 2026-11-15
+
+### Changed
+
+- Localized all player-facing interface text, tutorials, narrative scenes, dialogues, decisions, reports, and endings to English.
+
 ## [1.0.6] — 2026-11-15
 
 ### Changed

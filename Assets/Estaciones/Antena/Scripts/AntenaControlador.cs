@@ -119,20 +119,20 @@ public class AntenaControlador : EstacionBase
             if (GameState.Noche % 2 == 0)
             {
                 GameState.CodigoReactorManana = true;
-                respuesta = "Nikolas: Gracias. Te mando un código de desbloqueo: mañana el MOXIE calentará 30 % más rápido.";
+        respuesta = "Nikolas: Thanks. I am sending you an unlock code: tomorrow MOXIE will heat 30% faster.";
             }
             else
             {
                 GameState.PronosticoTau = true;
-                respuesta = "Nikolas: Te mando el pronóstico de opacidad (Tau) de mañana. Llega con el reporte de las 06:00.";
+        respuesta = "Nikolas: I am sending tomorrow's opacity (Tau) forecast. It arrives with the 06:00 report.";
             }
         }
         else
         {
             GameState.NikolasDiscusiones++;
-            respuesta = "Nikolas: ...Ok. Anotado. Con 12 minutos de retraso, pero anotado.";
+        respuesta = "Nikolas: ...Okay. Noted. Twelve minutes late, but noted.";
         }
-        if (textoMensaje != null) textoMensaje.text += "\n\nTú: " + (i == 0 ? "Recibido, Houston. Gracias, Nikolas." : "Tú nos mandaste a aterrizar aquí, genio.") + "\n\n" + respuesta;
+        if (textoMensaje != null) textoMensaje.text += "\n\nYou: " + (i == 0 ? "Copy that, Houston. Thanks, Nikolas." : "You sent us to land here, genius.") + "\n\n" + respuesta;
         foreach (var b in botonesRespuesta) if (b != null) b.SetActive(false);
     }
 
@@ -146,16 +146,16 @@ public class AntenaControlador : EstacionBase
         if (!logica.Exito)
         {
             GameState.AntenaFallo = true;
-            if (textoEstado != null) textoEstado.text = "El orbitador se perdió tras el horizonte. No llegó nada (gastaste 10 % de batería).";
+        if (textoEstado != null) textoEstado.text = "The orbiter disappeared behind the horizon. Nothing got through (you spent 10% battery).";
             return;
         }
         GameState.Paquete = paqueteElegido;
         string que;
-        if (paqueteElegido == "sos") { GameState.SumarRescate(1); GameState.SosEnviados++; que = "SOS enviado: rescate " + GameState.ProgresoRescate + "/4."; }
-        else if (paqueteElegido == "domo") { GameState.SumarDomo(1); GameState.Sumar(agua: 10); que = "Descargaste el esquema de reciclaje: domo " + GameState.AutosuficienciaDomo + "/4 y +10 % de agua."; }
-        else que = "Transmitiste datos científicos. Aris está feliz; Elena no tanto.";
+        if (paqueteElegido == "sos") { GameState.SumarRescate(1); GameState.SosEnviados++; que = "SOS sent: rescue " + GameState.ProgresoRescate + "/4."; }
+        else if (paqueteElegido == "domo") { GameState.SumarDomo(1); GameState.Sumar(agua: 10); que = "You downloaded the recycling plan: dome " + GameState.AutosuficienciaDomo + "/4 and +10% water."; }
+        else que = "You transmitted scientific data. Aris is happy; Elena is not.";
         if (textoMensaje != null)
-            textoMensaje.text = que + "\n\n[Recibido 12 min 30 s después]\nNikolas: " + TextosNoches.MensajeNikolas[Mathf.Clamp(GameState.Noche, 0, 7)];
+        textoMensaje.text = que + "\n\n[Received 12 min 30 s later]\nNikolas: " + TextosNoches.MensajeNikolas[Mathf.Clamp(GameState.Noche, 0, 7)];
         Mostrar(grupoMensaje);
     }
 
@@ -180,9 +180,9 @@ public class AntenaControlador : EstacionBase
         bool vacio = !logica.Terminado && logica.EnElVacio;
         AmbienteAudio.Siseo(vacio ? 1f : 0f);
         if (textoVacio != null)
-            textoVacio.text = vacio ? "Distancia a la Tierra: 225,000,000 km\nRetraso de señal: 12 min 30 s" : "";
+        textoVacio.text = vacio ? "Distance to Earth: 225,000,000 km\nSignal delay: 12 min 30 s" : "";
         if (textoEstado != null && !logica.Terminado)
-            textoEstado.text = logica.Alineado ? "¡Señal alineada! Mantén..." : "Sigue la onda tenue: frecuencia con A/D, amplitud con W/S.";
+        textoEstado.text = logica.Alineado ? "Signal aligned! Hold..." : "Match the faint wave: frequency with A/D, amplitude with W/S.";
     }
 
     void Onda(RectTransform[] puntos, float frecuencia, float amplitud, float t, bool nieve)
@@ -201,8 +201,8 @@ public class AntenaControlador : EstacionBase
     protected override string ResumenSalida()
     {
         if (logica != null && !logica.Terminado) TerminarAlineacion(false);
-        if (!GameState.AntenaUsada) return "Antena: no transmitiste";
-        if (GameState.AntenaFallo) return "Antena: se perdió el orbitador";
-        return "Antena: paquete " + GameState.Paquete.ToUpper() + " enviado";
+        if (!GameState.AntenaUsada) return "Antenna: no transmission";
+        if (GameState.AntenaFallo) return "Antenna: orbiter lost";
+        return "Antenna: " + GameState.Paquete.ToUpper() + " package sent";
     }
 }

@@ -62,7 +62,7 @@ public class InvernaderoControlador : EstacionBase
         MostrarPagina(0);
         MostrarTutorial();
         if (GameState.Noche == 5 && HayArabidopsisViva())
-            Avisar("La Arabidopsis se retorció y sus hojas están negras. Algo atraviesa el casco...");
+            Avisar("The Arabidopsis twisted and its leaves turned black. Something is passing through the hull...");
     }
 
     protected override void Update()
@@ -92,9 +92,9 @@ public class InvernaderoControlador : EstacionBase
         if (c.Toxica)
         {
             GameState.Trip(TripId.Aris).SumarBpm(15f);
-            Avisar("Aris: «¡Ese suelo tiene percloratos! Primero hay que limpiarlo.»");
+            Avisar("Aris: “That soil has perchlorates! We need to clean it first.”");
         }
-        else Avisar("Sembraste " + Semillas.Info[e].Nombre + ". Ajusta humedad y luz según el manual.");
+        else Avisar("You planted " + Semillas.Info[e].Nombre + ". Set humidity and light according to the manual.");
     }
 
     public void CambiarHumedad(int delta)
@@ -128,13 +128,13 @@ public class InvernaderoControlador : EstacionBase
         if (!podrida && !confirmarArrancar)
         {
             confirmarArrancar = true;
-            Avisar("¿Arrancar " + c.Info.Nombre + "? Pulsa otra vez para confirmar.");
+            Avisar("Pull out " + c.Info.Nombre + "? Press again to confirm.");
             return;
         }
 
         confirmarArrancar = false;
         c.Vaciar();
-        Avisar(podrida ? "Limpiaste la biomasa podrida." : "Arrancaste la planta.");
+        Avisar(podrida ? "You cleaned the rotten biomass." : "You pulled out the plant.");
     }
 
     public void PaginaSiguiente() { MostrarPagina(pagina + 1); }
@@ -156,7 +156,7 @@ public class InvernaderoControlador : EstacionBase
                 plantas[i].enabled = s != null;
             }
             if (i < etiquetasCapsula.Length && etiquetasCapsula[i] != null)
-                etiquetasCapsula[i].text = (c.Regolito ? "Regolito" : "Hidropónica") + "\n" + (c.Vacia ? "vacía" : c.Info.Nombre);
+                etiquetasCapsula[i].text = (c.Regolito ? "Regolith" : "Hydroponic") + "\n" + (c.Vacia ? "empty" : c.Info.Nombre);
             if (i < avisosPerclorato.Length && avisosPerclorato[i] != null) avisosPerclorato[i].enabled = c.Perclorato;
         }
 
@@ -164,28 +164,28 @@ public class InvernaderoControlador : EstacionBase
         if (textoCapsula != null) textoCapsula.text = Descripcion(sel);
         if (grupoSemillas != null) grupoSemillas.SetActive(sel.Vacia);
         if (grupoAjustes != null) grupoAjustes.SetActive(true);
-        if (textoHumedad != null) textoHumedad.text = "Humedad " + sel.Humedad + " %";
+        if (textoHumedad != null) textoHumedad.text = "Humidity " + sel.Humedad + "%";
         ledsTmp[0] = sel.LedRojo; ledsTmp[1] = sel.LedAzul; ledsTmp[2] = sel.LedUv;
         for (int k = 0; k < botonesLed.Length && k < 3; k++)
             if (botonesLed[k] != null) botonesLed[k].color = ledsTmp[k] ? ColoresLed[k] : LedApagado;
         if (sel.Vacia) confirmarArrancar = false;
         if (botonAccion != null) botonAccion.SetActive(!sel.Vacia);
         if (textoAccion != null)
-            textoAccion.text = sel.Estado == EstadoPlanta.Podrida ? "Limpiar biomasa"
-                             : confirmarArrancar ? "¿Seguro? Pulsa otra vez" : "Arrancar planta";
+            textoAccion.text = sel.Estado == EstadoPlanta.Podrida ? "Clean biomass"
+                             : confirmarArrancar ? "Are you sure? Press again" : "Pull out plant";
     }
 
     static string Descripcion(Capsula c)
     {
-        string suelo = c.Regolito ? (c.Perclorato ? "Regolito con percloratos (ClO₄⁻)" : "Regolito limpio") : (c.Perclorato ? "Hidropónica contaminada (ClO₄⁻)" : "Hidropónica limpia");
-        if (c.Vacia) return c.Nombre.Split('(')[0].Trim() + " · " + suelo + " · Elige una semilla:";
+        string suelo = c.Regolito ? (c.Perclorato ? "Regolith with perchlorates (ClO₄⁻)" : "Clean regolith") : (c.Perclorato ? "Contaminated hydroponics (ClO₄⁻)" : "Clean hydroponics");
+        if (c.Vacia) return c.Nombre.Split('(')[0].Trim() + " · " + suelo + " · Choose a seed:";
         string estado;
         switch (c.Estado)
         {
-            case EstadoPlanta.Podrida: estado = c.Congelada ? "congelada (muerta)" : "biomasa podrida"; break;
-            case EstadoPlanta.Estresada: estado = "estresada: no creció anoche"; break;
-            case EstadoPlanta.Madura: estado = "madura"; break;
-            default: estado = "noche " + c.Progreso + " de " + c.Info.Noches; break;
+            case EstadoPlanta.Podrida: estado = c.Congelada ? "frozen (dead)" : "rotten biomass"; break;
+            case EstadoPlanta.Estresada: estado = "stressed: did not grow last night"; break;
+            case EstadoPlanta.Madura: estado = "mature"; break;
+            default: estado = "night " + c.Progreso + " of " + c.Info.Noches; break;
         }
         return c.Nombre.Split('(')[0].Trim() + " · " + suelo + " · " + c.Info.Nombre + ": " + estado;
     }
@@ -250,12 +250,12 @@ public class InvernaderoControlador : EstacionBase
             if (c.Vacia) continue;
             partes.Add(c.Info.Nombre + " " + c.Humedad + " % " + LedsCortos(c));
         }
-        return "Invernadero: " + (partes.Count == 0 ? "sin plantas" : string.Join(", ", partes));
+        return "Greenhouse: " + (partes.Count == 0 ? "no plants" : string.Join(", ", partes));
     }
 
     static string LedsCortos(Capsula c)
     {
-        if (c.CanalesLed == 0) return "(a oscuras)";
+        if (c.CanalesLed == 0) return "(dark)";
         var l = new List<string>();
         if (c.LedRojo) l.Add("R");
         if (c.LedAzul) l.Add("A");

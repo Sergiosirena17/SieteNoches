@@ -125,8 +125,8 @@ public class BiomedicaControlador : EstacionBase
         if (retratoDialogo != null) retratoDialogo.enabled = false;
         if (textoNombre != null) textoNombre.text = "";
         Decir(GameState.Charlas >= GameState.CharlasPorNoche
-            ? "Ya hablaste con 2 tripulantes. Vuelve mañana por la noche."
-            : "Elige con quién hablar (te quedan " + (GameState.CharlasPorNoche - GameState.Charlas) + "). Mira su pulso y su CO₂ antes de responder.");
+            ? "You already talked to 2 crew members. Come back tomorrow night."
+            : "Choose who to talk to (" + (GameState.CharlasPorNoche - GameState.Charlas) + " left). Check their pulse and CO₂ before responding.");
         CompletarTexto();
     }
 
@@ -190,7 +190,7 @@ public class BiomedicaControlador : EstacionBase
             if (i < textosTarjeta.Length && textosTarjeta[i] != null)
             {
                 string nombre = t.Nombre.Split(' ')[t.Id == TripId.Elena || t.Id == TripId.Aris ? 1 : 0];
-                textosTarjeta[i].text = nombre + "\n" + Mathf.RoundToInt(t.Bpm) + " BPM" + (t.HabloEstaNoche ? "\n(ya hablaron)" : "");
+        textosTarjeta[i].text = nombre + "\n" + Mathf.RoundToInt(t.Bpm) + " BPM" + (t.HabloEstaNoche ? "\n(already talked)" : "");
             }
             if (i < fondosTarjeta.Length && fondosTarjeta[i] != null)
             {
@@ -207,7 +207,7 @@ public class BiomedicaControlador : EstacionBase
         if (actual == null)
         {
             if (monitor != null) { monitor.bpm = 60f; monitor.sonido = false; }
-            if (textoMonitor != null) textoMonitor.text = "Sin paciente conectado.   Verde < 85 BPM · Rojo > 115 BPM · Hipercapnia > 5.0 mmHg";
+        if (textoMonitor != null) textoMonitor.text = "No patient connected.   Green < 85 BPM · Red > 115 BPM · Hypercapnia > 5.0 mmHg";
             return;
         }
         if (monitor != null) { monitor.bpm = actual.Bpm; monitor.sonido = true; }
@@ -215,11 +215,11 @@ public class BiomedicaControlador : EstacionBase
         int deuda = GameState.Noche * 39;
         string co2 = actual.Co2.ToString("0.0") + " mmHg";
         if (actual.Hipercapnia) co2 = "<color=#E5484D>" + co2 + "</color>";
-        textoMonitor.text = "♥ " + Mathf.RoundToInt(actual.Bpm) + " BPM   ppCO₂ " + co2 + "   Deuda de sueño +" + (deuda / 60) + " h " + (deuda % 60) + " min";
+        textoMonitor.text = "♥ " + Mathf.RoundToInt(actual.Bpm) + " BPM   ppCO₂ " + co2 + "   Sleep debt +" + (deuda / 60) + " h " + (deuda % 60) + " min";
     }
 
     protected override string ResumenSalida()
     {
-        return "Biomédica: hablaste con " + GameState.Charlas + " tripulante(s)";
+        return "Biomedical: talked to " + GameState.Charlas + " crew member(s)";
     }
 }

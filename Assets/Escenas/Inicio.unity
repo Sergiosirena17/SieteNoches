@@ -442,7 +442,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Guardia nocturna: sobrevive hasta las 6:00 AM. Siete veces.'
+  m_Text: 'Night watch: survive until 6:00 AM. Seven times.'
 --- !u!222 &915465924
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -600,7 +600,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Jugar
+  m_Text: Play
 --- !u!222 &1396707535
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -679,7 +679,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 7 Noches en Marte
+  m_Text: 7 Nights on Mars
 --- !u!222 &1493721495
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -758,7 +758,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "WASD o flechas: moverse     E: entrar a una estaci\xF3n     Espacio: avanzar texto"
+  m_Text: "WASD or arrows: move     E: enter a station     Space: advance text"
 --- !u!222 &1744895732
 CanvasRenderer:
   m_ObjectHideFlags: 0

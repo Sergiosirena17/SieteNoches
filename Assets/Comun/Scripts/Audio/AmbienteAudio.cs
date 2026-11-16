@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Audio de ambiente (direccion de tono "efecto Undertale"):
-/// - Inicio: la narracion se reproduce una vez; el ambiente empieza cuando aparece el jugador en el mapa.
+/// - Inicio: la musica principal suena en bucle; al pulsar Jugar se detiene y comienza la narracion.
 /// - Estaciones: la musica de minijuegos reemplaza temporalmente a la musica principal.
 /// - Normal: musica lo-fi y zumbido de ventiladores.
 /// - Si apagas ventiladores, el casco cruje cada 10 segundos.
@@ -29,6 +29,7 @@ public class AmbienteAudio : MonoBehaviour
     bool ventiladoresDetenidos;
     bool ambienteActivo;
     bool enMinijuego;
+    bool musicaEnInicio;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Crear()
@@ -65,7 +66,7 @@ public class AmbienteAudio : MonoBehaviour
         bool silencioTension = !GameState.Ventiladores && !GameState.CalefCamarotes;
 
         // Se corta en seco, sin fundido: el silencio es el susto.
-        musica.volume = ambienteActivo && !enMinijuego && !MusicaApagada && !silencioTension && !noche7 ? VolumenMusica : 0f;
+        musica.volume = (musicaEnInicio || (ambienteActivo && !enMinijuego && !MusicaApagada && !silencioTension && !noche7)) ? VolumenMusica : 0f;
         minijuegos.volume = ambienteActivo && enMinijuego ? VolumenMinijuegos : 0f;
         zumbido.volume = ambienteActivo && !silencioTension ? VolumenZumbido : 0f;
         musica.pitch = GameState.Oxigeno < 30 ? 0.75f : 1f;
@@ -103,14 +104,16 @@ public class AmbienteAudio : MonoBehaviour
         Instancia.efectos.PlayOneShot(clip, volumen);
     }
 
-    /// <summary>Deja el titulo sin ambiente. La narracion empieza solo al pulsar Jugar.</summary>
+    /// <summary>Activa solo la musica principal en bucle para la pantalla de titulo.</summary>
     public static void PrepararInicio()
     {
         if (Instancia == null) return;
         Instancia.ambienteActivo = false;
         Instancia.enMinijuego = false;
+        Instancia.musicaEnInicio = true;
         Instancia.DetenerLoops();
         if (Instancia.narracion != null) Instancia.narracion.Stop();
+        Instancia.ReproducirLoop(Instancia.musica);
     }
 
     /// <summary>Reproduce la narracion de apertura una vez, mientras se muestran las vinetas.</summary>
@@ -119,6 +122,7 @@ public class AmbienteAudio : MonoBehaviour
         if (Instancia == null) return;
         Instancia.ambienteActivo = false;
         Instancia.enMinijuego = false;
+        Instancia.musicaEnInicio = false;
         Instancia.DetenerLoops();
         if (Instancia.narracion != null)
         {
@@ -133,6 +137,7 @@ public class AmbienteAudio : MonoBehaviour
         if (Instancia == null) return;
         Instancia.ambienteActivo = true;
         Instancia.enMinijuego = false;
+        Instancia.musicaEnInicio = false;
         if (Instancia.narracion != null) Instancia.narracion.Stop();
         if (Instancia.minijuegos != null) Instancia.minijuegos.Stop();
         Instancia.ReproducirLoop(Instancia.musica);
@@ -145,6 +150,7 @@ public class AmbienteAudio : MonoBehaviour
         if (Instancia == null) return;
         Instancia.ambienteActivo = true;
         Instancia.enMinijuego = true;
+        Instancia.musicaEnInicio = false;
         if (Instancia.narracion != null) Instancia.narracion.Stop();
         if (Instancia.musica != null) Instancia.musica.Stop();
         Instancia.ReproducirLoop(Instancia.minijuegos);

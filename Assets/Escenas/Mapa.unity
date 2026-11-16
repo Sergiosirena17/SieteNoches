@@ -1230,7 +1230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EstacionMapa
   idEstacion: biomedica
-  nombreVisible: "Terminal Biom\xE9dica"
+  nombreVisible: Biomedical Terminal
   indicador: {fileID: 431303839}
 --- !u!58 &489849471
 CircleCollider2D:
@@ -1577,7 +1577,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EstacionMapa
   idEstacion: antena
-  nombreVisible: Antena Banda X
+  nombreVisible: X-Band Antenna
   indicador: {fileID: 1744909009}
 --- !u!58 &599058172
 CircleCollider2D:
@@ -1940,7 +1940,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Continuar
+  m_Text: Continue
 --- !u!222 &671922576
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1998,7 +1998,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EstacionMapa
   idEstacion: puente
-  nombreVisible: Puente
+  nombreVisible: Bridge
   indicador: {fileID: 1249727056}
 --- !u!58 &695403985
 CircleCollider2D:
@@ -2220,7 +2220,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Opci\xF3n A"
+  m_Text: "Option A"
 --- !u!1 &725010911
 GameObject:
   m_ObjectHideFlags: 0
@@ -2299,7 +2299,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Noche 1 de 7 \xB7 18:30"
+  m_Text: "Night 1 of 7 · 18:30"
 --- !u!1 &761976160
 GameObject:
   m_ObjectHideFlags: 0
@@ -2983,7 +2983,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Noche 1 \xB7 18:30 MTC"
+  m_Text: "Night 1 · 18:30 MTC"
 --- !u!1 &1045905128
 GameObject:
   m_ObjectHideFlags: 0
@@ -9441,7 +9441,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Opci\xF3n B"
+  m_Text: "Option B"
 --- !u!222 &1186390948
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9998,7 +9998,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EstacionMapa
   idEstacion: invernadero
-  nombreVisible: Invernadero
+  nombreVisible: Hydroponic Greenhouse
   indicador: {fileID: 849512664}
 --- !u!58 &1442235247
 CircleCollider2D:
@@ -13240,7 +13240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EstacionMapa
   idEstacion: soporte
-  nombreVisible: Soporte Vital
+  nombreVisible: Life Support
   indicador: {fileID: 1704451213}
 --- !u!58 &1816101674
 CircleCollider2D:
@@ -13768,7 +13768,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EstacionMapa
   idEstacion: camarotes
-  nombreVisible: Camarotes
+  nombreVisible: Crew Quarters
   indicador: {fileID: 1477371452}
 --- !u!58 &2026106371
 CircleCollider2D:
@@ -13961,7 +13961,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EstacionMapa
   idEstacion: 
-  nombreVisible: "Zona de hielo (pr\xF3ximamente)"
+  nombreVisible: Ice Zone (coming soon)
   indicador: {fileID: 779552632}
 --- !u!58 &2047229700
 CircleCollider2D:
@@ -14229,7 +14229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EstacionMapa
   idEstacion: 
-  nombreVisible: 'Paneles solares: 0 W de noche'
+  nombreVisible: 'Solar panels: 0 W at night'
   indicador: {fileID: 761976162}
 --- !u!58 &2119947976
 CircleCollider2D:
@@ -14422,7 +14422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EstacionMapa
   idEstacion: 
-  nombreVisible: "Sonda antigua (pr\xF3ximamente)"
+  nombreVisible: Ancient probe (coming soon)
   indicador: {fileID: 906766081}
 --- !u!58 &2143651055
 CircleCollider2D:

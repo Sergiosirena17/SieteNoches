@@ -189,7 +189,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "O\u2082 producido esta noche"
+  m_Text: "O₂ produced tonight"
 --- !u!222 &8735941
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -268,7 +268,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Volver al mapa
+  m_Text: Return to Map
 --- !u!222 &53724123
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -496,7 +496,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Calentar (ESPACIO)
+  m_Text: Heat (SPACE)
 --- !u!222 &62805470
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -819,7 +819,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Holl\xEDn en los filtros"
+  m_Text: "Soot in filters"
 --- !u!222 &182660905
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1595,7 +1595,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Dato real: ...'
+  m_Text: 'Real-world fact: ...'
 --- !u!1 &433399480
 GameObject:
   m_ObjectHideFlags: 0
@@ -1741,7 +1741,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Distribuci\xF3n de energ\xEDa"
+  m_Text: "Power distribution"
 --- !u!222 &437105250
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1907,7 +1907,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Fuente: ...'
+  m_Text: 'Source: ...'
 --- !u!1 &651429157
 GameObject:
   m_ObjectHideFlags: 0
@@ -2129,7 +2129,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Purgar filtro (P)
+  m_Text: Purge filter (P)
 --- !u!222 &795861150
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2790,7 +2790,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Apagar reactor
+  m_Text: Shut down reactor
 --- !u!222 &1183034407
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2869,7 +2869,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Soporte Vital y termodin\xE1mica"
+  m_Text: "Life Support and thermodynamics"
 --- !u!222 &1222248295
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3734,7 +3734,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Noche 1 \xB7 18:30"
+  m_Text: "Night 1 · 18:30"
 --- !u!1 &1775669758
 GameObject:
   m_ObjectHideFlags: 0
@@ -3851,7 +3851,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Bater\xEDa"
+  m_Text: "Battery"
 --- !u!1 &1853983599
 GameObject:
   m_ObjectHideFlags: 0
@@ -4151,7 +4151,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Salir (+2 h 30)
+  m_Text: Exit (+2 h 30)
 --- !u!222 &2023369658
 CanvasRenderer:
   m_ObjectHideFlags: 0

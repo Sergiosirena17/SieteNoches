@@ -116,9 +116,9 @@ public class SoporteVitalControlador : EstacionBase
     protected override string ResumenSalida()
     {
         if (logica != null && !logica.Terminado && empezo) { logica.Apagar(); Guardar(); }
-        string moxie = GameState.MoxieDanado ? "MOXIE fundido" : GameState.MoxieUsado ? "MOXIE " + Mathf.RoundToInt(GameState.MoxieProduccion * 100f) + " %" : "MOXIE apagado";
-        return "Soporte vital: " + moxie + ", calefacción inv. " + (GameState.CalefInvernadero ? "sí" : "no") +
-               ", camarotes " + (GameState.CalefCamarotes ? "sí" : "no") + ", ventiladores " + (GameState.Ventiladores ? "sí" : "no");
+        string moxie = GameState.MoxieDanado ? "MOXIE melted" : GameState.MoxieUsado ? "MOXIE " + Mathf.RoundToInt(GameState.MoxieProduccion * 100f) + "%" : "MOXIE off";
+        return "Life Support: " + moxie + ", greenhouse heat " + (GameState.CalefInvernadero ? "on" : "off") +
+               ", quarters heat " + (GameState.CalefCamarotes ? "on" : "off") + ", fans " + (GameState.Ventiladores ? "on" : "off");
     }
 
     // ------------------------------------------------------------------ Dibujo
@@ -136,8 +136,8 @@ public class SoporteVitalControlador : EstacionBase
         {
             if (textoTemperatura != null) textoTemperatura.text = "—";
             if (textoEstado != null) textoEstado.text = GameState.MoxieDanado
-                ? "Las celdas se fundieron esta noche."
-                : "El MOXIE ya trabajó esta noche (" + Mathf.RoundToInt(GameState.MoxieProduccion * 100f) + " %). Aquí puedes cambiar los sectores.";
+                ? "The cells melted tonight."
+                : "MOXIE already ran tonight (" + Mathf.RoundToInt(GameState.MoxieProduccion * 100f) + "%). You can change sectors here.";
             if (grupoControles != null) grupoControles.SetActive(false);
             Barra(rellenoProduccion, GameState.MoxieProduccion, false);
             return;
@@ -153,21 +153,21 @@ public class SoporteVitalControlador : EstacionBase
         if (textoTiempo != null) textoTiempo.text = Mathf.CeilToInt(MoxieLogica.Duracion - logica.Tiempo) + " s";
         if (grupoControles != null) grupoControles.SetActive(!logica.Terminado);
         if (textoEstado == null) return;
-        if (logica.Fundido) textoEstado.text = "¡Celdas fundidas! El MOXIE no dará oxígeno esta noche.";
-        else if (logica.Terminado) textoEstado.text = "Reactor apagado. Producción: " + Mathf.RoundToInt(logica.Produccion * 100f) + " % (+" + Mathf.RoundToInt(SimulacionNoche.O2Moxie * logica.Produccion) + " % O₂ al amanecer).";
+        if (logica.Fundido) textoEstado.text = "Cells melted! MOXIE will not provide oxygen tonight.";
+        else if (logica.Terminado) textoEstado.text = "Reactor off. Production: " + Mathf.RoundToInt(logica.Produccion * 100f) + "% (+" + Mathf.RoundToInt(SimulacionNoche.O2Moxie * logica.Produccion) + "% O₂ at dawn).";
         else if (!empezo) textoEstado.text = GameState.TomaCongelada
-            ? "Las tomas tienen hielo seco: produce a mitad de ritmo. Mantén ESPACIO para calentar."
-            : "Mantén ESPACIO para calentar hasta la franja verde (780-830 °C).";
-        else if (logica.Temperatura >= MoxieLogica.Fusion) textoEstado.text = "¡Demasiado caliente! Suelta ESPACIO.";
-        else if (logica.Tapado) textoEstado.text = "Filtros tapados de hollín: pulsa PURGAR (P).";
-        else if (logica.Produciendo) textoEstado.text = "Rompiendo CO₂ en O₂...";
-        else textoEstado.text = logica.Temperatura < MoxieLogica.ZonaMin ? "Frío: sigue calentando." : "Pasaste la franja: suelta y deja enfriar.";
+            ? "The intakes have dry ice: it produces at half speed. Hold SPACE to heat."
+            : "Hold SPACE to heat into the green band (780-830 °C).";
+        else if (logica.Temperatura >= MoxieLogica.Fusion) textoEstado.text = "Too hot! Release SPACE.";
+        else if (logica.Tapado) textoEstado.text = "Filters clogged with soot: press PURGE (P).";
+        else if (logica.Produciendo) textoEstado.text = "Splitting CO₂ into O₂...";
+        else textoEstado.text = logica.Temperatura < MoxieLogica.ZonaMin ? "Cold: keep heating." : "You passed the band: release and let it cool.";
     }
 
     void DibujarSectores()
     {
         bool[] estado = { GameState.CalefInvernadero, GameState.CalefCamarotes, GameState.Ventiladores };
-        string[] nombres = { "Calefacción del invernadero", "Calefacción de los camarotes", "Ventiladores de los camarotes" };
+        string[] nombres = { "Greenhouse heating", "Crew quarters heating", "Crew quarters fans" };
         int[] costos = { SimulacionNoche.CostoCalefaccion, SimulacionNoche.CostoCalefaccion, SimulacionNoche.CostoVentiladores };
         for (int i = 0; i < 3; i++)
         {
@@ -175,16 +175,16 @@ public class SoporteVitalControlador : EstacionBase
             if (i < botonesSector.Length && botonesSector[i] != null)
                 botonesSector[i].color = bloqueado ? Bloqueado : estado[i] ? Encendido : Apagado;
             if (i < textosSector.Length && textosSector[i] != null)
-                textosSector[i].text = nombres[i] + ": " + (bloqueado ? "SIN CALOR (tomas)" : estado[i] ? "ENCENDIDA · " + costos[i] + " %" : "APAGADA");
+                textosSector[i].text = nombres[i] + ": " + (bloqueado ? "NO HEAT (intakes)" : estado[i] ? "ON · " + costos[i] + "%" : "OFF");
         }
         if (textoCargas == null) return;
-        var sb = new StringBuilder("Consumo de esta noche:\n");
+        var sb = new StringBuilder("Tonight's power use:\n");
         foreach (var c in SimulacionNoche.Cargas()) sb.Append("  ").Append(c.Nombre).Append(": ").Append(c.Costo).Append(" %\n");
         int total = SimulacionNoche.ConsumoProyectado();
-        sb.Append("TOTAL: ").Append(total).Append(" % de ").Append(GameState.Bateria).Append(" %");
-        if (total > GameState.Bateria) sb.Append("\n<color=#E5484D>¡No alcanza! A las 03:00 habrá apagón.</color>");
-        if (!GameState.Ventiladores) sb.Append("\nSin ventiladores el CO₂ se acumula en los camarotes.");
-        if (!GameState.CalefInvernadero) sb.Append("\nSin calefacción, las plantas con 60 % de humedad o más se congelan.");
+        sb.Append("TOTAL: ").Append(total).Append("% of ").Append(GameState.Bateria).Append("%");
+        if (total > GameState.Bateria) sb.Append("\n<color=#E5484D>Not enough! There will be a blackout at 03:00.</color>");
+        if (!GameState.Ventiladores) sb.Append("\nWithout fans, CO₂ builds up in the crew quarters.");
+        if (!GameState.CalefInvernadero) sb.Append("\nWithout heating, plants at 60% humidity or higher freeze.");
         textoCargas.text = sb.ToString();
     }
 }

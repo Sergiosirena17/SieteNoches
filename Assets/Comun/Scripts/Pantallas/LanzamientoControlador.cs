@@ -12,11 +12,11 @@ public class LanzamientoControlador : MonoBehaviour
     {
         if (textoEstado == null) return;
         var sb = new StringBuilder();
-        sb.Append("Rescate: ").Append(GameState.ProgresoRescate).Append("/4 (Houston necesita 3 para calcular la ventana)\n");
-        sb.Append("Autosuficiencia del domo: ").Append(GameState.AutosuficienciaDomo).Append("/4\n");
-        sb.Append("O₂: ").Append(GameState.Oxigeno).Append(" %   Batería de despegue: ").Append(GameState.Bateria).Append(" %\n\n");
+        sb.Append("Rescue: ").Append(GameState.ProgresoRescate).Append("/4 (Houston needs 3 to calculate the window)\n");
+        sb.Append("Dome self-sufficiency: ").Append(GameState.AutosuficienciaDomo).Append("/4\n");
+        sb.Append("O₂: ").Append(GameState.Oxigeno).Append("%   Launch battery: ").Append(GameState.Bateria).Append("%\n\n");
         foreach (var t in GameState.Tripulacion)
-            sb.Append(t.Nombre).Append(": ").Append(Mathf.RoundToInt(t.Bpm)).Append(" BPM (").Append(t.Estado.ToString().ToLower()).Append(")\n");
+            sb.Append(t.Nombre).Append(": ").Append(Mathf.RoundToInt(t.Bpm)).Append(" BPM (").Append(EstadoEnIngles(t.Estado)).Append(")\n");
         textoEstado.text = sb.ToString();
     }
 
@@ -30,5 +30,10 @@ public class LanzamientoControlador : MonoBehaviour
     {
         GameState.DecisionFinal = "sellar";
         SceneManager.LoadScene(Escenas.Final);
+    }
+
+    static string EstadoEnIngles(EstadoTrip estado)
+    {
+        return estado == EstadoTrip.Verde ? "green" : estado == EstadoTrip.Rojo ? "red" : "yellow";
     }
 }

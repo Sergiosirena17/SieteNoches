@@ -417,7 +417,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Sale el sol en un minuto. \xBFQu\xE9 hacen?"
+  m_Text: "Sunrise is in one minute. What do you do?"
 --- !u!222 &915465924
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -477,7 +477,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Rescate: 0/4'
+  m_Text: 'Rescue: 0/4'
 --- !u!222 &1186390948
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -712,7 +712,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Despegar en la ventana
+  m_Text: Launch in the window
 --- !u!222 &1396707535
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -791,7 +791,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "05:59 AM \xB7 Puente"
+  m_Text: "05:59 AM · Bridge"
 --- !u!222 &1493721495
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1064,7 +1064,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Sellar el domo y quedarnos
+  m_Text: Seal the dome and stay
 --- !u!222 &1932326492
 CanvasRenderer:
   m_ObjectHideFlags: 0

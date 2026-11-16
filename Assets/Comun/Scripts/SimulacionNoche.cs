@@ -27,15 +27,15 @@ public static class SimulacionNoche
     /// <summary>Lo que va a gastar la noche con la configuracion actual. Lo muestran el mapa y las estaciones.</summary>
     public static List<Carga> Cargas()
     {
-        var l = new List<Carga> { new Carga { Nombre = "Hábitat (base)", Costo = CostoBase } };
+        var l = new List<Carga> { new Carga { Nombre = "Habitat (base)", Costo = CostoBase } };
         int leds = 0;
         foreach (var c in GameState.Capsulas) leds += c.CanalesLed;
-        if (leds > 0) l.Add(new Carga { Nombre = "LEDs del invernadero (" + leds + " canales)", Costo = leds * CostoLed });
-        if (CalefInvernaderoEfectiva) l.Add(new Carga { Nombre = "Calefacción del invernadero", Costo = CostoCalefaccion });
-        if (CalefCamarotesEfectiva) l.Add(new Carga { Nombre = "Calefacción de los camarotes", Costo = CostoCalefaccion });
-        if (GameState.Ventiladores) l.Add(new Carga { Nombre = "Ventiladores de los camarotes", Costo = CostoVentiladores });
+        if (leds > 0) l.Add(new Carga { Nombre = "Greenhouse LEDs (" + leds + " channels)", Costo = leds * CostoLed });
+        if (CalefInvernaderoEfectiva) l.Add(new Carga { Nombre = "Greenhouse heating", Costo = CostoCalefaccion });
+        if (CalefCamarotesEfectiva) l.Add(new Carga { Nombre = "Crew quarters heating", Costo = CostoCalefaccion });
+        if (GameState.Ventiladores) l.Add(new Carga { Nombre = "Crew quarters fans", Costo = CostoVentiladores });
         if (GameState.MoxieUsado) l.Add(new Carga { Nombre = "Reactor MOXIE", Costo = CostoMoxie });
-        if (GameState.AntenaUsada) l.Add(new Carga { Nombre = GameState.AntenaFallo ? "Antena (intento fallido)" : "Antena (transmisión)", Costo = GameState.AntenaFallo ? CostoAntenaFallida : CostoAntena });
+        if (GameState.AntenaUsada) l.Add(new Carga { Nombre = GameState.AntenaFallo ? "Antenna (failed attempt)" : "Antenna (transmission)", Costo = GameState.AntenaFallo ? CostoAntenaFallida : CostoAntena });
         return l;
     }
 
@@ -115,19 +115,19 @@ public static class SimulacionNoche
             {
                 case TripId.Elena:
                     calInv = false; aguaCortada = true;
-                    r.Add("SABOTAJE: Elena cortó el agua y la calefacción del invernadero para darle energía al radar.");
+        r.Add("SABOTAGE: Elena cut greenhouse water and heating to power the radar.");
                     break;
                 case TripId.Marco:
                     o2 -= 15;
-                    r.Add("SABOTAJE: Marco, delirando, giró las válvulas de oxígeno al azar (-15 % O₂).");
+        r.Add("SABOTAGE: Marco, delirious, turned the oxygen valves at random (-15% O₂).");
                     break;
                 case TripId.Aris:
                     GameState.SumarRescate(-1);
-                    r.Add("SABOTAJE: Aris usó la antena para enviar datos genómicos y borró las coordenadas SOS (rescate -1).");
+        r.Add("SABOTAGE: Aris used the antenna to send genomic data and erased SOS coordinates (rescue -1).");
                     break;
                 case TripId.Jonas:
                     o2 -= 10;
-                    r.Add("SABOTAJE: Jonas hiperventiló toda la noche e intentó abrir la esclusa (-10 % O₂).");
+        r.Add("SABOTAGE: Jonas hyperventilated all night and tried to open the airlock (-10% O₂).");
                     break;
             }
         }
@@ -139,21 +139,21 @@ public static class SimulacionNoche
         {
             calInv = calCam = vent = false;
             GameState.NochesApagon++;
-            r.Add("APAGÓN: necesitabas " + consumo + " % de batería y tenías " + GameState.Bateria + " %. A las 03:00 se apagó todo.");
+            r.Add("BLACKOUT: you needed " + consumo + "% battery and had " + GameState.Bateria + "%. Everything shut down at 03:00.");
         }
-        else r.Add("Batería: gastaste " + consumo + " % de " + GameState.Bateria + " %.");
+        else r.Add("Battery: you used " + consumo + "% of " + GameState.Bateria + "%.");
 
         // ---------- 3. Oxigeno de la tripulacion y del MOXIE ----------
         foreach (var t in tri) o2 -= (t.Id == TripId.Jonas && enRojo.Contains(t)) ? O2PorTripulante * 2 : O2PorTripulante;
-        if (GameState.MoxieDanado) r.Add("MOXIE: celdas fundidas. No produjo oxígeno.");
+        if (GameState.MoxieDanado) r.Add("MOXIE: cells melted. No oxygen produced.");
         else if (GameState.MoxieUsado)
         {
             int prod = Mathf.RoundToInt(O2Moxie * GameState.MoxieProduccion * (apagon ? 0.5f : 1f));
             o2 += prod;
             if (prod > 0) GameState.NochesMoxie++;
-            r.Add("MOXIE: +" + prod + " % de O₂.");
+            r.Add("MOXIE: +" + prod + "% O₂.");
         }
-        else r.Add("MOXIE: nadie lo encendió.");
+        else r.Add("MOXIE: no one turned it on.");
 
         // ---------- 4. Plantas ----------
         int muertes = 0;
@@ -168,7 +168,7 @@ public static class SimulacionNoche
             if (!calInv && c.Humedad >= 60)
             {
                 c.Estado = EstadoPlanta.Podrida; c.Congelada = true; muertes++;
-                r.Add(c.Nombre + ": sin calefacción el agua se congeló y mató a la " + info.Nombre + ".");
+        r.Add(c.Nombre + ": without heating, water froze and killed the " + info.Nombre + ".");
                 continue;
             }
 
@@ -192,12 +192,12 @@ public static class SimulacionNoche
                 if (c.ErroresSeguidos >= 2)
                 {
                     c.Estado = EstadoPlanta.Podrida; muertes++;
-                    r.Add(c.Nombre + ": 2 noches mal configurada. Ahora es biomasa podrida (-5 % O₂ por noche hasta limpiarla).");
+        r.Add(c.Nombre + ": misconfigured for 2 nights. It is now rotten biomass (-5% O₂ each night until cleaned).");
                 }
                 else
                 {
                     c.Estado = EstadoPlanta.Estresada;
-                    r.Add(c.Nombre + ": configuración incorrecta. La " + info.Nombre + " dejó de crecer (mira el color de sus hojas).");
+        r.Add(c.Nombre + ": incorrect configuration. The " + info.Nombre + " stopped growing (check leaf color).");
                 }
             }
         }
@@ -205,17 +205,17 @@ public static class SimulacionNoche
 
         // ---------- 5. Agua ----------
         agua -= AguaTripulacion;
-        if (aris.Estado == EstadoTrip.Verde) { agua += AguaAris; r.Add("Aris recolectó vapor condensado en las paredes frías (+5 % de agua)."); }
+        if (aris.Estado == EstadoTrip.Verde) { agua += AguaAris; r.Add("Aris collected condensed vapor from cold walls (+5% water)."); }
 
         GameState.Sumar(oxigeno: o2, agua: agua);
-        r.Add("Oxígeno " + ConSigno(o2) + " % (ahora " + GameState.Oxigeno + " %). Agua " + ConSigno(agua) + " % (ahora " + GameState.Agua + " %).");
+        r.Add("Oxygen " + ConSigno(o2) + "% (now " + GameState.Oxigeno + "%). Water " + ConSigno(agua) + "% (now " + GameState.Agua + "%).");
 
         // ---------- 6. CO2 en los camarotes ----------
         foreach (var t in tri) t.Co2 = vent ? t.Co2Base : t.Co2 + t.Co2SinVentilacion;
         if (!vent)
         {
             GameState.NochesSinVentilacion++;
-            r.Add("Sin ventilación: el CO₂ de la tripulación dormida se acumuló (Marco: " + marco.Co2.ToString("0.0") + " mmHg).");
+        r.Add("Without ventilation: CO₂ from the sleeping crew built up (Marco: " + marco.Co2.ToString("0.0") + " mmHg).");
         }
 
         // ---------- 7. Pulso (BPM) para la noche siguiente ----------
@@ -242,7 +242,7 @@ public static class SimulacionNoche
             {
                 t.SumarBpm(45f);
                 GameState.PromesasRotas++;
-                r.Add("Promesa rota: le dijiste a " + t.Nombre + " que dejarías la calefacción al máximo (+45 BPM).");
+        r.Add("Broken promise: you told " + t.Nombre + " you would leave heating at maximum (+45 BPM).");
             }
         }
 
@@ -263,16 +263,16 @@ public static class SimulacionNoche
         if (otroEnRojo) jonas.SumarBpm(15f);
 
         foreach (var t in tri)
-            if (t.Estado == EstadoTrip.Rojo) r.Add(t.Nombre + " está en ROJO (" + Mathf.RoundToInt(t.Bpm) + " BPM): mañana puede sabotear algo.");
+        if (t.Estado == EstadoTrip.Rojo) r.Add(t.Nombre + " is RED (" + Mathf.RoundToInt(t.Bpm) + " BPM): they may sabotage something tomorrow.");
 
         // ---------- 8. Cierre ----------
         if (GameState.MoxieDanado && noche == 6) GameState.NocheMoxieDanado = 6;
         if (GameState.PronosticoTau && noche + 1 < GameState.UltimaNoche)
-            r.Add("Pronóstico de Houston para la Noche " + (noche + 1) + ": " + TextosNoches.Telemetria[noche + 1]);
+        r.Add("Houston forecast for Night " + (noche + 1) + ": " + TextosNoches.Telemetria[noche + 1]);
         GameState.PronosticoTau = false;
 
         int bonus = jonas.Estado == EstadoTrip.Verde ? 10 : 0;
-        if (bonus > 0) r.Add("Jonas revisó los condensadores antes de dormir: +10 % de batería mañana.");
+        if (bonus > 0) r.Add("Jonas checked the capacitors before sleeping: +10% battery tomorrow.");
 
         GameState.UltimoReporte.Clear();
         GameState.UltimoReporte.AddRange(r);
@@ -287,7 +287,7 @@ public static class SimulacionNoche
         if (info.Continua)
         {
             if (c.Estado != EstadoPlanta.Madura)
-                r.Add(c.Nombre + ": la " + info.Nombre + " ya está madura. " + info.Efecto);
+        r.Add(c.Nombre + ": the " + info.Nombre + " is now mature. " + info.Efecto);
             c.Estado = EstadoPlanta.Madura;
             return 0;
         }
@@ -300,24 +300,24 @@ public static class SimulacionNoche
                 GameState.BiorremediacionHecha = true;
                 if (c.Perclorato && !c.Descontaminada) { GameState.SumarDomo(1); c.Descontaminada = true; }
                 c.Perclorato = false;
-                r.Add(c.Nombre + ": la Dechloromonas destruyó el perclorato. Suelo limpio y +20 % de agua.");
+        r.Add(c.Nombre + ": Dechloromonas destroyed the perchlorate. Clean soil and +20% water.");
                 break;
             case Especie.Papa:
             case Especie.Lechuga:
                 if (c.Toxica)
                 {
                     GameState.CosechasToxicas++;
-                    r.Add(c.Nombre + ": la cosecha tiene percloratos. Hay que tirarla.");
+        r.Add(c.Nombre + ": the harvest has perchlorates. It must be discarded.");
                     break;
                 }
                 GameState.Cosechas++;
-                if (c.Especie == Especie.Papa) { GameState.Raciones += 3; r.Add(c.Nombre + ": ¡cosecha! +3 raciones de papa."); }
-                else { GameState.Lechugas += 1; r.Add(c.Nombre + ": ¡cosecha! +1 dosis de lechuga roja."); }
+        if (c.Especie == Especie.Papa) { GameState.Raciones += 3; r.Add(c.Nombre + ": harvest! +3 potato rations."); }
+        else { GameState.Lechugas += 1; r.Add(c.Nombre + ": harvest! +1 red lettuce dose."); }
                 if (c.Regolito && !GameState.CosechaLimpia)
                 {
                     GameState.CosechaLimpia = true;
                     GameState.SumarDomo(1);
-                    r.Add("Primera comida cultivada en suelo marciano descontaminado (domo +1).");
+        r.Add("First food grown in decontaminated Martian soil (dome +1).");
                 }
                 break;
         }

@@ -55,6 +55,6 @@ public class IntroControlador : MonoBehaviour
         if (vinetas == null || vinetas.Length == 0) return;
         if (imagen != null) { imagen.sprite = vinetas[i].imagen; imagen.enabled = vinetas[i].imagen != null; }
         if (texto != null) texto.text = "";
-        if (textoAyuda != null) textoAyuda.text = (i + 1) + " / " + vinetas.Length + "   Espacio o clic";
+        if (textoAyuda != null) textoAyuda.text = (i + 1) + " / " + vinetas.Length + "   Space or click";
     }
 }

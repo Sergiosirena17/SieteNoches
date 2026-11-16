@@ -733,7 +733,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Volver al mapa
+  m_Text: Return to Map
 --- !u!222 &53724123
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -812,7 +812,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\u25B2 Amplitud (W)"
+  m_Text: "▲ Amplitude (W)"
 --- !u!222 &61122238
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3020,7 +3020,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Noche 1 \xB7 18:30"
+  m_Text: "Night 1 · 18:30"
 --- !u!1 &285058293
 GameObject:
   m_ObjectHideFlags: 0
@@ -3545,7 +3545,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\u25BC Amplitud (S)"
+  m_Text: "▼ Amplitude (S)"
 --- !u!222 &325707640
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3941,7 +3941,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Dato real: ...'
+  m_Text: 'Real-world fact: ...'
 --- !u!1 &377598804
 GameObject:
   m_ObjectHideFlags: 0
@@ -4470,7 +4470,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Bater\xEDa"
+  m_Text: "Battery"
 --- !u!1 &437105247
 GameObject:
   m_ObjectHideFlags: 0
@@ -5406,7 +5406,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Fuente: ...'
+  m_Text: 'Source: ...'
 --- !u!1 &588714403
 GameObject:
   m_ObjectHideFlags: 0
@@ -7159,7 +7159,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Responder: \xABRecibido, Houston. Gracias, Nikolas.\xBB"
+  m_Text: "Reply: “Copy that, Houston. Thanks, Nikolas.”"
 --- !u!222 &770103531
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7388,7 +7388,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\u25C0 Frecuencia (A)"
+  m_Text: "◀ Frequency (A)"
 --- !u!222 &795861150
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9575,7 +9575,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Responder: \xABT\xFA nos mandaste a aterrizar aqu\xED, genio.\xBB"
+  m_Text: "Reply: “You sent us to land here, genius.”"
 --- !u!222 &1086404513
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10509,7 +10509,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Frecuencia \u25B6 (D)"
+  m_Text: "Frequency ▶ (D)"
 --- !u!222 &1183034407
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10813,7 +10813,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Solo hay ancho de banda y bater\xEDa para 1 paquete esta noche (25 % de bater\xEDa; si se pierde la se\xF1al, 10 %).\n\xBFQu\xE9 env\xEDas?"
+  m_Text: "There is only bandwidth and battery for 1 package tonight (25% battery; if signal is lost, 10%).\nWhat do you send?"
 --- !u!222 &1222248295
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11117,7 +11117,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Se\xF1al bloqueada"
+  m_Text: "Signal locked"
 --- !u!222 &1255983346
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14457,7 +14457,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "El orbitador cruza el cielo: su frecuencia se corre de derecha a izquierda (efecto Doppler). Si Elena est\xE1 en verde, marca el punto exacto."
+  m_Text: "The orbiter crosses the sky: its frequency shifts from right to left (Doppler effect). If Elena is green, mark the exact point."
 --- !u!222 &1683409313
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -15209,7 +15209,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Comunicaciones y Antena Banda X
+  m_Text: Communications and X-Band Antenna
 --- !u!222 &1775669761
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -15667,7 +15667,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "SOS a Nikolas en Houston  \xB7  Rescate +1  \xB7  Elena se calma"
+  m_Text: "SOS to Nikolas in Houston  ·  Rescue +1  ·  Elena calms down"
 --- !u!222 &1809598962
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -15821,7 +15821,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "No transmitir esta noche (ahorra bater\xEDa)"
+  m_Text: "Do not transmit tonight (save battery)"
 --- !u!222 &1853983602
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -16954,7 +16954,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Salir (+2 h 30)
+  m_Text: Exit (+2 h 30)
 --- !u!222 &2023369658
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -17503,7 +17503,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Datos cient\xEDficos  \xB7  Aris contenta, Elena no"
+  m_Text: "Scientific data  ·  Aris is happy, Elena is not"
 --- !u!222 &2079579186
 CanvasRenderer:
   m_ObjectHideFlags: 0

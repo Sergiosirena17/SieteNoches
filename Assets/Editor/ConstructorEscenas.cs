@@ -186,15 +186,15 @@ public static class ConstructorEscenas
         // ---------- Estaciones ----------
         var flecha = Spr("Assets/Comun/UI/ui_flecha_mision.png");
         var estaciones = new GameObject("Estaciones").transform;
-        Estacion(estaciones, "Puente", Estaciones.Puente, "puente", new Vector2(4.5f, 16f), flecha);
-        Estacion(estaciones, "Soporte Vital", Estaciones.SoporteVital, "soporte", new Vector2(15.5f, 16f), flecha);
-        Estacion(estaciones, "Invernadero", Estaciones.Invernadero, "invernadero", new Vector2(4.5f, 9.5f), flecha);
-        Estacion(estaciones, "Terminal Biomédica", Estaciones.Biomedica, "biomedica", new Vector2(15.5f, 9.5f), flecha);
-        Estacion(estaciones, "Camarotes", Estaciones.Camarotes, "camarotes", new Vector2(4.5f, 3.5f), flecha);
-        Estacion(estaciones, "Antena Banda X", Estaciones.Antena, "antena", new Vector2(27f, 14f), flecha);
-        Estacion(estaciones, "Paneles solares: 0 W de noche", "", "paneles", new Vector2(31f, 9.5f), flecha);
-        Estacion(estaciones, "Zona de hielo (próximamente)", "", "camarotes", new Vector2(34f, 15f), flecha);
-        Estacion(estaciones, "Sonda antigua (próximamente)", "", "puente", new Vector2(34f, 5f), flecha);
+        Estacion(estaciones, "Bridge", Estaciones.Puente, "puente", new Vector2(4.5f, 16f), flecha);
+        Estacion(estaciones, "Life Support", Estaciones.SoporteVital, "soporte", new Vector2(15.5f, 16f), flecha);
+        Estacion(estaciones, "Hydroponic Greenhouse", Estaciones.Invernadero, "invernadero", new Vector2(4.5f, 9.5f), flecha);
+        Estacion(estaciones, "Biomedical Terminal", Estaciones.Biomedica, "biomedica", new Vector2(15.5f, 9.5f), flecha);
+        Estacion(estaciones, "Crew Quarters", Estaciones.Camarotes, "camarotes", new Vector2(4.5f, 3.5f), flecha);
+        Estacion(estaciones, "X-Band Antenna", Estaciones.Antena, "antena", new Vector2(27f, 14f), flecha);
+        Estacion(estaciones, "Solar panels: 0 W at night", "", "paneles", new Vector2(31f, 9.5f), flecha);
+        Estacion(estaciones, "Ice Zone (coming soon)", "", "camarotes", new Vector2(34f, 15f), flecha);
+        Estacion(estaciones, "Ancient probe (coming soon)", "", "puente", new Vector2(34f, 5f), flecha);
 
         // ---------- Jugador ----------
         var jugador = new GameObject("Jugador");

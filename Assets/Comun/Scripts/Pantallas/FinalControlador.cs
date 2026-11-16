@@ -17,11 +17,11 @@ public class FinalControlador : MonoBehaviour
         IdFinal = EvaluadorFinal.Calcular();
         var f = EvaluadorFinal.Finales[IdFinal];
         if (textoTitulo != null) textoTitulo.text = f.Titulo;
-        if (textoTipo != null) textoTipo.text = "Final: " + f.Tipo;
+        if (textoTipo != null) textoTipo.text = "Ending: " + f.Tipo;
         if (textoCuerpo != null)
             textoCuerpo.text = f.Texto + (IdFinal == EvaluadorFinal.Hipoxia ? "\n\n" + EvaluadorFinal.MotivoHipoxia() : "");
         if (textoInforme != null)
-            textoInforme.text = "INFORME CIENTÍFICO DE MISIÓN\n• " + string.Join("\n• ", EvaluadorFinal.InformeCientifico());
+            textoInforme.text = "MISSION SCIENCE REPORT\n• " + string.Join("\n• ", EvaluadorFinal.InformeCientifico());
     }
 
     public void JugarDeNuevo()

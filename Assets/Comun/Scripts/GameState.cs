@@ -121,16 +121,16 @@ public static class GameState
 
         Capsulas = new[]
         {
-            new Capsula("Cápsula 1 (hidropónica)", false),
-            new Capsula("Cápsula 2 (regolito)", true),
-            new Capsula("Cápsula 3 (regolito)", true),
+        new Capsula("Pod 1 (hydroponic)", false),
+        new Capsula("Pod 2 (regolith)", true),
+        new Capsula("Pod 3 (regolith)", true),
         };
         Tripulacion = new[]
         {
-            new Tripulante(TripId.Elena, "Cmdt. Elena Vance", "Piloto principal", 88f, 2.0f),
-            new Tripulante(TripId.Marco, "Marco \"Tornillo\" Silva", "Ingeniero de soporte vital", 78f, 2.5f),
-            new Tripulante(TripId.Aris, "Dra. Aris Thorne", "Astrobióloga", 92f, 2.0f),
-            new Tripulante(TripId.Jonas, "Jonas Miller", "Especialista de carga", 100f, 2.0f),
+        new Tripulante(TripId.Elena, "Cmdr. Elena Vance", "Lead pilot", 88f, 2.0f),
+        new Tripulante(TripId.Marco, "Marco \"Wrench\" Silva", "Life support engineer", 78f, 2.5f),
+        new Tripulante(TripId.Aris, "Dr. Aris Thorne", "Astrobiologist", 92f, 2.0f),
+        new Tripulante(TripId.Jonas, "Jonas Miller", "Payload specialist", 100f, 2.0f),
         };
         SimulacionNoche.EmpezarNoche(1, 0);
     }
@@ -172,30 +172,30 @@ public static class GameState
         if (Noche >= UltimaNoche)
         {
             if (id == Estaciones.SoporteVital || id == Estaciones.Puente) return true;
-            motivo = "No hay tiempo: Soporte Vital y luego el Puente.";
+            motivo = "No time left: Life Support, then the Bridge.";
             return false;
         }
         switch (id)
         {
             case Estaciones.Invernadero:
-                if (InvernaderoSacrificado) { motivo = "Apagado para cargar los condensadores"; return false; }
+        if (InvernaderoSacrificado) { motivo = "Shut down to charge the capacitors"; return false; }
                 return true;
             case Estaciones.SoporteVital:
             case Estaciones.Camarotes:
                 return true;
             case Estaciones.Biomedica:
-                if (Charlas >= CharlasPorNoche) { motivo = "Ya hablaste con 2 tripulantes esta noche"; return false; }
+        if (Charlas >= CharlasPorNoche) { motivo = "You already talked to 2 crew members tonight"; return false; }
                 return true;
             case Estaciones.Antena:
-                if (AntenaApagada) { motivo = "Apagada para sellar el domo"; return false; }
-                if (Noche < 2) { motivo = "Se activa en la Noche 2, cuando pase el orbitador"; return false; }
-                if (AntenaUsada) { motivo = "Solo hay batería para 1 paquete por noche"; return false; }
+        if (AntenaApagada) { motivo = "Shut down to seal the dome"; return false; }
+        if (Noche < 2) { motivo = "Activates on Night 2, when the orbiter passes"; return false; }
+        if (AntenaUsada) { motivo = "Only enough battery for 1 package per night"; return false; }
                 return true;
             case Estaciones.Puente:
-                motivo = "La ventana orbital se abre en la Noche 7";
+            motivo = "The orbital window opens on Night 7";
                 return false;
         }
-        motivo = "Próximamente";
+            motivo = "Coming soon";
         return false;
     }
 
@@ -205,7 +205,7 @@ public static class GameState
     public static void TerminarEstacion(string id, string resumen)
     {
         Visitas++;
-        if (!string.IsNullOrEmpty(resumen)) Informe.Add("Noche " + Noche + " " + Hora + ": " + resumen);
+        if (!string.IsNullOrEmpty(resumen)) Informe.Add("Night " + Noche + " " + Hora + ": " + resumen);
         SceneManager.LoadScene(Escenas.Mapa);
     }
 

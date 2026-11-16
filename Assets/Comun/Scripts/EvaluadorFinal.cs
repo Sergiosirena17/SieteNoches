@@ -1,10 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Elige el final al amanecer de la Noche 7 (tabla "Finales conectados").
-/// Se revisan de arriba hacia abajo y gana la primera condicion que se cumpla.
-/// </summary>
+/// <summary>Chooses the ending at dawn on Night 7.</summary>
 public static class EvaluadorFinal
 {
     public struct Final { public string Titulo; public string Tipo; public string Texto; }
@@ -23,7 +20,6 @@ public static class EvaluadorFinal
     {
         if (GameState.Oxigeno <= 0 || GameState.TiempoAgotado) return Hipoxia;
         if (Crisis120() >= 3 || GameState.PromesasRotas >= 3) return Motin;
-
         int rojos = GameState.ContarEnRojo();
         if (GameState.DecisionFinal == "sellar")
         {
@@ -31,9 +27,7 @@ public static class EvaluadorFinal
                       && GameState.Oxigeno > 80 && GameState.Trip(TripId.Aris).Estado == EstadoTrip.Verde;
             return ok ? RaicesRojas : Hipoxia;
         }
-
-        // Despegar
-        if (GameState.ProgresoRescate < 3) return Hipoxia; // sin coordenadas: fuera de la ventana
+        if (GameState.ProgresoRescate < 3) return Hipoxia;
         if (GameState.Bateria < 20 || GameState.NocheMoxieDanado == 6) return Sacrificio;
         if (GameState.NikolasDiscusiones >= 3 && GameState.NikolasCordiales == 0) return Nikolas;
         if (GameState.ProgresoRescate == 4 && GameState.Oxigeno > 60 && rojos == 0 && GameState.CosechaLimpia) return Heroe;
@@ -43,50 +37,36 @@ public static class EvaluadorFinal
 
     public static readonly Dictionary<string, Final> Finales = new Dictionary<string, Final>
     {
-        { Heroe, new Final { Titulo = "Regreso héroe", Tipo = "El mejor",
-            Texto = "Despegas en la ventana orbital exacta con toda la tripulación sana y las muestras biológicas vivas." } },
-        { RaicesRojas, new Final { Titulo = "Raíces Rojas", Tipo = "Secreto / Bueno",
-            Texto = "Ignoraste el rescate de Houston, pero cerraste el ciclo de agua, O₂ y comida sin percloratos. Cuando sale el sol, la tripulación acepta que ya no necesita volver: fundan la primera colonia permanente en Marte." } },
-        { Nikolas, new Final { Titulo = "Nikolas se queda", Tipo = "Secreto / Comedia",
-            Texto = "En pleno ascenso, Control de Misión se da cuenta, con 12 minutos de retraso, de que Nikolas estaba durmiendo en el módulo auxiliar que dejaste en tierra." } },
-        { Sacrificio, new Final { Titulo = "Órbita de sacrificio", Tipo = "Dramático",
-            Texto = "Solo hay energía y soporte vital para que la cápsula suba a tus compañeros. Te quedas abajo, en la oscuridad, operando a mano las válvulas y la antena mientras ves su estela cruzar el cielo marciano." } },
-        { CajaNegra, new Final { Titulo = "Caja negra", Tipo = "Mixto / Oscuro",
-            Texto = "La nave de rescate los recoge al amanecer y los datos se salvan, pero el hambre, la radiación y la paranoia rompieron para siempre a la tripulación." } },
-        { Motin, new Final { Titulo = "Motín en el domo", Tipo = "Malo (social)",
-            Texto = "En plena madrugada, el pánico y la hipercapnia hacen que la tripulación tome la base y te deje fuera de la cabina de mando para racionar el aire." } },
-        { Hipoxia, new Final { Titulo = "Deriva o fallo por hipoxia", Tipo = "Malo (técnico)",
-            Texto = "El frío de -125 °C o la acumulación de CO₂ apagan los sistemas del hábitat antes de que salga el sol." } },
-        { AMedias, new Final { Titulo = "Regreso a medias", Tipo = "Bueno (propuesta, no está en el documento)",
-            Texto = "Despegas dentro de la ventana. No todo salió bien, pero vuelven todos. Houston pregunta qué pasó esas siete noches; tú tienes el informe." } },
+        { Heroe, new Final { Titulo = "Heroic Return", Tipo = "Best ending", Texto = "You launch in the precise orbital window with the whole crew healthy and the biological samples alive." } },
+        { RaicesRojas, new Final { Titulo = "Red Roots", Tipo = "Secret / Good", Texto = "You ignored Houston's rescue plan, but closed the water, O₂, and food cycle without perchlorates. When the sun rises, the crew accepts they no longer need to return: they found the first permanent colony on Mars." } },
+        { Nikolas, new Final { Titulo = "Nikolas Stays Behind", Tipo = "Secret / Comedy", Texto = "During ascent, Mission Control realizes—12 minutes late—that Nikolas had been asleep in the auxiliary module you left on the ground." } },
+        { Sacrificio, new Final { Titulo = "Sacrifice Orbit", Tipo = "Dramatic", Texto = "There is only enough energy and life support for the capsule to carry your crewmates up. You stay below in the dark, operating the valves and antenna by hand as you watch their trail cross the Martian sky." } },
+        { CajaNegra, new Final { Titulo = "Black Box", Tipo = "Mixed / Dark", Texto = "The rescue ship collects you at dawn and the data is saved, but hunger, radiation, and paranoia have broken the crew forever." } },
+        { Motin, new Final { Titulo = "Mutiny in the Dome", Tipo = "Bad (social)", Texto = "In the middle of the night, panic and hypercapnia make the crew take the base and lock you out of command to ration the air." } },
+        { Hipoxia, new Final { Titulo = "Drift or Hypoxia Failure", Tipo = "Bad (technical)", Texto = "The -125 °C cold or accumulating CO₂ shuts down the habitat systems before sunrise." } },
+        { AMedias, new Final { Titulo = "A Partial Return", Tipo = "Good", Texto = "You launch within the window. Not everything went right, but everyone returns. Houston asks what happened during those seven nights; you have the report." } },
     };
 
-    /// <summary>Motivo concreto del final malo tecnico, para no dejar al jugador adivinando.</summary>
     public static string MotivoHipoxia()
     {
-        if (GameState.Oxigeno <= 0) return "El oxígeno llegó a 0 %.";
-        if (GameState.TiempoAgotado) return "Se acabaron los 60 segundos antes de llegar al Puente.";
-        if (GameState.DecisionFinal == "sellar") return "Sellaste el domo sin que fuera autosuficiente.";
-        return "Despegaste sin suficientes paquetes SOS: Houston no pudo calcular la ventana (necesitas rescate 3 de 4).";
+        if (GameState.Oxigeno <= 0) return "Oxygen reached 0%.";
+        if (GameState.TiempoAgotado) return "The 60 seconds ran out before you reached the Bridge.";
+        if (GameState.DecisionFinal == "sellar") return "You sealed the dome before it was self-sufficient.";
+        return "You launched without enough SOS packages: Houston could not calculate the window (you need rescue progress 3 of 4).";
     }
 
-    /// <summary>Informe Científico de Misión: explica con ciencia real que decisiones llevaron al final.</summary>
     public static List<string> InformeCientifico()
     {
         var l = new List<string>();
-        l.Add("MOXIE produjo oxígeno en " + GameState.NochesMoxie + " de 6 noches: rompe el CO₂ (95 % del aire marciano) a 800 °C.");
-        if (GameState.NochesApagon > 0)
-            l.Add(GameState.NochesApagon + " apagón(es): de noche los paneles solares dan 0 W y solo cuenta la batería.");
-        if (GameState.NochesSinVentilacion > 0)
-            l.Add(GameState.NochesSinVentilacion + " noche(s) sin ventilación: en 0.38 g casi no hay convección y el CO₂ exhalado forma burbujas. Sobre 5 mmHg causa hipercapnia.");
-        l.Add("Cosechas: " + GameState.Cosechas + ". Plantas muertas: " + GameState.PlantasMuertas + ". En baja gravedad el exceso de agua ahoga las raíces.");
-        if (GameState.BiorremediacionHecha)
-            l.Add("Limpiaste percloratos con Dechloromonas: el regolito tiene de 0.5 % a 1 % de ClO₄⁻, tóxico para la tiroides.");
-        else if (GameState.CosechasToxicas > 0)
-            l.Add(GameState.CosechasToxicas + " cosecha(s) tóxica(s): sembraste comida en suelo con percloratos sin limpiarlo.");
-        l.Add("Paquetes SOS que llegaron a Houston: " + GameState.SosEnviados + ". Cada mensaje tardó unos 12 minutos en cruzar el espacio.");
-        l.Add("Promesas rotas: " + GameState.PromesasRotas + ". Tripulantes en rojo al final: " + GameState.ContarEnRojo() + ".");
-        l.Add("Rescate " + GameState.ProgresoRescate + "/4 · Domo " + GameState.AutosuficienciaDomo + "/4 · O₂ " + GameState.Oxigeno + " % · Batería " + GameState.Bateria + " %.");
+        l.Add("MOXIE produced oxygen on " + GameState.NochesMoxie + " of 6 nights: it splits CO₂ (95% of Martian air) at 800 °C.");
+        if (GameState.NochesApagon > 0) l.Add(GameState.NochesApagon + " blackout(s): at night, solar panels provide 0 W, so only the battery matters.");
+        if (GameState.NochesSinVentilacion > 0) l.Add(GameState.NochesSinVentilacion + " night(s) without ventilation: at 0.38 g there is almost no convection, and exhaled CO₂ forms bubbles. Above 5 mmHg it causes hypercapnia.");
+        l.Add("Harvests: " + GameState.Cosechas + ". Dead plants: " + GameState.PlantasMuertas + ". In low gravity, excess water drowns roots.");
+        if (GameState.BiorremediacionHecha) l.Add("You removed perchlorates with Dechloromonas: regolith contains 0.5% to 1% ClO₄⁻, which is toxic to the thyroid.");
+        else if (GameState.CosechasToxicas > 0) l.Add(GameState.CosechasToxicas + " toxic harvest(s): you grew food in perchlorate soil without cleaning it.");
+        l.Add("SOS packages received in Houston: " + GameState.SosEnviados + ". Each message took about 12 minutes to cross space.");
+        l.Add("Broken promises: " + GameState.PromesasRotas + ". Crew members in red at the end: " + GameState.ContarEnRojo() + ".");
+        l.Add("Rescue " + GameState.ProgresoRescate + "/4 · Dome " + GameState.AutosuficienciaDomo + "/4 · O₂ " + GameState.Oxigeno + "% · Battery " + GameState.Bateria + "%.");
         return l;
     }
 }

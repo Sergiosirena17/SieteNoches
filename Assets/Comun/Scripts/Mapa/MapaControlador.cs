@@ -96,8 +96,8 @@ public class MapaControlador : MonoBehaviour
     {
         if (textoNoche != null)
             textoNoche.text = carreraFinal
-                ? "Noche 7 · 05:" + Mathf.Clamp(Mathf.FloorToInt(SegundosNoche7 - tiempoRestante), 0, 59).ToString("00")
-                : "Noche " + GameState.Noche + " de 7 · " + GameState.Hora;
+            ? "Night 7 · 05:" + Mathf.Clamp(Mathf.FloorToInt(SegundosNoche7 - tiempoRestante), 0, 59).ToString("00")
+            : "Night " + GameState.Noche + " of 7 · " + GameState.Hora;
         if (textoObjetivo != null) textoObjetivo.text = Objetivo();
 
         int consumo = SimulacionNoche.ConsumoProyectado();
@@ -123,10 +123,10 @@ public class MapaControlador : MonoBehaviour
     string Objetivo()
     {
         if (carreraFinal)
-            return GameState.ValvulasCerradas ? "¡Al Puente! " + Mathf.CeilToInt(tiempoRestante) + " s" : "Cierra las válvulas en Soporte Vital. " + Mathf.CeilToInt(tiempoRestante) + " s";
-        if (GameState.VentilacionPrometidaPendiente()) return "¡Enciende los ventiladores en Soporte Vital!";
-        if (SimulacionNoche.HabraApagon) return "¡La batería no alcanza! Apaga sistemas en Soporte Vital.";
-        return "Visitas " + GameState.Visitas + "/" + GameState.VisitasPorNoche + " · Camarotes: terminar la guardia";
+            return GameState.ValvulasCerradas ? "Get to the Bridge! " + Mathf.CeilToInt(tiempoRestante) + " s" : "Close the Life Support valves. " + Mathf.CeilToInt(tiempoRestante) + " s";
+        if (GameState.VentilacionPrometidaPendiente()) return "Turn on the Life Support fans!";
+        if (SimulacionNoche.HabraApagon) return "The battery is not enough! Shut down systems in Life Support.";
+        return "Visits " + GameState.Visitas + "/" + GameState.VisitasPorNoche + " · Crew Quarters: end the watch";
     }
 
     static void Poner(Text t, string valor, bool alerta)
@@ -142,15 +142,30 @@ public class MapaControlador : MonoBehaviour
     {
         estacionCerca = e;
         if (textoAviso == null) return;
-        if (string.IsNullOrEmpty(e.idEstacion)) { textoAviso.text = e.nombreVisible; return; }
+        string nombre = NombreEnIngles(e);
+        if (string.IsNullOrEmpty(e.idEstacion)) { textoAviso.text = nombre; return; }
         if (carreraFinal)
         {
-            textoAviso.text = e.idEstacion == Estaciones.SoporteVital ? "E: Cerrar válvulas"
-                : e.idEstacion == Estaciones.Puente ? "E: Ir a la cabina" : e.nombreVisible + ": no hay tiempo";
+        textoAviso.text = e.idEstacion == Estaciones.SoporteVital ? "E: Close valves"
+            : e.idEstacion == Estaciones.Puente ? "E: Go to Bridge" : nombre + ": no time left";
             return;
         }
-        if (e.idEstacion == Estaciones.Camarotes) { textoAviso.text = "E: Terminar la guardia (pasar a las 06:00)"; return; }
-        textoAviso.text = e.Disponible ? "E: " + e.nombreVisible + " (2 h 30)" : e.nombreVisible + ": " + e.Motivo;
+        if (e.idEstacion == Estaciones.Camarotes) { textoAviso.text = "E: End watch (advance to 06:00)"; return; }
+        textoAviso.text = e.Disponible ? "E: " + nombre + " (2 h 30)" : nombre + ": " + e.Motivo;
+    }
+
+    static string NombreEnIngles(EstacionMapa e)
+    {
+        if (!string.IsNullOrEmpty(e.idEstacion) && Estaciones.Nombre.TryGetValue(e.idEstacion, out string nombre))
+            return nombre;
+
+        switch (e.nombreVisible)
+        {
+            case "Zona de hielo (próximamente)": return "Ice Zone (coming soon)";
+            case "Paneles solares: 0 W de noche": return "Solar panels: 0 W at night";
+            case "Sonda antigua (próximamente)": return "Ancient probe (coming soon)";
+            default: return e.nombreVisible;
+        }
     }
 
     public void OcultarAviso(EstacionMapa e)
@@ -181,11 +196,11 @@ public class MapaControlador : MonoBehaviour
         if (e.idEstacion == Estaciones.SoporteVital)
         {
             GameState.ValvulasCerradas = true;
-            if (textoAviso != null) textoAviso.text = "Válvulas cerradas. ¡Ahora al Puente!";
+        if (textoAviso != null) textoAviso.text = "Valves closed. Now get to the Bridge!";
         }
         else if (e.idEstacion == Estaciones.Puente)
         {
-            if (!GameState.ValvulasCerradas) { if (textoAviso != null) textoAviso.text = "Primero cierra las válvulas en Soporte Vital."; return; }
+        if (!GameState.ValvulasCerradas) { if (textoAviso != null) textoAviso.text = "Close the Life Support valves first."; return; }
             carreraFinal = false;
             SceneManager.LoadScene(Escenas.Lanzamiento);
         }
@@ -200,12 +215,12 @@ public class MapaControlador : MonoBehaviour
         var cuerpo = new List<string>
         {
             TextosNoches.Titulo[n],
-            TextosNoches.Telemetria[n] + " | Batería al anochecer: " + GameState.Bateria + " %",
+            TextosNoches.Telemetria[n] + " | Battery at nightfall: " + GameState.Bateria + "%",
             "",
             TextosNoches.Incidente[n],
         };
         if (n == 4 && GameState.CapsulaContaminada >= 0)
-            cuerpo.Add("Cápsula contaminada: " + GameState.Capsulas[GameState.CapsulaContaminada].Nombre + ".");
+            cuerpo.Add("Contaminated pod: " + GameState.Capsulas[GameState.CapsulaContaminada].Nombre + ".");
         if (GameState.CentinelaActiva() && TextosNoches.Centinela[n] != "") cuerpo.Add(TextosNoches.Centinela[n]);
 
         PonerLuz(colorNoche, 0.8f);
@@ -214,14 +229,14 @@ public class MapaControlador : MonoBehaviour
             if (GameState.CentinelaActiva() || GameState.BiorremediacionHecha)
             {
                 GameState.TomaCongelada = false;
-                if (!GameState.CentinelaActiva()) cuerpo.Add("La Dechloromonas dejó las tomas limpias: el hielo seco no se pegó.");
-                yield return Pantalla("Noche 3 · 18:30 MTC", string.Join("\n", cuerpo));
+        if (!GameState.CentinelaActiva()) cuerpo.Add("Dechloromonas left the intakes clean: dry ice did not stick.");
+        yield return Pantalla("Night 3 · 18:30 MTC", string.Join("\n", cuerpo));
             }
             else
             {
-                cuerpo.Add("\nPara descongelar las tomas hay que quitarle el calor a un sector esta noche:");
-                yield return Pantalla("Noche 3 · 18:30 MTC", string.Join("\n", cuerpo),
-                    "Enfriar el Invernadero (riesgo: raíces húmedas se congelan)", "Enfriar los Camarotes (+25 BPM a Marco y Jonas)");
+        cuerpo.Add("\nTo thaw the intakes, you must remove heat from one sector tonight:");
+        yield return Pantalla("Night 3 · 18:30 MTC", string.Join("\n", cuerpo),
+            "Cool the Greenhouse (risk: wet roots freeze)", "Cool the Crew Quarters (+25 BPM to Marco and Jonas)");
                 GameState.TomaCongelada = false;
                 if (eleccion == 0) GameState.SectorSinCalor = Estaciones.Invernadero;
                 else
@@ -234,9 +249,9 @@ public class MapaControlador : MonoBehaviour
         }
         else if (n == 6)
         {
-            cuerpo.Add("\nPunto de no retorno. ¿Qué sistema sacrificas?");
-            yield return Pantalla("Noche 6 · 18:30 MTC", string.Join("\n", cuerpo),
-                "Apagar el Invernadero y cargar los condensadores de despegue", "Apagar la Antena y sellar el domo como colonia");
+        cuerpo.Add("\nPoint of no return. Which system do you sacrifice?");
+        yield return Pantalla("Night 6 · 18:30 MTC", string.Join("\n", cuerpo),
+            "Shut down the Greenhouse and charge the launch capacitors", "Shut down the Antenna and seal the dome as a colony");
             if (eleccion == 0)
             {
                 GameState.InvernaderoSacrificado = true;
@@ -244,33 +259,33 @@ public class MapaControlador : MonoBehaviour
                 GameState.CalefInvernadero = false;
                 foreach (var c in GameState.Capsulas) { c.Vaciar(); c.LedRojo = c.LedAzul = c.LedUv = false; }
                 GameState.Trip(TripId.Aris).SumarBpm(25f);
-                GameState.Informe.Add("Noche 6: sacrificaste el invernadero para cargar los condensadores de despegue.");
+        GameState.Informe.Add("Night 6: you sacrificed the greenhouse to charge the launch capacitors.");
             }
             else
             {
                 GameState.AntenaApagada = true;
                 GameState.SumarDomo(1);
                 GameState.Trip(TripId.Elena).SumarBpm(25f);
-                GameState.Informe.Add("Noche 6: apagaste la antena y sellaste el domo como colonia.");
+        GameState.Informe.Add("Night 6: you shut down the antenna and sealed the dome as a colony.");
             }
         }
-        else yield return Pantalla("Noche " + n + " · 18:30 MTC", string.Join("\n", cuerpo));
+        else yield return Pantalla("Night " + n + " · 18:30 MTC", string.Join("\n", cuerpo));
 
         if (!GameState.TutorialesVistos.Contains("mapa"))
         {
             GameState.TutorialesVistos.Add("mapa");
-            yield return Pantalla("Cómo se juega", string.Join("\n", ComoSeJuega));
+            yield return Pantalla("How to Play", string.Join("\n", ComoSeJuega));
         }
     }
 
     static readonly string[] ComoSeJuega =
     {
-        "• Camina con WASD y entra a las estaciones con E. Cada visita dura 2 h 30.",
-        "• Lo que dejas encendido gasta batería. A las 6:00 AM ves qué pasó con el oxígeno, las plantas y la tripulación.",
-        "• Arriba están tus recursos y el pulso de cada tripulante: verde está bien, rojo está mal.",
-        "• Cuando quieras terminar la noche, ve a los Camarotes.",
+        "• Move with WASD and enter stations with E. Each visit lasts 2 h 30.",
+        "• Anything you leave on drains the battery. At 6:00 AM you see what happened to oxygen, plants, and crew.",
+        "• Your resources and each crew member's pulse are at the top: green is good, red is bad.",
+        "• When you want to end the night, go to the Crew Quarters.",
         "",
-        "Para empezar: siembra en el Invernadero, enciende el MOXIE en Soporte Vital y habla con Jonas en la Terminal Biomédica (está nervioso).",
+        "To begin: plant in the Greenhouse, turn on MOXIE in Life Support, and talk to Jonas at the Biomedical Terminal (he is nervous).",
     };
 
     /// <summary>Guiño a FNAF: a las 6:00 AM se resuelve todo lo que dejaste configurado.</summary>
@@ -279,7 +294,7 @@ public class MapaControlador : MonoBehaviour
         int noche = GameState.Noche;
         PonerLuz(colorAmanecer, 1f);
         var reporte = SimulacionNoche.Amanecer();
-        yield return Pantalla("6:00 AM", "Sobreviviste la Noche " + noche + ".\n\n" + string.Join("\n", reporte), null, null, 11);
+        yield return Pantalla("6:00 AM", "You survived Night " + noche + ".\n\n" + string.Join("\n", reporte), null, null, 11);
         if (GameState.Oxigeno <= 0) { SceneManager.LoadScene(Escenas.Final); yield break; }
         if (GameState.Noche >= GameState.UltimaNoche) yield return HoraMasOscura();
         else yield return InicioDeNoche();
@@ -288,8 +303,8 @@ public class MapaControlador : MonoBehaviour
     IEnumerator HoraMasOscura()
     {
         PonerLuz(colorEmergencia, 0.6f);
-        yield return Pantalla("Noche 7 · 05:00 AM", TextosNoches.Titulo[7] + "\n" + TextosNoches.Telemetria[7] + " | Batería: " + GameState.Bateria + " %\n\n" + TextosNoches.Incidente[7] +
-                              "\n\nRescate " + GameState.ProgresoRescate + "/4 · Domo " + GameState.AutosuficienciaDomo + "/4 · O₂ " + GameState.Oxigeno + " %");
+        yield return Pantalla("Night 7 · 05:00 AM", TextosNoches.Titulo[7] + "\n" + TextosNoches.Telemetria[7] + " | Battery: " + GameState.Bateria + "%\n\n" + TextosNoches.Incidente[7] +
+            "\n\nRescue " + GameState.ProgresoRescate + "/4 · Dome " + GameState.AutosuficienciaDomo + "/4 · O₂ " + GameState.Oxigeno + "%");
         tiempoRestante = SegundosNoche7;
         carreraFinal = true;
         AmbienteAudio.Efecto(SonidoProcedural.Pitido(), 0.8f);
@@ -310,7 +325,7 @@ public class MapaControlador : MonoBehaviour
         if (textoPantallaCuerpo != null)
         {
             textoPantallaCuerpo.fontSize = tamano;
-            textoPantallaCuerpo.text = cuerpo + (conOpciones ? "" : "\n\n(Espacio o botón Continuar)");
+        textoPantallaCuerpo.text = cuerpo + (conOpciones ? "" : "\n\n(Space or Continue button)");
         }
         if (botonContinuar != null) botonContinuar.SetActive(!conOpciones);
         if (botonOpcionA != null) botonOpcionA.SetActive(conOpciones);
